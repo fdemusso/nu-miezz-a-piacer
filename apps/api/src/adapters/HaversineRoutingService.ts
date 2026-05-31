@@ -1,18 +1,29 @@
 import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
+  Coordinates, WalkEstimate, RouteEstimate, IRoutingService,
 } from '@vsa/contracts'
 
-export class HaversineRoutingService implements IRoutingService {
-  async estimateWalkingTime(from: Coordinates, to: Coordinates): Promise<WalkEstimate> { return {} as WalkEstimate }
+const EARTH_R = 6_371_000
+const WALK_SPEED_MPS = 1.4   // ~5 km/h
+const BIKE_SPEED_MPS = 5.0   // ~18 km/h
 
-  async estimateRoute(vehicle: Vehicle, from: Coordinates, to: Coordinates): Promise<RouteEstimate> { return {} as RouteEstimate }
+function haversine(a: Coordinates, b: Coordinates): number {
+  const toRad = (d: number) => (d * Math.PI) / 180
+  const dLat = toRad(b.lat - a.lat)
+  const dLng = toRad(b.lng - a.lng)
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2
+  return 2 * EARTH_R * Math.asin(Math.sqrt(h))
+}
+
+export class HaversineRoutingService implements IRoutingService {
+  async estimateWalk(from: Coordinates, to: Coordinates): Promise<WalkEstimate> {
+    const distanceMeters = haversine(from, to)
+    return { distanceMeters, durationSeconds: distanceMeters / WALK_SPEED_MPS }
+  }
+
+  async estimateRoute(from: Coordinates, to: Coordinates): Promise<RouteEstimate> {
+    const distanceMeters = haversine(from, to)
+    return { distanceMeters, durationSeconds: distanceMeters / BIKE_SPEED_MPS }
+  }
 }

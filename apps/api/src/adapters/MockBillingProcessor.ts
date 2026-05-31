@@ -1,20 +1,25 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { Money, PaymentMethod, IBillingService } from '@vsa/contracts'
+
+interface Charge { userId: string; amount: Money; at: Date }
 
 export class MockBillingProcessor implements IBillingService {
-  async chargeCustomer(customer: Customer, amount: Money, paymentMethod?: PaymentMethod): Promise<void> { }
+  private charges: Charge[] = []
+  private methods = new Map<string, PaymentMethod[]>()
 
-  async refundCustomer(customer: Customer, amount: Money): Promise<void> { }
+  async charge(userId: string, amount: Money): Promise<void> {
+    this.charges.push({ userId, amount, at: new Date() })
+  }
 
-  async validatePaymentMethod(paymentMethod: PaymentMethod): Promise<boolean> { return false }
+  async addPaymentMethod(userId: string, method: PaymentMethod): Promise<void> {
+    const list = this.methods.get(userId) ?? []
+    list.push(method)
+    this.methods.set(userId, list)
+  }
+
+  async removePaymentMethod(userId: string, methodId: string): Promise<void> {
+    const list = this.methods.get(userId) ?? []
+    this.methods.set(userId, list.filter(m => m.id !== methodId))
+  }
+
+  getChargesForTest(): Charge[] { return [...this.charges] }
 }

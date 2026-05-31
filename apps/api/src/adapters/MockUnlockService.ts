@@ -1,20 +1,20 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { Vehicle, UnlockMethodType, IUnlockService } from '@vsa/contracts'
 
 export class MockUnlockService implements IUnlockService {
-  async unlock(vehicle: Vehicle, method: UnlockMethodType, user: Customer): Promise<boolean> { return false }
+  private unlocked = new Set<string>()
 
-  async lock(vehicle: Vehicle): Promise<boolean> { return false }
+  async unlock(vehicleId: string, _method: UnlockMethodType): Promise<void> {
+    this.unlocked.add(vehicleId)
+  }
 
-  getSupportedMethods(vehicle: Vehicle): UnlockMethodType[] { return [] }
+  async lock(vehicleId: string): Promise<void> {
+    this.unlocked.delete(vehicleId)
+  }
+
+  async getAvailableMethods(vehicle: Vehicle): Promise<UnlockMethodType[]> {
+    if (vehicle.type === 'car') return ['app', 'nfc']
+    return ['qr', 'app']
+  }
+
+  isUnlockedForTest(vehicleId: string): boolean { return this.unlocked.has(vehicleId) }
 }

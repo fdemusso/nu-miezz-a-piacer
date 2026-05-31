@@ -1,22 +1,17 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { FleetZone, IFleetZoneRepository } from '@vsa/contracts'
 
 export class SqliteFleetZoneRepository implements IFleetZoneRepository {
-  async findAll(): Promise<FleetZone[]> { return [] }
+  private byId = new Map<string, FleetZone>()
 
-  async findById(zoneId: string): Promise<FleetZone | null> { return null }
+  async findAll(): Promise<FleetZone[]> {
+    return [...this.byId.values()]
+  }
 
-  async findBelowThreshold(): Promise<FleetZone[]> { return [] }
+  async findById(zoneId: string): Promise<FleetZone | null> {
+    return this.byId.get(zoneId) ?? null
+  }
 
-  async updateAvailability(zoneId: string, currentAvailableVehicles: number): Promise<void> { }
+  async save(zone: FleetZone): Promise<void> {
+    this.byId.set(zone.id, zone)
+  }
 }

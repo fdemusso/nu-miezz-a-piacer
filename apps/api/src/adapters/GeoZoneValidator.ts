@@ -1,20 +1,33 @@
 import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
+  Coordinates, FleetZone, ZoneRule, ParkingValidationResult, IZoneValidator,
 } from '@vsa/contracts'
 
 export class GeoZoneValidator implements IZoneValidator {
-  async validateDestination(vehicle: Vehicle, destination: Coordinates): Promise<boolean> { return false }
+  isInsideZone(position: Coordinates, zone: ZoneRule | FleetZone): boolean {
+    const poly = 'boundary' in zone ? zone.boundary : []
+    if (poly.length < 3) return false
+    let inside = false
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const xi = poly[i].lng, yi = poly[i].lat
+      const xj = poly[j].lng, yj = poly[j].lat
+      const intersect =
+        yi > position.lat !== yj > position.lat &&
+        position.lng < ((xj - xi) * (position.lat - yi)) / (yj - yi) + xi
+      if (intersect) inside = !inside
+    }
+    return inside
+  }
 
-  async validateParking(vehicle: Vehicle, position: Coordinates): Promise<ParkingValidationResult> { return {} as ParkingValidationResult }
-
-  async getActiveRulesByPosition(position: Coordinates): Promise<ZoneRule[]> { return [] }
+  validate(position: Coordinates, zones: ZoneRule[]): ParkingValidationResult {
+    for (const z of zones) {
+      if (z.type === 'forbidden' && this.isInsideZone(position, z)) {
+        return { valid: false, reason: `forbidden zone: ${z.name}` }
+      }
+    }
+    const parkingZones = zones.filter(z => z.type === 'parking')
+    if (parkingZones.length > 0 && !parkingZones.some(z => this.isInsideZone(position, z))) {
+      return { valid: false, reason: 'outside parking zone' }
+    }
+    return { valid: true }
+  }
 }

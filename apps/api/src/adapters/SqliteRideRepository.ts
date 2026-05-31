@@ -1,22 +1,24 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { Ride, IRideRepository } from '@vsa/contracts'
 
 export class SqliteRideRepository implements IRideRepository {
-  async findById(rideId: string): Promise<Ride | null> { return null }
+  private byId = new Map<string, Ride>()
 
-  async findActiveByUser(userId: string): Promise<Ride | null> { return null }
+  async findById(rideId: string): Promise<Ride | null> {
+    return this.byId.get(rideId) ?? null
+  }
 
-  async save(ride: Ride): Promise<void> { }
+  async findActiveByUser(userId: string): Promise<Ride | null> {
+    for (const r of this.byId.values()) {
+      if (r.userId === userId && !r.endedAt) return r
+    }
+    return null
+  }
 
-  async update(ride: Ride): Promise<void> { }
+  async save(ride: Ride): Promise<void> {
+    this.byId.set(ride.id, ride)
+  }
+
+  async findAll(): Promise<Ride[]> {
+    return [...this.byId.values()]
+  }
 }

@@ -1,20 +1,19 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { ParkingBonusRule, IIncentiveService } from '@vsa/contracts'
+
+interface BonusGrant { userId: string; zoneId: string; at: Date }
 
 export class StandardIncentiveService implements IIncentiveService {
-  async configureParkingBonus(rule: ParkingBonusRule): Promise<void> { }
+  private rulesByZone = new Map<string, ParkingBonusRule>()
+  private grants: BonusGrant[] = []
 
-  async getActiveParkingBonusRules(): Promise<ParkingBonusRule[]> { return [] }
+  async configureBonusRule(rule: ParkingBonusRule): Promise<void> {
+    this.rulesByZone.set(rule.zoneId, rule)
+  }
 
-  async evaluateParkingBonus(ride: Ride, parkingResult: ParkingValidationResult): Promise<Money | null> { return null }
+  async applyParkingBonus(userId: string, zoneId: string): Promise<void> {
+    if (!this.rulesByZone.has(zoneId)) return
+    this.grants.push({ userId, zoneId, at: new Date() })
+  }
+
+  getGrantsForTest(): BonusGrant[] { return [...this.grants] }
 }

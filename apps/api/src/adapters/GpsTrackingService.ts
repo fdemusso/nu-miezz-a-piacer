@@ -1,20 +1,26 @@
 import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
+  Coordinates, TimeRange, VehiclePositionSnapshot, IGpsTrackingService,
 } from '@vsa/contracts'
 
 export class GpsTrackingService implements IGpsTrackingService {
-  async getCurrentPosition(vehicleId: string): Promise<Coordinates> { return {} as Coordinates }
+  private latest = new Map<string, Coordinates>()
+  private history = new Map<string, VehiclePositionSnapshot[]>()
 
-  async getPositionHistory(vehicleId: string): Promise<GeoPoint[]> { return [] }
+  recordForTest(snapshot: VehiclePositionSnapshot): void {
+    this.latest.set(snapshot.vehicleId, snapshot.position)
+    const list = this.history.get(snapshot.vehicleId) ?? []
+    list.push(snapshot)
+    this.history.set(snapshot.vehicleId, list)
+  }
 
-  async savePositionSnapshot(snapshot: VehiclePositionSnapshot): Promise<void> { }
+  async getPosition(vehicleId: string): Promise<Coordinates> {
+    const p = this.latest.get(vehicleId)
+    if (!p) throw new Error(`no position for vehicle ${vehicleId}`)
+    return p
+  }
+
+  async getHistory(vehicleId: string, range: TimeRange): Promise<VehiclePositionSnapshot[]> {
+    const list = this.history.get(vehicleId) ?? []
+    return list.filter(s => s.recordedAt >= range.from && s.recordedAt <= range.to)
+  }
 }

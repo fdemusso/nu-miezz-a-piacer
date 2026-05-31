@@ -1,20 +1,46 @@
 import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
+  TimeRange, MobilityReport, FleetZone, Ride, IReportingService,
+  IFleetZoneRepository,
 } from '@vsa/contracts'
 
+interface RideSource { findAll(): Promise<Ride[]> }
+
 export class StandardReportingService implements IReportingService {
-  async generateMobilityReport(period: TimeRange): Promise<MobilityReport> { return {} as MobilityReport }
+  constructor(
+    private readonly rides?: RideSource,
+    private readonly fleetZones?: IFleetZoneRepository,
+  ) {}
 
-  async getUsageByVehicleType(period: TimeRange): Promise<Record<VehicleType, number>> { return {} as Record<VehicleType, number> }
+  private async allRides(): Promise<Ride[]> {
+    return this.rides ? this.rides.findAll() : []
+  }
 
-  async getHighDensityZones(period: TimeRange): Promise<Coordinates[]> { return [] }
+  async getUsageFrequency(range: TimeRange): Promise<Record<string, number>> {
+    const rides = await this.allRides()
+    const buckets: Record<string, number> = {}
+    for (const r of rides) {
+      if (r.startedAt < range.from || r.startedAt > range.to) continue
+      const day = r.startedAt.toISOString().slice(0, 10)
+      buckets[day] = (buckets[day] ?? 0) + 1
+    }
+    return buckets
+  }
+
+  async getMobilityReport(range: TimeRange): Promise<MobilityReport> {
+    const rides = (await this.allRides()).filter(
+      r => r.startedAt >= range.from && r.startedAt <= range.to,
+    )
+    const users = new Set(rides.map(r => r.userId))
+    return {
+      period: range,
+      totalRides: rides.length,
+      totalDistance: 0,
+      activeUsers: users.size,
+    }
+  }
+
+  async getHighDensityZones(): Promise<FleetZone[]> {
+    const zones = (await this.fleetZones?.findAll()) ?? []
+    return [...zones].sort((a, b) => b.vehicleCount - a.vehicleCount).slice(0, 5)
+  }
 }

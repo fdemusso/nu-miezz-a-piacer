@@ -1,20 +1,18 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { INotificationSender } from '@vsa/contracts'
+
+interface Sent { userId: string; title: string; body: string; at: Date }
 
 export class FirebasePushSender implements INotificationSender {
-  async notifyUser(userId: string, message: string): Promise<void> { }
+  private log: Sent[] = []
 
-  async notifyOperator(operatorId: string, message: string): Promise<void> { }
+  async send(userId: string, title: string, body: string): Promise<void> {
+    this.log.push({ userId, title, body, at: new Date() })
+  }
 
-  async notifyZoneAlert(zoneId: string, message: string): Promise<void> { }
+  async broadcast(userIds: string[], title: string, body: string): Promise<void> {
+    const at = new Date()
+    for (const userId of userIds) this.log.push({ userId, title, body, at })
+  }
+
+  getSentForTest(): Sent[] { return [...this.log] }
 }

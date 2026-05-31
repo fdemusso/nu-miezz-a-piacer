@@ -1,22 +1,27 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { SupportTicket, ISupportService } from '@vsa/contracts'
 
 export class StandardSupportService implements ISupportService {
-  async openTicket(ticket: SupportTicket): Promise<void> { }
+  private byId = new Map<string, SupportTicket>()
+  private seq = 0
 
-  async assignTicket(ticketId: string, operatorId: string): Promise<void> { }
+  async openTicket(userId: string, subject: string, body: string): Promise<SupportTicket> {
+    const ticket: SupportTicket = {
+      id: `tkt_${++this.seq}`,
+      userId,
+      subject,
+      body,
+      status: 'open',
+      createdAt: new Date(),
+    }
+    this.byId.set(ticket.id, ticket)
+    return ticket
+  }
 
-  async closeTicket(ticketId: string): Promise<void> { }
+  async listTickets(): Promise<SupportTicket[]> {
+    return [...this.byId.values()]
+  }
 
-  async getOpenTickets(): Promise<SupportTicket[]> { return [] }
+  async getTicketsByUser(userId: string): Promise<SupportTicket[]> {
+    return [...this.byId.values()].filter(t => t.userId === userId)
+  }
 }

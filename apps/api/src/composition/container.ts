@@ -33,7 +33,7 @@ function buildContainer() {
   const gpsTrackingService = new GpsTrackingService()
   const maintenanceService = new StandardMaintenanceService()
   const supportService = new StandardSupportService()
-  const reportingService = new StandardReportingService()
+  const reportingService = new StandardReportingService(rideRepo, fleetZoneRepo)
 
   return {
     nearbyVehicles: {

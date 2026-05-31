@@ -1,22 +1,20 @@
-import type {
-  User, Vehicle, Booking, Ride, ZoneRule, ZoneType, FleetZone, Coordinates,
-  VehicleConditionReport, SupportTicket, ParkingBonusRule, GeoPoint,
-  VehiclePositionSnapshot, VehicleStatus, Customer, Promotion, PaymentMethod,
-  WalkEstimate, RouteEstimate, CostEstimate, ParkingValidationResult, Money,
-  MobilityReport, TimeRange, VehicleType, UnlockMethodType, UserRole,
-  IUserRepository, IVehicleRepository, IBookingRepository, IRideRepository,
-  IZoneRepository, IFleetZoneRepository, IAuthService, IZoneValidator,
-  IRoutingService, IPricingService, IBillingService, IPromotionService,
-  IIncentiveService, INotificationSender, IUnlockService, IGpsTrackingService,
-  IMaintenanceService, ISupportService, IReportingService,
-} from '@vsa/contracts'
+import type { User, IUserRepository } from '@vsa/contracts'
 
 export class SqliteUserRepository implements IUserRepository {
-  async findById(userId: string): Promise<User | null> { return null }
+  private byId = new Map<string, User>()
+  private byEmail = new Map<string, string>()
 
-  async findByEmail(email: string): Promise<User | null> { return null }
+  async findById(userId: string): Promise<User | null> {
+    return this.byId.get(userId) ?? null
+  }
 
-  async save(user: User): Promise<void> { }
+  async findByEmail(email: string): Promise<User | null> {
+    const id = this.byEmail.get(email.toLowerCase())
+    return id ? this.byId.get(id) ?? null : null
+  }
 
-  async update(user: User): Promise<void> { }
+  async save(user: User): Promise<void> {
+    this.byId.set(user.id, user)
+    this.byEmail.set(user.email.toLowerCase(), user.id)
+  }
 }
