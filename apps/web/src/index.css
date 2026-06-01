@@ -71,6 +71,7 @@ body {
 
 /* ── Page Content ── */
 .page-content {
+  position: relative;
   flex: 1;
   padding: 24px 20px;
   padding-bottom: calc(var(--nav-height) + 24px);
@@ -203,13 +204,11 @@ body {
    ══════════════════════════════════════════════════════════════════════════ */
 
 .nv-page {
-  display: flex;
-  flex-direction: column;
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  gap: 0;
-  /* remove default page padding — we need full-bleed map */
-  margin: -24px -20px;
-  margin-bottom: calc((var(--nav-height) + 24px) * -1);
+  overflow: hidden;
 }
 
 /* ── Filter Bar ─────────────────────────────────────────────────────────── */
@@ -263,9 +262,10 @@ body {
 /* ── Map Area ───────────────────────────────────────────────────────────── */
 
 .nv-map {
-  flex: 1;
-  min-height: 280px;
-  position: relative;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   background:
     radial-gradient(ellipse at 40% 50%, rgba(108, 92, 231, 0.06) 0%, transparent 60%),
@@ -449,14 +449,17 @@ body {
 /* ── Vehicle Detail Panel ───────────────────────────────────────────────── */
 
 .nv-panel {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 20;
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   padding: 16px 20px;
   padding-bottom: calc(var(--nav-height) + 16px);
-  margin-top: -12px;
+  margin-top: 0;
   transition: transform 0.35s var(--ease-smooth), opacity 0.3s var(--ease-smooth);
   animation: panelSlideUp 0.35s var(--ease-smooth);
 }
@@ -1710,5 +1713,157 @@ body {
 @keyframes prProgressLoad {
   to { width: 100%; }
 }
+
+/* ── Vector SVG Map Styles ── */
+.nv-vector-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f1118;
+  z-index: 1;
+}
+.map-layer-earth {
+  fill: #0f1118;
+}
+.map-layer-green {
+  fill: #132a22;
+  opacity: 0.85;
+}
+.map-layer-field {
+  fill: #1a241c;
+  opacity: 0.75;
+}
+.map-layer-square {
+  fill: #202330;
+}
+.map-layer-river {
+  fill: none;
+  stroke: #086b83;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+.map-layer-building {
+  fill: #1b1e2a;
+  stroke: rgba(255, 255, 255, 0.04);
+  stroke-width: 2px;
+}
+.map-layer-wall {
+  fill: none;
+  stroke: #3c3e4b;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 6 6;
+}
+.map-layer-road {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s;
+}
+.map-layer-road:hover {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+
+/* Overlay User GPS styles inside SVG */
+.map-user-radar {
+  fill: rgba(59, 130, 246, 0.05);
+  stroke: rgba(59, 130, 246, 0.2);
+  stroke-width: 6px;
+  animation: mapRadarPulse 4s ease-out infinite;
+  transform-origin: 50px -10px;
+}
+@keyframes mapRadarPulse {
+  0% { r: 50; opacity: 1; }
+  100% { r: 400; opacity: 0; }
+}
+.map-user-dot-outer {
+  fill: rgba(59, 130, 246, 0.15);
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 8px;
+}
+.map-user-dot-inner {
+  fill: #3b82f6;
+}
+
+/* Pin overlays inside SVG */
+.map-svg-pin {
+  outline: none;
+}
+.map-pin-circle-bg {
+  fill: rgba(26, 29, 39, 0.85);
+  transition: fill 0.2s;
+}
+.map-pin-circle-border {
+  fill: none;
+  stroke: rgba(108, 92, 231, 0.5);
+  stroke-width: 10px;
+  transition: stroke-width 0.2s, stroke 0.2s;
+}
+.map-svg-pin.selected .map-pin-circle-border,
+.map-svg-pin:hover .map-pin-circle-border {
+  stroke: var(--color-accent);
+  stroke-width: 14px;
+}
+.map-svg-pin.selected .map-pin-circle-bg {
+  fill: rgba(108, 92, 231, 0.15);
+}
+
+/* Stroke colors for dynamic pin symbols inside SVG */
+.map-svg-pin.nv-pin--scooter { color: #a855f7; }
+.map-svg-pin.nv-pin--bike    { color: #10b981; }
+.map-svg-pin.nv-pin--ebike   { color: #06b6d4; }
+.map-svg-pin.nv-pin--car     { color: #f59e0b; }
+
+/* ── Map Zoom and Recenter Controls ── */
+.nv-map-controls {
+  position: absolute;
+  right: 12px;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+
+.nv-control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: rgba(26, 29, 39, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  user-select: none;
+  outline: none;
+}
+
+.nv-control-btn:hover {
+  background: rgba(36, 40, 54, 0.95);
+  border-color: rgba(108, 92, 231, 0.4);
+  transform: scale(1.05);
+}
+
+.nv-control-btn:active {
+  transform: scale(0.95);
+}
+
+.nv-control-btn.recenter {
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+
 
 

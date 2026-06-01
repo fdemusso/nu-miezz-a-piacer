@@ -5,16 +5,17 @@ import type {
   VehicleTypeFilter,
 } from './NearbyVehicles.types'
 
-// ── Centro di Napoli — Coordinate GPS simulate dell'utente ───────────────────
-const USER_POSITION = { lat: 40.8465, lng: 14.2530 } // Napoli Centro (Via Toledo/Piazza Municipio)
+// ── Posizione GPS simulata dell'utente sulla mappa di Mappa0.json ────────────
+// In questo sistema Cartesiano: lng = coordinata X, lat = coordinata Y
+const USER_POSITION = { lat: -10, lng: 50 } // Posizionato vicino all'origine, direttamente su una strada principale
 
-// ── Dati mock — veicoli sparsi nel centro di Napoli ───────────────────────────
+// ── Dati mock — veicoli posizionati esattamente sulle giunzioni delle strade di Mappa0.json ───────────
 const MOCK_VEHICLES: NearbyVehicle[] = [
   {
     id: 'v-001',
     type: 'scooter',
     label: 'E-Scooter #A3',
-    position: { lat: 40.8518, lng: 14.2681 },   // Piazza Garibaldi
+    position: { lat: -97, lng: -60 },           // Strada 2 (Junction)
     status: 'available',
     batteryLevel: 85,
     distanceMeters: 0,                           // Calcolato geometricamente
@@ -24,9 +25,9 @@ const MOCK_VEHICLES: NearbyVehicle[] = [
     id: 'v-002',
     type: 'bike',
     label: 'City Bike #B7',
-    position: { lat: 40.8478, lng: 14.2530 },   // Via Toledo (Molto vicino!)
+    position: { lat: 6, lng: 32 },              // Strada 1 (Junction - Molto vicina!)
     status: 'available',
-    batteryLevel: 100,                           // bici meccanica → 100%
+    batteryLevel: 100,                           // Bici meccanica
     distanceMeters: 0,
     pricingPlan: { unlockCost: 0.5, perMinuteCost: 0.10 },
   },
@@ -34,7 +35,7 @@ const MOCK_VEHICLES: NearbyVehicle[] = [
     id: 'v-003',
     type: 'car',
     label: 'Smart EQ #C1',
-    position: { lat: 40.8532, lng: 14.2726 },   // Stazione Centrale
+    position: { lat: -61, lng: 185 },           // Strada 1 (Junction)
     status: 'available',
     batteryLevel: 45,
     distanceMeters: 0,
@@ -44,7 +45,7 @@ const MOCK_VEHICLES: NearbyVehicle[] = [
     id: 'v-004',
     type: 'scooter',
     label: 'E-Scooter #A9',
-    position: { lat: 40.8360, lng: 14.2475 },   // Chiaia / Lungomare
+    position: { lat: -174, lng: -158 },         // Strada 2 (Junction)
     status: 'available',
     batteryLevel: 91,
     distanceMeters: 0,
@@ -54,7 +55,7 @@ const MOCK_VEHICLES: NearbyVehicle[] = [
     id: 'v-005',
     type: 'ebike',
     label: 'E-Bike #D2',
-    position: { lat: 40.8565, lng: 14.2345 },   // Vomero / Vanvitelli
+    position: { lat: 9, lng: -85 },             // Strada 3 (Junction)
     status: 'available',
     batteryLevel: 62,
     distanceMeters: 0,
@@ -62,20 +63,11 @@ const MOCK_VEHICLES: NearbyVehicle[] = [
   },
 ]
 
-// ── Calcolo distanza in metri (Haversine o Flat Approximation) ───────────────
+// ── Calcolo distanza Euclidea 2D (in metri di coordinate Cartesiane) ─────────
 function calculateDistanceMeters(p1: { lat: number; lng: number }, p2: { lat: number; lng: number }) {
-  const R = 6371e3 // Raggio terrestre in metri
-  const phi1 = (p1.lat * Math.PI) / 180
-  const phi2 = (p2.lat * Math.PI) / 180
-  const deltaPhi = ((p2.lat - p1.lat) * Math.PI) / 180
-  const deltaLambda = ((p2.lng - p1.lng) * Math.PI) / 180
-
-  const a =
-    Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
-    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-  return Math.round(R * c)
+  const dx = p2.lng - p1.lng
+  const dy = p2.lat - p1.lat
+  return Math.round(Math.sqrt(dx * dx + dy * dy))
 }
 
 // ── Hook ──────────────────────────────────────────────────────────────────────

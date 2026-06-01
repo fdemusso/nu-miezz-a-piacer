@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useNearbyVehicles } from './NearbyVehicles.hook'
 import type { NearbyVehicle, VehicleTypeFilter } from './NearbyVehicles.types'
 import { useEstimateRideCost } from '../EstimateRideCost/EstimateRideCost.hook'
+import mapData from './Mappa0.json'
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -84,21 +85,7 @@ function formatDistance(meters: number) {
   return `${meters} m`
 }
 
-/**
- * Map the vehicle position to % coordinates inside the map container.
- * We normalize positions relative to the bounding box of mock data.
- */
-const LAT_RANGE = { min: 40.833, max: 40.860 }
-const LNG_RANGE = { min: 14.230, max: 14.280 }
-
-function toMapPercent(pos: { lat: number; lng: number }) {
-  const x = ((pos.lng - LNG_RANGE.min) / (LNG_RANGE.max - LNG_RANGE.min)) * 100
-  const y = ((LAT_RANGE.max - pos.lat) / (LAT_RANGE.max - LAT_RANGE.min)) * 100
-  return {
-    left: `${Math.max(8, Math.min(88, x))}%`,
-    top: `${Math.max(10, Math.min(85, y))}%`,
-  }
-}
+// coordinates translation helper is no longer needed since we render SVG coordinates natively!
 
 // ── Component ────────────────────────────────────────────────────────────────
 
@@ -116,6 +103,135 @@ export function NearbyVehiclesPage() {
     stopScanning,
   } = useNearbyVehicles()
 
+  const [isCollapsed, setIsCollapsed] = React.useState(false)
+
+  // ── Pan and Zoom States ────────────────────────────────────────────────────
+  const svgRef = React.useRef<SVGSVGElement>(null)
+  const [zoom, setZoom] = React.useState(1.0)
+  const [pan, setPan] = React.useState({ x: 0, y: 0 })
+  const [containerWidth, setContainerWidth] = React.useState(400)
+  const [dragState, setDragState] = React.useState({
+    isDragging: false,
+    startX: 0,
+    startY: 0,
+    startPanX: 0,
+    startPanY: 0,
+  })
+
+  // Monitor container width dynamically to scale icons perfectly
+  React.useEffect(() => {
+    if (!svgRef.current) return
+    const rect = svgRef.current.getBoundingClientRect()
+    if (rect.width) {
+      setContainerWidth(rect.width)
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.contentRect.width) {
+          setContainerWidth(entry.contentRect.width)
+        }
+      }
+    })
+    resizeObserver.observe(svgRef.current)
+    return () => resizeObserver.disconnect()
+  }, [])
+
+  // Standard viewBox bounds of Mappa0.json
+  const BASE_W = 5800
+  const BASE_H = 5900
+  const cx = 100
+  const cy = -150
+
+  const w = BASE_W / zoom
+  const h = BASE_H / zoom
+  const x = cx - w / 2 + pan.x
+  const y = cy - h / 2 + pan.y
+
+  const viewBoxString = `${x} ${y} ${w} ${h}`
+
+  // Ratio mapping 1 screen pixel to SVG coordinate units
+  const svgUnitsPerPixel = w / containerWidth
+
+  const handleStart = (clientX: number, clientY: number) => {
+    setDragState({
+      isDragging: true,
+      startX: clientX,
+      startY: clientY,
+      startPanX: pan.x,
+      startPanY: pan.y,
+    })
+  }
+
+  const handleMove = (clientX: number, clientY: number) => {
+    if (!dragState.isDragging) return
+    const container = svgRef.current
+    if (!container) return
+
+    const rect = container.getBoundingClientRect()
+    const containerWidth = rect.width || 400
+    const containerHeight = rect.height || 400
+
+    const dx = clientX - dragState.startX
+    const dy = clientY - dragState.startY
+
+    // Screen pixel to SVG map coordinates scaling factor
+    const svgDx = dx * (w / containerWidth)
+    const svgDy = dy * (h / containerHeight)
+
+    setPan({
+      x: dragState.startPanX - svgDx,
+      y: dragState.startPanY - svgDy,
+    })
+  }
+
+  const handleEnd = () => {
+    setDragState((prev) => ({ ...prev, isDragging: false }))
+  }
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return // Only drag on left click
+    handleStart(e.clientX, e.clientY)
+  }
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    handleMove(e.clientX, e.clientY)
+  }
+
+  const onMouseUp = () => {
+    handleEnd()
+  }
+
+  const onMouseLeave = () => {
+    handleEnd()
+  }
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      handleStart(e.touches[0].clientX, e.touches[0].clientY)
+    }
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      handleMove(e.touches[0].clientX, e.touches[0].clientY)
+    }
+  }
+
+  const onTouchEnd = () => {
+    handleEnd()
+  }
+
+  const onWheel = (e: React.WheelEvent) => {
+    // Zoom in or out relative to center
+    const zoomFactor = 1.15
+    if (e.deltaY < 0) {
+      setZoom((z) => Math.min(z * zoomFactor, 35.0))
+    } else {
+      setZoom((z) => Math.max(z / zoomFactor, 0.4))
+    }
+  }
+
   React.useEffect(() => {
     if (!isScanning) return
 
@@ -130,8 +246,6 @@ export function NearbyVehiclesPage() {
     return () => clearTimeout(timer)
   }, [isScanning, vehicles, selectVehicle, stopScanning])
 
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
-
   if (loading) return <div className="nv-page"><p style={{ padding: 24 }}>Caricamento…</p></div>
   if (error) return <div className="nv-page"><p style={{ padding: 24, color: '#f87171' }}>{error}</p></div>
 
@@ -139,6 +253,190 @@ export function NearbyVehiclesPage() {
     <div className="nv-page">
       {/* ── Simulated Map ── */}
       <div className="nv-map" aria-label="Mappa veicoli">
+        {/* ── Vector SVG Map Layer ── */}
+        <svg
+          ref={svgRef}
+          viewBox={viewBoxString}
+          className="nv-vector-map"
+          xmlns="http://www.w3.org/2000/svg"
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onWheel={onWheel}
+          style={{ cursor: dragState.isDragging ? 'grabbing' : 'grab', userSelect: 'none', touchAction: 'none' }}
+        >
+          {/* Earth / Land */}
+          {(() => {
+            const earthFeature = mapData.features.find((f) => f.id === 'earth')
+            if (!earthFeature || !earthFeature.coordinates) return null
+            const pointsStr = earthFeature.coordinates[0].map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+            return <polygon points={pointsStr} className="map-layer-earth" />
+          })()}
+
+          {/* Greens */}
+          {(() => {
+            const greensFeature = mapData.features.find((f) => f.id === 'greens')
+            if (!greensFeature || !greensFeature.coordinates) return null
+            return greensFeature.coordinates.map((polygonList: any, idx: number) => {
+              const outerRing = polygonList[0]
+              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              return <polygon key={`green-${idx}`} points={pointsStr} className="map-layer-green" />
+            })
+          })()}
+
+          {/* Fields */}
+          {(() => {
+            const fieldsFeature = mapData.features.find((f) => f.id === 'fields')
+            if (!fieldsFeature || !fieldsFeature.coordinates) return null
+            return fieldsFeature.coordinates.map((polygonList: any, idx: number) => {
+              const outerRing = polygonList[0]
+              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              return <polygon key={`field-${idx}`} points={pointsStr} className="map-layer-field" />
+            })
+          })()}
+
+          {/* Squares */}
+          {(() => {
+            const squaresFeature = mapData.features.find((f) => f.id === 'squares')
+            if (!squaresFeature || !squaresFeature.coordinates) return null
+            return squaresFeature.coordinates.map((polygonList: any, idx: number) => {
+              const outerRing = polygonList[0]
+              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              return <polygon key={`square-${idx}`} points={pointsStr} className="map-layer-square" />
+            })
+          })()}
+
+          {/* Rivers */}
+          {(() => {
+            const riversFeature = mapData.features.find((f) => f.id === 'rivers')
+            if (!riversFeature || !riversFeature.geometries) return null
+            return riversFeature.geometries.map((g: any, idx: number) => {
+              if (g.type === 'LineString') {
+                const pointsStr = g.coordinates.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+                return <polyline key={`river-${idx}`} points={pointsStr} className="map-layer-river" strokeWidth={g.width || 20} />
+              }
+              return null
+            })
+          })()}
+
+          {/* Buildings */}
+          {(() => {
+            const buildingsFeature = mapData.features.find((f) => f.id === 'buildings')
+            if (!buildingsFeature || !buildingsFeature.coordinates) return null
+            return buildingsFeature.coordinates.map((polygonList: any, idx: number) => {
+              const outerRing = polygonList[0]
+              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              return <polygon key={`building-${idx}`} points={pointsStr} className="map-layer-building" />
+            })
+          })()}
+
+          {/* Walls */}
+          {(() => {
+            const wallsFeature = mapData.features.find((f) => f.id === 'walls')
+            if (!wallsFeature || !wallsFeature.geometries) return null
+            return wallsFeature.geometries.map((g: any, idx: number) => {
+              if (g.type === 'LineString') {
+                const pointsStr = g.coordinates.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+                return <polyline key={`wall-${idx}`} points={pointsStr} className="map-layer-wall" strokeWidth={g.width || 8} />
+              }
+              return null
+            })
+          })()}
+
+          {/* Roads */}
+          {(() => {
+            const roadsFeature = mapData.features.find((f) => f.id === 'roads')
+            if (!roadsFeature || !roadsFeature.geometries) return null
+            return roadsFeature.geometries.map((g: any, idx: number) => {
+              if (g.type === 'LineString') {
+                const pointsStr = g.coordinates.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+                return <polyline key={`road-${idx}`} points={pointsStr} className={`map-layer-road width-${g.width || 8}`} strokeWidth={g.width || 8} />
+              }
+              return null
+            })
+          })()}
+
+          {/* ── SVG Space Overlays ── */}
+
+          {/* User Marker */}
+          {(() => {
+            const userOuterRadius = 15 * svgUnitsPerPixel
+            const userOuterStroke = 3 * svgUnitsPerPixel
+            const userInnerRadius = 7 * svgUnitsPerPixel
+
+            return (
+              <g className="map-overlay-user">
+                <circle cx="50" cy="-10" r="150" className="map-user-radar" />
+                <circle
+                  cx="50"
+                  cy="-10"
+                  r={userOuterRadius}
+                  className="map-user-dot-outer"
+                  style={{ strokeWidth: `${userOuterStroke}px` }}
+                />
+                <circle
+                  cx="50"
+                  cy="-10"
+                  r={userInnerRadius}
+                  className="map-user-dot-inner"
+                />
+              </g>
+            )
+          })()}
+
+          {/* Vehicle pins */}
+          {vehicles.map((v) => {
+            const isSelected = selectedVehicle?.id === v.id
+            const Icon = VEHICLE_ICONS[v.type]
+            const cx = v.position.lng
+            const cy = v.position.lat
+
+            // Compensate coordinate scaling so pins sit at exactly 44px on screen
+            const baseRadius = 22 * svgUnitsPerPixel
+            const baseIconSize = 24 * svgUnitsPerPixel
+            const strokeWidth = (isSelected ? 3.5 : 2.0) * svgUnitsPerPixel
+
+            return (
+              <g
+                key={v.id}
+                className={`map-svg-pin nv-pin--${v.type}${isSelected ? ' selected' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  selectVehicle(isSelected ? null : v)
+                  setIsCollapsed(false)
+                }}
+                style={{
+                  cursor: 'pointer',
+                  transform: isSelected ? 'scale(1.15)' : 'none',
+                  transformOrigin: `${cx}px ${cy}px`,
+                  transition: 'transform 0.2s var(--ease-smooth)',
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`${v.label} — batteria ${v.batteryLevel}%`}
+              >
+                {/* Visual pin circle background */}
+                <circle cx={cx} cy={cy} r={baseRadius} className="map-pin-circle-bg" />
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={baseRadius}
+                  className="map-pin-circle-border"
+                  style={{ strokeWidth: `${strokeWidth}px` }}
+                />
+                {/* Vector SVG Icon centered at coordinates (cx, cy) */}
+                <g transform={`translate(${cx - baseIconSize / 2}, ${cy - baseIconSize / 2})`}>
+                  {Icon && <Icon size={baseIconSize} />}
+                </g>
+              </g>
+            )
+          })}
+        </svg>
+
         {/* ── Filter Chips (inside map for correct stacking) ── */}
         <div className="nv-filter-bar" role="tablist" aria-label="Filtra per tipo di veicolo">
           {FILTERS.map(({ value, label }) => {
@@ -162,46 +460,42 @@ export function NearbyVehiclesPage() {
           })}
         </div>
 
-        <div className="nv-map-grid" />
-        <div className="nv-map-roads" />
-
         {/* User position label */}
         <div className="nv-user-label">
           <span className="nv-user-dot" />
           La tua posizione
         </div>
 
-        {/* User marker */}
-        <div
-          className="nv-user-marker"
-          style={{ left: '46%', top: '50%', transform: 'translate(-50%, -50%)' }}
-        >
-          <div className="nv-user-marker-dot" />
+        {/* ── Map Controls (Zoom in, Zoom out, Recenter) ── */}
+        <div className="nv-map-controls">
+          <button
+            className="nv-control-btn"
+            onClick={() => setZoom((z) => Math.min(z * 1.2, 35.0))}
+            aria-label="Ingrandisci"
+            title="Ingrandisci"
+          >
+            ＋
+          </button>
+          <button
+            className="nv-control-btn"
+            onClick={() => setZoom((z) => Math.max(z / 1.2, 0.4))}
+            aria-label="Rimpicciolisci"
+            title="Rimpicciolisci"
+          >
+            －
+          </button>
+          <button
+            className="nv-control-btn recenter"
+            onClick={() => {
+              setZoom(1.0)
+              setPan({ x: 0, y: 0 })
+            }}
+            aria-label="Centra sulla mia posizione"
+            title="Centra sulla mia posizione"
+          >
+            🎯
+          </button>
         </div>
-
-        {/* Vehicle pins */}
-        {vehicles.map((v) => {
-          const pos = toMapPercent(v.position)
-          const isSelected = selectedVehicle?.id === v.id
-          const Icon = VEHICLE_ICONS[v.type]
-          return (
-            <button
-              key={v.id}
-              className={`nv-pin nv-pin--${v.type}${isSelected ? ' selected' : ''}`}
-              style={{ left: pos.left, top: pos.top, transform: 'translate(-50%, -50%)' }}
-              onClick={() => {
-                selectVehicle(isSelected ? null : v)
-                setIsCollapsed(false)
-              }}
-              aria-label={`${v.label} — batteria ${v.batteryLevel}%`}
-            >
-              <span className="nv-pin-icon">
-                {Icon && <Icon size={18} />}
-              </span>
-              <span className="nv-pin-label">{v.label}</span>
-            </button>
-          )
-        })}
       </div>
 
       {/* ── Bottom Panel ── */}
