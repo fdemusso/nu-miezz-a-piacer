@@ -1,5 +1,4 @@
-import React from 'react'
-import { useReceiveMalfunctionReport } from './ReceiveMalfunctionReport.hook'
+﻿import { useReceiveMalfunctionReport } from './ReceiveMalfunctionReport.hook'
 
 export function ReceiveMalfunctionReportPage() {
   const { loading, error } = useReceiveMalfunctionReport()

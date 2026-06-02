@@ -1,5 +1,4 @@
-import React from 'react'
-import { useApplyPromotion } from './ApplyPromotion.hook'
+﻿import { useApplyPromotion } from './ApplyPromotion.hook'
 
 export function ApplyPromotionPage() {
   const { loading, error } = useApplyPromotion()

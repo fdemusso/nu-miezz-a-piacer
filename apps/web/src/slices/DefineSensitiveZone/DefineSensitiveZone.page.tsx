@@ -1,5 +1,4 @@
-import React from 'react'
-import { useDefineSensitiveZone } from './DefineSensitiveZone.hook'
+﻿import { useDefineSensitiveZone } from './DefineSensitiveZone.hook'
 
 export function DefineSensitiveZonePage() {
   const { loading, error } = useDefineSensitiveZone()

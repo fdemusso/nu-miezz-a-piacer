@@ -1,5 +1,4 @@
-import React from 'react'
-import { useVehicleDetails } from './VehicleDetails.hook'
+﻿import { useVehicleDetails } from './VehicleDetails.hook'
 
 export function VehicleDetailsPage() {
   const { loading, error } = useVehicleDetails()

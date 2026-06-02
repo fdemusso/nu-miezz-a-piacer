@@ -1,5 +1,4 @@
-import React from 'react'
-import { useVehicleBatteryStatus } from './VehicleBatteryStatus.hook'
+﻿import { useVehicleBatteryStatus } from './VehicleBatteryStatus.hook'
 
 export function VehicleBatteryStatusPage() {
   const { loading, error } = useVehicleBatteryStatus()

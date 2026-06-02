@@ -1,5 +1,4 @@
-import React from 'react'
-import { useUsageFrequencyReport } from './UsageFrequencyReport.hook'
+﻿import { useUsageFrequencyReport } from './UsageFrequencyReport.hook'
 
 export function UsageFrequencyReportPage() {
   const { loading, error } = useUsageFrequencyReport()

@@ -1,5 +1,4 @@
-import React from 'react'
-import { useOpenSupportTicket } from './OpenSupportTicket.hook'
+﻿import { useOpenSupportTicket } from './OpenSupportTicket.hook'
 
 export function OpenSupportTicketPage() {
   const { loading, error } = useOpenSupportTicket()

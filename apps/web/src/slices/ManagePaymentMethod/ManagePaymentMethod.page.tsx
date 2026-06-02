@@ -1,5 +1,4 @@
-import React from 'react'
-import { useManagePaymentMethod } from './ManagePaymentMethod.hook'
+﻿import { useManagePaymentMethod } from './ManagePaymentMethod.hook'
 
 export function ManagePaymentMethodPage() {
   const { loading, error } = useManagePaymentMethod()

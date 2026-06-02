@@ -1,17 +1,13 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import type { NearbyVehicle } from '../NearbyVehicles/NearbyVehicles.types'
+import type { ActiveRideVehicle } from './PauseRide.types'
 import type { PauseRideViewState } from './PauseRide.types'
 
-const DEFAULT_VEHICLE: NearbyVehicle = {
+const DEFAULT_VEHICLE: ActiveRideVehicle = {
   id: 'v-001',
   type: 'scooter',
   label: 'E-Scooter #A3',
-  position: { lat: 40.8518, lng: 14.2681 },
-  status: 'available',
   batteryLevel: 85,
-  distanceMeters: 120,
-  pricingPlan: { unlockCost: 1.0, perMinuteCost: 0.25 },
 }
 
 // ── Tariffe Pause dedicate per tipologia di veicolo ──────────────────────────
@@ -27,7 +23,7 @@ export function usePauseRide(): PauseRideViewState {
   const location = useLocation()
 
   // Retrieve active vehicle from route state, fallback to mock if none
-  const vehicle = (location.state?.vehicle as NearbyVehicle) || DEFAULT_VEHICLE
+  const vehicle = (location.state?.vehicle as ActiveRideVehicle) || DEFAULT_VEHICLE
   
   const pricing = useMemo(() => {
     return RATES[vehicle.type] || RATES.scooter

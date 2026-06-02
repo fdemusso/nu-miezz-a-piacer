@@ -1,6 +1,6 @@
 import React from 'react'
 import { usePauseRide } from './PauseRide.hook'
-import { VEHICLE_ICONS } from '../NearbyVehicles/NearbyVehicles.page'
+import { VEHICLE_ICONS } from '../../components/VehicleIcons'
 
 const VEHICLE_TYPE_LABEL: Record<string, string> = {
   scooter: 'Monopattino Elettrico',
@@ -27,6 +27,13 @@ export function PauseRidePage() {
     isEndingRide,
     endRide,
   } = usePauseRide()
+
+  const parkingDialogRef = React.useRef<HTMLDialogElement>(null)
+  React.useEffect(() => {
+    if (isEndingRide) {
+      parkingDialogRef.current?.showModal()
+    }
+  }, [isEndingRide])
 
   if (loading) {
     return (
@@ -110,6 +117,7 @@ export function PauseRidePage() {
             </p>
           </div>
           <button
+            type="button"
             className={`pr-toggle-switch${isPaused ? ' active' : ''}`}
             onClick={togglePause}
             role="switch"
@@ -123,6 +131,7 @@ export function PauseRidePage() {
         {/* End Ride Action */}
         <div className="pr-actions">
           <button
+            type="button"
             className="pr-btn-danger"
             id="btn-termina-corsa"
             onClick={endRide}
@@ -135,7 +144,12 @@ export function PauseRidePage() {
 
       {/* Fullscreen GPS Parking Validation Loading Overlay */}
       {isEndingRide && (
-        <div className="pr-overlay" role="dialog" aria-modal="true" aria-label="Validazione parcheggio">
+        <dialog
+          ref={parkingDialogRef}
+          className="pr-overlay"
+          aria-label="Validazione parcheggio"
+          onCancel={(e) => e.preventDefault()}
+        >
           <div className="pr-overlay-container">
             <div className="pr-radar-wrapper">
               <div className="pr-radar-circle wave-1" />
@@ -148,7 +162,7 @@ export function PauseRidePage() {
               <div className="pr-progress-fill" />
             </div>
           </div>
-        </div>
+        </dialog>
       )}
     </div>
   )

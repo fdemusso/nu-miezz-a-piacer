@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEstimateRideCost } from './EstimateRideCost.hook'
+﻿import { useEstimateRideCost } from './EstimateRideCost.hook'
 
 export function EstimateRideCostPage() {
   const { loading, error } = useEstimateRideCost()

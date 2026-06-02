@@ -1,6 +1,5 @@
-import React from 'react'
-import { useBookVehicle } from './BookVehicle.hook'
-import { VEHICLE_ICONS } from '../NearbyVehicles/NearbyVehicles.page'
+﻿import { useBookVehicle } from './BookVehicle.hook'
+import { VEHICLE_ICONS } from '../../components/VehicleIcons'
 
 const VEHICLE_TYPE_LABEL: Record<string, string> = {
   scooter: 'Monopattino Elettrico',
@@ -43,7 +42,7 @@ export function BookVehiclePage() {
     return (
       <div className="bv-page">
         <p className="bv-error">{error || 'Impossibile trovare il veicolo prenotato.'}</p>
-        <button className="bv-btn-secondary" onClick={cancelBooking}>
+        <button type="button" className="bv-btn-secondary" onClick={cancelBooking}>
           Torna alla mappa
         </button>
       </div>
@@ -56,7 +55,7 @@ export function BookVehiclePage() {
     <div className="bv-page">
       {/* Header */}
       <header className="bv-header">
-        <button className="bv-back-btn" onClick={cancelBooking} aria-label="Torna indietro">
+        <button type="button" className="bv-back-btn" onClick={cancelBooking} aria-label="Torna indietro">
           ←
         </button>
         <h1 className="bv-title">Veicolo Prenotato</h1>
@@ -128,6 +127,7 @@ export function BookVehiclePage() {
         {/* CTAs */}
         <div className="bv-actions">
           <button
+            type="button"
             className="bv-btn-primary"
             id="btn-sblocca-veicolo"
             onClick={unlockVehicle}
@@ -137,6 +137,7 @@ export function BookVehiclePage() {
           </button>
           
           <button
+            type="button"
             className="bv-btn-secondary"
             id="btn-annulla-prenotazione"
             onClick={cancelBooking}

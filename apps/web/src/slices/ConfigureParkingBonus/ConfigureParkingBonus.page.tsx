@@ -1,5 +1,4 @@
-import React from 'react'
-import { useConfigureParkingBonus } from './ConfigureParkingBonus.hook'
+﻿import { useConfigureParkingBonus } from './ConfigureParkingBonus.hook'
 
 export function ConfigureParkingBonusPage() {
   const { loading, error } = useConfigureParkingBonus()

@@ -1,14 +1,4 @@
-export type { VehicleType, Coordinates } from '@vsa/contracts'
-
-// ── Pricing Plan ──────────────────────────────────────────────────────────────
-
-/** Piano tariffario associato a un veicolo nelle vicinanze */
-export interface PricingPlan {
-  /** Costo di sblocco in EUR */
-  unlockCost: number
-  /** Costo al minuto in EUR */
-  perMinuteCost: number
-}
+export type { VehicleType, Coordinates, PricingPlan } from '@vsa/contracts'
 
 // ── Nearby Vehicle ────────────────────────────────────────────────────────────
 

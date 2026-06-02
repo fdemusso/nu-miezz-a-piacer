@@ -1,5 +1,4 @@
-import React from 'react'
-import { useMaintenanceQueue } from './MaintenanceQueue.hook'
+﻿import { useMaintenanceQueue } from './MaintenanceQueue.hook'
 
 export function MaintenanceQueuePage() {
   const { loading, error } = useMaintenanceQueue()

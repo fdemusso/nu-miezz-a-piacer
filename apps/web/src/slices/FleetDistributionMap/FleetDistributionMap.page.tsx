@@ -1,5 +1,4 @@
-import React from 'react'
-import { useFleetDistributionMap } from './FleetDistributionMap.hook'
+﻿import { useFleetDistributionMap } from './FleetDistributionMap.hook'
 
 export function FleetDistributionMapPage() {
   const { loading, error } = useFleetDistributionMap()

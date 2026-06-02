@@ -1,5 +1,4 @@
-import React from 'react'
-import { useExpiredBookingsMonitor } from './ExpiredBookingsMonitor.hook'
+﻿import { useExpiredBookingsMonitor } from './ExpiredBookingsMonitor.hook'
 
 export function ExpiredBookingsMonitorPage() {
   const { loading, error } = useExpiredBookingsMonitor()

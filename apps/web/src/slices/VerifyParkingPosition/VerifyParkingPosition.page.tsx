@@ -1,5 +1,4 @@
-import React from 'react'
-import { useVerifyParkingPosition } from './VerifyParkingPosition.hook'
+﻿import { useVerifyParkingPosition } from './VerifyParkingPosition.hook'
 
 export function VerifyParkingPositionPage() {
   const { loading, error } = useVerifyParkingPosition()

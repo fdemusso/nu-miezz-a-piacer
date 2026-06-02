@@ -1,5 +1,4 @@
-import React from 'react'
-import { useLowAvailabilityAlert } from './LowAvailabilityAlert.hook'
+﻿import { useLowAvailabilityAlert } from './LowAvailabilityAlert.hook'
 
 export function LowAvailabilityAlertPage() {
   const { loading, error } = useLowAvailabilityAlert()

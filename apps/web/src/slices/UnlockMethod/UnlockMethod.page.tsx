@@ -1,5 +1,4 @@
-import React from 'react'
-import { useUnlockMethod } from './UnlockMethod.hook'
+﻿import { useUnlockMethod } from './UnlockMethod.hook'
 
 export function UnlockMethodPage() {
   const { loading, error } = useUnlockMethod()

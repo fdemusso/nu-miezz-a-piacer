@@ -11,6 +11,7 @@ export type UnlockMethodType = 'qr' | 'nfc' | 'pin' | 'app'
 export interface Coordinates { lat: number; lng: number }
 export interface GeoPoint { lat: number; lng: number }
 export interface Money { amount: number; currency: string }
+export interface PricingPlan { unlockCost: number; perMinuteCost: number }
 export interface TimeRange { from: Date; to: Date }
 
 export interface User {

@@ -1,5 +1,4 @@
-import React from 'react'
-import { useHighDensityZoneMap } from './HighDensityZoneMap.hook'
+﻿import { useHighDensityZoneMap } from './HighDensityZoneMap.hook'
 
 export function HighDensityZoneMapPage() {
   const { loading, error } = useHighDensityZoneMap()

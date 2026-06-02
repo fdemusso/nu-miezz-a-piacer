@@ -1166,6 +1166,10 @@ body {
 .nv-scanner-overlay {
   position: fixed;
   inset: 0;
+  border: none;
+  padding: 0;
+  max-width: none;
+  max-height: none;
   background: rgba(15, 17, 23, 0.88);
   backdrop-filter: blur(15px) saturate(160%);
   -webkit-backdrop-filter: blur(15px) saturate(160%);
@@ -1174,6 +1178,7 @@ body {
   justify-content: center;
   z-index: 200; /* Covery over bottom nav */
   animation: fadeIn 0.25s var(--ease-smooth);
+  color: inherit;
 }
 
 @keyframes fadeIn {
@@ -1616,6 +1621,10 @@ body {
 .pr-overlay {
   position: fixed;
   inset: 0;
+  border: none;
+  padding: 0;
+  max-width: none;
+  max-height: none;
   background: rgba(15, 17, 23, 0.92);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -1624,6 +1633,7 @@ body {
   justify-content: center;
   z-index: 210;
   animation: fadeIn 0.25s var(--ease-smooth);
+  color: inherit;
 }
 
 .pr-overlay-container {
@@ -1862,6 +1872,18 @@ body {
 .nv-control-btn.recenter {
   font-size: 1rem;
   margin-top: 4px;
+}
+
+dialog::backdrop {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+button.nv-list-item {
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
 }
 
 

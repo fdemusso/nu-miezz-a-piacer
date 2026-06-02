@@ -1,5 +1,4 @@
-import React from 'react'
-import { useRemoteLockVehicle } from './RemoteLockVehicle.hook'
+﻿import { useRemoteLockVehicle } from './RemoteLockVehicle.hook'
 
 export function RemoteLockVehiclePage() {
   const { loading, error } = useRemoteLockVehicle()

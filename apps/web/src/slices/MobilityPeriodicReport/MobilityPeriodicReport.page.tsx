@@ -1,5 +1,4 @@
-import React from 'react'
-import { useMobilityPeriodicReport } from './MobilityPeriodicReport.hook'
+﻿import { useMobilityPeriodicReport } from './MobilityPeriodicReport.hook'
 
 export function MobilityPeriodicReportPage() {
   const { loading, error } = useMobilityPeriodicReport()

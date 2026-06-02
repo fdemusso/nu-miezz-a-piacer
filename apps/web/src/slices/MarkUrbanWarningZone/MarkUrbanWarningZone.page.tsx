@@ -1,5 +1,4 @@
-import React from 'react'
-import { useMarkUrbanWarningZone } from './MarkUrbanWarningZone.hook'
+﻿import { useMarkUrbanWarningZone } from './MarkUrbanWarningZone.hook'
 
 export function MarkUrbanWarningZonePage() {
   const { loading, error } = useMarkUrbanWarningZone()

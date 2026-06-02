@@ -2,52 +2,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useNearbyVehicles } from './NearbyVehicles.hook'
 import type { NearbyVehicle, VehicleTypeFilter } from './NearbyVehicles.types'
-import { useEstimateRideCost } from '../EstimateRideCost/EstimateRideCost.hook'
 import mapData from './Mappa0.json'
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-export const VEHICLE_ICONS: Record<string, (props: { className?: string; size?: number }) => React.ReactElement> = {
-  scooter: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={props.className}>
-      <path d="M18 8h-4" />
-      <path d="M15 8l-4 11" />
-      <path d="M5 19h12" />
-      <circle cx="5" cy="19" r="2" />
-      <circle cx="17" cy="19" r="2" />
-    </svg>
-  ),
-  bike: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={props.className}>
-      <circle cx="5.5" cy="17.5" r="3.5" />
-      <circle cx="18.5" cy="17.5" r="3.5" />
-      <path d="M15 6h3.5" />
-      <path d="M12 6l-3.5 11.5" />
-      <path d="M5.5 17.5L12 6l3.5 7.5h-7" />
-      <path d="M18.5 17.5L15 6" />
-      <path d="M12 13.5l-3-4" />
-    </svg>
-  ),
-  ebike: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={props.className}>
-      <circle cx="5.5" cy="17.5" r="3.5" />
-      <circle cx="18.5" cy="17.5" r="3.5" />
-      <path d="M15 6h3.5" />
-      <path d="M12 6l-3.5 11.5" />
-      <path d="M5.5 17.5L12 6l3.5 7.5h-7" />
-      <path d="M18.5 17.5L15 6" />
-      <path d="M11.5 11.5l-1.5 3h2.5l-1 3.5" />
-    </svg>
-  ),
-  car: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={props.className}>
-      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-      <circle cx="7" cy="17" r="2.5" />
-      <circle cx="17" cy="17" r="2.5" />
-      <path d="M5 10h9" />
-    </svg>
-  ),
-}
+import { VEHICLE_ICONS } from '../../components/VehicleIcons'
+export { VEHICLE_ICONS }
 
 const QrCodeIcon = ({ className = '', size = 24 }: { className?: string; size?: number }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -104,6 +64,13 @@ export function NearbyVehiclesPage() {
   } = useNearbyVehicles()
 
   const [isCollapsed, setIsCollapsed] = React.useState(false)
+
+  const scannerDialogRef = React.useRef<HTMLDialogElement>(null)
+  React.useEffect(() => {
+    if (isScanning) {
+      scannerDialogRef.current?.showModal()
+    }
+  }, [isScanning])
 
   // ── Pan and Zoom States ────────────────────────────────────────────────────
   const svgRef = React.useRef<SVGSVGElement>(null)
@@ -273,7 +240,7 @@ export function NearbyVehiclesPage() {
           {(() => {
             const earthFeature = mapData.features.find((f) => f.id === 'earth')
             if (!earthFeature || !earthFeature.coordinates) return null
-            const pointsStr = earthFeature.coordinates[0].map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+            const pointsStr = (earthFeature.coordinates[0] as [number, number][]).map(([x, y]) => `${x},${y}`).join(' ')
             return <polygon points={pointsStr} className="map-layer-earth" />
           })()}
 
@@ -282,8 +249,8 @@ export function NearbyVehiclesPage() {
             const greensFeature = mapData.features.find((f) => f.id === 'greens')
             if (!greensFeature || !greensFeature.coordinates) return null
             return greensFeature.coordinates.map((polygonList: any, idx: number) => {
-              const outerRing = polygonList[0]
-              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              const outerRing = polygonList[0] as [number, number][]
+              const pointsStr = outerRing.map(([x, y]) => `${x},${y}`).join(' ')
               return <polygon key={`green-${idx}`} points={pointsStr} className="map-layer-green" />
             })
           })()}
@@ -293,8 +260,8 @@ export function NearbyVehiclesPage() {
             const fieldsFeature = mapData.features.find((f) => f.id === 'fields')
             if (!fieldsFeature || !fieldsFeature.coordinates) return null
             return fieldsFeature.coordinates.map((polygonList: any, idx: number) => {
-              const outerRing = polygonList[0]
-              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              const outerRing = polygonList[0] as [number, number][]
+              const pointsStr = outerRing.map(([x, y]) => `${x},${y}`).join(' ')
               return <polygon key={`field-${idx}`} points={pointsStr} className="map-layer-field" />
             })
           })()}
@@ -304,8 +271,8 @@ export function NearbyVehiclesPage() {
             const squaresFeature = mapData.features.find((f) => f.id === 'squares')
             if (!squaresFeature || !squaresFeature.coordinates) return null
             return squaresFeature.coordinates.map((polygonList: any, idx: number) => {
-              const outerRing = polygonList[0]
-              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              const outerRing = polygonList[0] as [number, number][]
+              const pointsStr = outerRing.map(([x, y]) => `${x},${y}`).join(' ')
               return <polygon key={`square-${idx}`} points={pointsStr} className="map-layer-square" />
             })
           })()}
@@ -316,7 +283,7 @@ export function NearbyVehiclesPage() {
             if (!riversFeature || !riversFeature.geometries) return null
             return riversFeature.geometries.map((g: any, idx: number) => {
               if (g.type === 'LineString') {
-                const pointsStr = g.coordinates.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+                const pointsStr = (g.coordinates as [number, number][]).map(([x, y]) => `${x},${y}`).join(' ')
                 return <polyline key={`river-${idx}`} points={pointsStr} className="map-layer-river" strokeWidth={g.width || 20} />
               }
               return null
@@ -328,8 +295,8 @@ export function NearbyVehiclesPage() {
             const buildingsFeature = mapData.features.find((f) => f.id === 'buildings')
             if (!buildingsFeature || !buildingsFeature.coordinates) return null
             return buildingsFeature.coordinates.map((polygonList: any, idx: number) => {
-              const outerRing = polygonList[0]
-              const pointsStr = outerRing.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+              const outerRing = polygonList[0] as [number, number][]
+              const pointsStr = outerRing.map(([x, y]) => `${x},${y}`).join(' ')
               return <polygon key={`building-${idx}`} points={pointsStr} className="map-layer-building" />
             })
           })()}
@@ -340,7 +307,7 @@ export function NearbyVehiclesPage() {
             if (!wallsFeature || !wallsFeature.geometries) return null
             return wallsFeature.geometries.map((g: any, idx: number) => {
               if (g.type === 'LineString') {
-                const pointsStr = g.coordinates.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+                const pointsStr = (g.coordinates as [number, number][]).map(([x, y]) => `${x},${y}`).join(' ')
                 return <polyline key={`wall-${idx}`} points={pointsStr} className="map-layer-wall" strokeWidth={g.width || 8} />
               }
               return null
@@ -353,7 +320,7 @@ export function NearbyVehiclesPage() {
             if (!roadsFeature || !roadsFeature.geometries) return null
             return roadsFeature.geometries.map((g: any, idx: number) => {
               if (g.type === 'LineString') {
-                const pointsStr = g.coordinates.map(([x, y]: [number, number]) => `${x},${y}`).join(' ')
+                const pointsStr = (g.coordinates as [number, number][]).map(([x, y]) => `${x},${y}`).join(' ')
                 return <polyline key={`road-${idx}`} points={pointsStr} className={`map-layer-road width-${g.width || 8}`} strokeWidth={g.width || 8} />
               }
               return null
@@ -443,6 +410,7 @@ export function NearbyVehiclesPage() {
             const Icon = VEHICLE_ICONS[value]
             return (
               <button
+                type="button"
                 key={value}
                 role="tab"
                 aria-selected={activeFilter === value}
@@ -469,6 +437,7 @@ export function NearbyVehiclesPage() {
         {/* ── Map Controls (Zoom in, Zoom out, Recenter) ── */}
         <div className="nv-map-controls">
           <button
+            type="button"
             className="nv-control-btn"
             onClick={() => setZoom((z) => Math.min(z * 1.2, 35.0))}
             aria-label="Ingrandisci"
@@ -477,6 +446,7 @@ export function NearbyVehiclesPage() {
             ＋
           </button>
           <button
+            type="button"
             className="nv-control-btn"
             onClick={() => setZoom((z) => Math.max(z / 1.2, 0.4))}
             aria-label="Rimpicciolisci"
@@ -485,6 +455,7 @@ export function NearbyVehiclesPage() {
             －
           </button>
           <button
+            type="button"
             className="nv-control-btn recenter"
             onClick={() => {
               setZoom(1.0)
@@ -525,8 +496,16 @@ export function NearbyVehiclesPage() {
 
       {/* QR Scanner Fullscreen Overlay */}
       {isScanning && (
-        <div className="nv-scanner-overlay" role="dialog" aria-modal="true" aria-label="Scansione QR Code">
-          <button className="nv-scanner-close" onClick={stopScanning} aria-label="Chiudi scanner">✕</button>
+        <dialog
+          ref={scannerDialogRef}
+          className="nv-scanner-overlay"
+          aria-label="Scansione QR Code"
+          onCancel={(e) => {
+            e.preventDefault()
+            stopScanning()
+          }}
+        >
+          <button type="button" className="nv-scanner-close" onClick={stopScanning} aria-label="Chiudi scanner">✕</button>
           <div className="nv-scanner-container">
             <div className="nv-scanner-viewfinder">
               <div className="nv-scanner-corner top-left" />
@@ -538,7 +517,7 @@ export function NearbyVehiclesPage() {
             <p className="nv-scanner-text">Inquadra il QR Code sul veicolo</p>
             <div className="nv-scanner-hint">Scansione automatica in corso...</div>
           </div>
-        </div>
+        </dialog>
       )}
     </div>
   )
@@ -561,13 +540,12 @@ function VehicleDetailPanel({
 }) {
   const bClass = batteryClass(vehicle.batteryLevel)
   const navigate = useNavigate()
-  const { getPricing } = useEstimateRideCost()
-  const pricing = getPricing(vehicle.type)
 
   return (
     <section className={`nv-panel${isCollapsed ? ' collapsed' : ''}`} aria-label={`Dettagli ${vehicle.label}`}>
       {/* Floating QR scan button */}
       <button
+        type="button"
         className="nv-qr-fab"
         onClick={onStartScanning}
         aria-label="Scansiona QR Code"
@@ -576,7 +554,7 @@ function VehicleDetailPanel({
       </button>
 
       <div className="nv-panel-handle" onClick={onToggleCollapse} />
-      <button className="nv-close-btn" onClick={onClose} aria-label="Chiudi dettagli">✕</button>
+      <button type="button" className="nv-close-btn" onClick={onClose} aria-label="Chiudi dettagli">✕</button>
 
       <div className="nv-detail">
         {/* Header */}
@@ -621,16 +599,17 @@ function VehicleDetailPanel({
         <div className="nv-pricing">
           <div className="nv-price-tag">
             <span className="nv-price-tag-label">Sblocco</span>
-            <span className="nv-price-tag-value">€{pricing.unlockCost.amount.toFixed(2)}</span>
+            <span className="nv-price-tag-value">€{vehicle.pricingPlan.unlockCost.toFixed(2)}</span>
           </div>
           <div className="nv-price-tag">
             <span className="nv-price-tag-label">Al minuto</span>
-            <span className="nv-price-tag-value">€{pricing.perMinuteCost.amount.toFixed(2)}/min</span>
+            <span className="nv-price-tag-value">€{vehicle.pricingPlan.perMinuteCost.toFixed(2)}/min</span>
           </div>
         </div>
 
         {/* CTA */}
         <button
+          type="button"
           className="nv-cta"
           id="btn-prenota-veicolo"
           onClick={() => navigate('/prenota', { state: { vehicle } })}
@@ -659,6 +638,7 @@ function VehicleListPanel({
     <section className={`nv-panel${isCollapsed ? ' collapsed' : ''}`} aria-label="Lista veicoli vicini">
       {/* Floating QR scan button */}
       <button
+        type="button"
         className="nv-qr-fab"
         onClick={onStartScanning}
         aria-label="Scansiona QR Code"
@@ -678,13 +658,11 @@ function VehicleListPanel({
           {vehicles.map((v) => {
             const bClass = batteryClass(v.batteryLevel)
             return (
-              <div
+              <button
+                type="button"
                 key={v.id}
                 className="nv-list-item"
                 onClick={() => onSelect(v)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && onSelect(v)}
                 aria-label={`Seleziona ${v.label}`}
               >
                 <div className={`nv-list-icon nv-detail-icon ${v.type}`}>
@@ -708,7 +686,7 @@ function VehicleListPanel({
                     />
                   </div>
                 </div>
-              </div>
+              </button>
             )
           })}
         </div>

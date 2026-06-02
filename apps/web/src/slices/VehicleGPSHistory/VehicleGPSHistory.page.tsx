@@ -1,5 +1,4 @@
-import React from 'react'
-import { useVehicleGPSHistory } from './VehicleGPSHistory.hook'
+﻿import { useVehicleGPSHistory } from './VehicleGPSHistory.hook'
 
 export function VehicleGPSHistoryPage() {
   const { loading, error } = useVehicleGPSHistory()

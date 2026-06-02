@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEndRide } from './EndRide.hook'
+﻿import { useEndRide } from './EndRide.hook'
 
 export function EndRidePage() {
   const { loading, error } = useEndRide()

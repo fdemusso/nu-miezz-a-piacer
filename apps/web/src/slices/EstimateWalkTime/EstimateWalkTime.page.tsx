@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEstimateWalkTime } from './EstimateWalkTime.hook'
+﻿import { useEstimateWalkTime } from './EstimateWalkTime.hook'
 
 export function EstimateWalkTimePage() {
   const { loading, error } = useEstimateWalkTime()

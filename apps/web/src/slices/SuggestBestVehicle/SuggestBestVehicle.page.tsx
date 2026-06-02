@@ -1,5 +1,4 @@
-import React from 'react'
-import { useSuggestBestVehicle } from './SuggestBestVehicle.hook'
+﻿import { useSuggestBestVehicle } from './SuggestBestVehicle.hook'
 
 export function SuggestBestVehiclePage() {
   const { loading, error } = useSuggestBestVehicle()

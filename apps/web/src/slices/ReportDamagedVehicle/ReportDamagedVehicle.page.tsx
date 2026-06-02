@@ -1,5 +1,4 @@
-import React from 'react'
-import { useReportDamagedVehicle } from './ReportDamagedVehicle.hook'
+﻿import { useReportDamagedVehicle } from './ReportDamagedVehicle.hook'
 
 export function ReportDamagedVehiclePage() {
   const { loading, error } = useReportDamagedVehicle()

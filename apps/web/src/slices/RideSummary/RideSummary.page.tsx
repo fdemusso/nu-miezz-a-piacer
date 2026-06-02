@@ -1,5 +1,4 @@
-import React from 'react'
-import { useRideSummary } from './RideSummary.hook'
+﻿import { useRideSummary } from './RideSummary.hook'
 
 export function RideSummaryPage() {
   const { loading, error } = useRideSummary()

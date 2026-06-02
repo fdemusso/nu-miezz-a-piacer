@@ -1,14 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import type { NearbyVehicle } from '../NearbyVehicles/NearbyVehicles.types'
+import type { BookedVehicle } from './BookVehicle.types'
 import type { BookVehicleViewState } from './BookVehicle.types'
 
-const DEFAULT_VEHICLE: NearbyVehicle = {
+const DEFAULT_VEHICLE: BookedVehicle = {
   id: 'v-001',
   type: 'scooter',
   label: 'E-Scooter #A3',
-  position: { lat: 40.8518, lng: 14.2681 },
-  status: 'available',
   batteryLevel: 85,
   distanceMeters: 120,
   pricingPlan: { unlockCost: 1.0, perMinuteCost: 0.25 },
@@ -19,7 +17,7 @@ export function useBookVehicle(): BookVehicleViewState {
   const location = useLocation()
   
   // Extract vehicle from navigation state, fallback to a sensible mock if accessed directly
-  const vehicle = (location.state?.vehicle as NearbyVehicle) || DEFAULT_VEHICLE
+  const vehicle = (location.state?.vehicle as BookedVehicle) || DEFAULT_VEHICLE
 
   const [loading] = useState(false)
   const [error] = useState<string | null>(null)

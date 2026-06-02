@@ -1,5 +1,4 @@
-import React from 'react'
-import { useSuspendUserAccount } from './SuspendUserAccount.hook'
+﻿import { useSuspendUserAccount } from './SuspendUserAccount.hook'
 
 export function SuspendUserAccountPage() {
   const { loading, error } = useSuspendUserAccount()

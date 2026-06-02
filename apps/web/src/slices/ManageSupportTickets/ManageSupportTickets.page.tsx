@@ -1,5 +1,4 @@
-import React from 'react'
-import { useManageSupportTickets } from './ManageSupportTickets.hook'
+﻿import { useManageSupportTickets } from './ManageSupportTickets.hook'
 
 export function ManageSupportTicketsPage() {
   const { loading, error } = useManageSupportTickets()
