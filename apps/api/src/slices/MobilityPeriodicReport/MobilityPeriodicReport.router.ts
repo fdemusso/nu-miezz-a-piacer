@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeMobilityPeriodicReportHandler } from './MobilityPeriodicReport.handler'
 import type { MobilityPeriodicReportRequest } from './MobilityPeriodicReport.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeMobilityPeriodicReportHandler(container.mobilityPeriodicReport)
+export function makeMobilityPeriodicReportRouter(deps: Container['mobilityPeriodicReport']): Router {
+  const router = Router()
+  const handler = makeMobilityPeriodicReportHandler(deps)
 
-router.get('/admin/reports/periodic', async (req, res) => {
-  const input = req.query as unknown as MobilityPeriodicReportRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/admin/reports/periodic', async (req, res) => {
+    const input = req.query as unknown as MobilityPeriodicReportRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as mobilityPeriodicReportRouter }
+  return router
+}

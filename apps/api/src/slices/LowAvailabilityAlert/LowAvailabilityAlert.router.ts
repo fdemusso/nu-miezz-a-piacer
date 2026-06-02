@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeLowAvailabilityAlertHandler } from './LowAvailabilityAlert.handler'
 import type { LowAvailabilityAlertRequest } from './LowAvailabilityAlert.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeLowAvailabilityAlertHandler(container.lowAvailabilityAlert)
+export function makeLowAvailabilityAlertRouter(deps: Container['lowAvailabilityAlert']): Router {
+  const router = Router()
+  const handler = makeLowAvailabilityAlertHandler(deps)
 
-router.get('/operator/fleet/low-availability', async (req, res) => {
-  const input = req.query as unknown as LowAvailabilityAlertRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/operator/fleet/low-availability', async (req, res) => {
+    const input = req.query as unknown as LowAvailabilityAlertRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as lowAvailabilityAlertRouter }
+  return router
+}

@@ -1,10 +1,7 @@
 import {
-  InMemoryUserRepository, SqliteUserRepository,
-  InMemoryVehicleRepository, SqliteVehicleRepository,
-  InMemoryBookingRepository, SqliteBookingRepository,
-  InMemoryRideRepository, SqliteRideRepository,
-  InMemoryZoneRepository, SqliteZoneRepository,
-  InMemoryFleetZoneRepository, SqliteFleetZoneRepository,
+  InMemoryUserRepository, InMemoryVehicleRepository,
+  InMemoryBookingRepository, InMemoryRideRepository,
+  InMemoryZoneRepository, InMemoryFleetZoneRepository,
 } from '../adapters/repositories'
 import {
   JwtAuthService, GeoZoneValidator, HaversineRoutingService,
@@ -13,16 +10,15 @@ import {
   GpsTrackingService, StandardMaintenanceService, StandardSupportService,
   StandardReportingService,
 } from '../adapters/services'
+import type { Container } from '../composition/types'
 
-const backend = process.env.DB_BACKEND ?? 'memory'
-
-export function buildContainer() {
-  const userRepo = backend === 'sqlite' ? new SqliteUserRepository() : new InMemoryUserRepository()
-  const vehicleRepo = backend === 'sqlite' ? new SqliteVehicleRepository() : new InMemoryVehicleRepository()
-  const bookingRepo = backend === 'sqlite' ? new SqliteBookingRepository() : new InMemoryBookingRepository()
-  const rideRepo = backend === 'sqlite' ? new SqliteRideRepository() : new InMemoryRideRepository()
-  const zoneRepo = backend === 'sqlite' ? new SqliteZoneRepository() : new InMemoryZoneRepository()
-  const fleetZoneRepo = backend === 'sqlite' ? new SqliteFleetZoneRepository() : new InMemoryFleetZoneRepository()
+export function buildTestContainer(): Container {
+  const userRepo = new InMemoryUserRepository()
+  const vehicleRepo = new InMemoryVehicleRepository()
+  const bookingRepo = new InMemoryBookingRepository()
+  const rideRepo = new InMemoryRideRepository()
+  const zoneRepo = new InMemoryZoneRepository()
+  const fleetZoneRepo = new InMemoryFleetZoneRepository()
 
   const authService = new JwtAuthService()
   const zoneValidator = new GeoZoneValidator()
@@ -73,5 +69,3 @@ export function buildContainer() {
     expiredBookingsMonitor: { bookingRepo },
   }
 }
-
-export const container = buildContainer()

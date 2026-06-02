@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeSuggestBestVehicleHandler } from './SuggestBestVehicle.handler'
 import type { SuggestBestVehicleRequest } from './SuggestBestVehicle.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeSuggestBestVehicleHandler(container.suggestBestVehicle)
+export function makeSuggestBestVehicleRouter(deps: Container['suggestBestVehicle']): Router {
+  const router = Router()
+  const handler = makeSuggestBestVehicleHandler(deps)
 
-router.get('/vehicles/suggest', async (req, res) => {
-  const input = req.query as unknown as SuggestBestVehicleRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/vehicles/suggest', async (req, res) => {
+    const input = req.query as unknown as SuggestBestVehicleRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as suggestBestVehicleRouter }
+  return router
+}

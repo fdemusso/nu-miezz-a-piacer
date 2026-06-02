@@ -1,6 +1,7 @@
 import type { ZoneRule, IZoneRepository } from '@vsa/contracts'
+import { getDb } from './db'
 
-export class SqliteZoneRepository implements IZoneRepository {
+export class InMemoryZoneRepository implements IZoneRepository {
   private byId = new Map<string, ZoneRule>()
 
   async findAll(): Promise<ZoneRule[]> {
@@ -10,4 +11,22 @@ export class SqliteZoneRepository implements IZoneRepository {
   async save(zone: ZoneRule): Promise<void> {
     this.byId.set(zone.id, zone)
   }
+}
+
+export class SqliteZoneRepository implements IZoneRepository {
+  async findAll(): Promise<ZoneRule[]> {
+    const rows = getDb().prepare('SELECT * FROM zones').all() as ZoneRow[]
+    return rows.map(rowToZone)
+  }
+
+  async save(zone: ZoneRule): Promise<void> {
+    getDb()
+      .prepare('INSERT OR REPLACE INTO zones (id, type, name, boundary) VALUES (?, ?, ?, ?)')
+      .run(zone.id, zone.type, zone.name, JSON.stringify(zone.boundary))
+  }
+}
+
+interface ZoneRow { id: string; type: string; name: string; boundary: string }
+function rowToZone(r: ZoneRow): ZoneRule {
+  return { id: r.id, type: r.type as ZoneRule['type'], name: r.name, boundary: JSON.parse(r.boundary) }
 }

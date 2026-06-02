@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeRideSummaryHandler } from './RideSummary.handler'
 import type { RideSummaryRequest } from './RideSummary.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeRideSummaryHandler(container.rideSummary)
+export function makeRideSummaryRouter(deps: Container['rideSummary']): Router {
+  const router = Router()
+  const handler = makeRideSummaryHandler(deps)
 
-router.get('/rides/:rideId/summary', async (req, res) => {
-  const input = req.query as unknown as RideSummaryRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/rides/:rideId/summary', async (req, res) => {
+    const input = req.query as unknown as RideSummaryRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as rideSummaryRouter }
+  return router
+}

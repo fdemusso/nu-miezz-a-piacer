@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeMarkUrbanWarningZoneHandler } from './MarkUrbanWarningZone.handler'
 import type { MarkUrbanWarningZoneRequest } from './MarkUrbanWarningZone.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeMarkUrbanWarningZoneHandler(container.markUrbanWarningZone)
+export function makeMarkUrbanWarningZoneRouter(deps: Container['markUrbanWarningZone']): Router {
+  const router = Router()
+  const handler = makeMarkUrbanWarningZoneHandler(deps)
 
-router.post('/admin/zones/warning', async (req, res) => {
-  const input = req.body as unknown as MarkUrbanWarningZoneRequest
-  const result = await handler(input)
-  res.status(201).json(result)
-})
+  router.post('/admin/zones/warning', async (req, res) => {
+    const input = req.body as unknown as MarkUrbanWarningZoneRequest
+    const result = await handler(input)
+    res.status(201).json(result)
+  })
 
-export { router as markUrbanWarningZoneRouter }
+  return router
+}

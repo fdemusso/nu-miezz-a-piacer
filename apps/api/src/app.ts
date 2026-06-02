@@ -1,71 +1,74 @@
 import express from 'express'
-import { nearbyVehiclesRouter } from './slices/NearbyVehicles/NearbyVehicles.router'
-import { bookVehicleRouter } from './slices/BookVehicle/BookVehicle.router'
-import { estimateRideCostRouter } from './slices/EstimateRideCost/EstimateRideCost.router'
-import { endRideRouter } from './slices/EndRide/EndRide.router'
-import { rideSummaryRouter } from './slices/RideSummary/RideSummary.router'
-import { vehicleDetailsRouter } from './slices/VehicleDetails/VehicleDetails.router'
-import { estimateWalkTimeRouter } from './slices/EstimateWalkTime/EstimateWalkTime.router'
-import { suggestBestVehicleRouter } from './slices/SuggestBestVehicle/SuggestBestVehicle.router'
-import { applyPromotionRouter } from './slices/ApplyPromotion/ApplyPromotion.router'
-import { openSupportTicketRouter } from './slices/OpenSupportTicket/OpenSupportTicket.router'
-import { reportDamagedVehicleRouter } from './slices/ReportDamagedVehicle/ReportDamagedVehicle.router'
-import { vehicleBatteryStatusRouter } from './slices/VehicleBatteryStatus/VehicleBatteryStatus.router'
-import { unlockVehicleRouter } from './slices/UnlockVehicle/UnlockVehicle.router'
-import { unlockMethodRouter } from './slices/UnlockMethod/UnlockMethod.router'
-import { managePaymentMethodRouter } from './slices/ManagePaymentMethod/ManagePaymentMethod.router'
-import { pauseRideRouter } from './slices/PauseRide/PauseRide.router'
-import { usageFrequencyReportRouter } from './slices/UsageFrequencyReport/UsageFrequencyReport.router'
-import { mobilityPeriodicReportRouter } from './slices/MobilityPeriodicReport/MobilityPeriodicReport.router'
-import { markUrbanWarningZoneRouter } from './slices/MarkUrbanWarningZone/MarkUrbanWarningZone.router'
-import { highDensityZoneMapRouter } from './slices/HighDensityZoneMap/HighDensityZoneMap.router'
-import { defineSensitiveZoneRouter } from './slices/DefineSensitiveZone/DefineSensitiveZone.router'
-import { fleetDistributionMapRouter } from './slices/FleetDistributionMap/FleetDistributionMap.router'
-import { lowAvailabilityAlertRouter } from './slices/LowAvailabilityAlert/LowAvailabilityAlert.router'
-import { receiveMalfunctionReportRouter } from './slices/ReceiveMalfunctionReport/ReceiveMalfunctionReport.router'
-import { verifyParkingPositionRouter } from './slices/VerifyParkingPosition/VerifyParkingPosition.router'
-import { maintenanceQueueRouter } from './slices/MaintenanceQueue/MaintenanceQueue.router'
-import { vehicleGPSHistoryRouter } from './slices/VehicleGPSHistory/VehicleGPSHistory.router'
-import { manageSupportTicketsRouter } from './slices/ManageSupportTickets/ManageSupportTickets.router'
-import { configureParkingBonusRouter } from './slices/ConfigureParkingBonus/ConfigureParkingBonus.router'
-import { suspendUserAccountRouter } from './slices/SuspendUserAccount/SuspendUserAccount.router'
-import { remoteLockVehicleRouter } from './slices/RemoteLockVehicle/RemoteLockVehicle.router'
-import { expiredBookingsMonitorRouter } from './slices/ExpiredBookingsMonitor/ExpiredBookingsMonitor.router'
+import { container } from './composition/container'
+import { healthRouter } from './slices/Health/Health.router'
+import { makeNearbyVehiclesRouter } from './slices/NearbyVehicles/NearbyVehicles.router'
+import { makeBookVehicleRouter } from './slices/BookVehicle/BookVehicle.router'
+import { makeEstimateRideCostRouter } from './slices/EstimateRideCost/EstimateRideCost.router'
+import { makeEndRideRouter } from './slices/EndRide/EndRide.router'
+import { makeRideSummaryRouter } from './slices/RideSummary/RideSummary.router'
+import { makeVehicleDetailsRouter } from './slices/VehicleDetails/VehicleDetails.router'
+import { makeEstimateWalkTimeRouter } from './slices/EstimateWalkTime/EstimateWalkTime.router'
+import { makeSuggestBestVehicleRouter } from './slices/SuggestBestVehicle/SuggestBestVehicle.router'
+import { makeApplyPromotionRouter } from './slices/ApplyPromotion/ApplyPromotion.router'
+import { makeOpenSupportTicketRouter } from './slices/OpenSupportTicket/OpenSupportTicket.router'
+import { makeReportDamagedVehicleRouter } from './slices/ReportDamagedVehicle/ReportDamagedVehicle.router'
+import { makeVehicleBatteryStatusRouter } from './slices/VehicleBatteryStatus/VehicleBatteryStatus.router'
+import { makeUnlockVehicleRouter } from './slices/UnlockVehicle/UnlockVehicle.router'
+import { makeUnlockMethodRouter } from './slices/UnlockMethod/UnlockMethod.router'
+import { makeManagePaymentMethodRouter } from './slices/ManagePaymentMethod/ManagePaymentMethod.router'
+import { makePauseRideRouter } from './slices/PauseRide/PauseRide.router'
+import { makeUsageFrequencyReportRouter } from './slices/UsageFrequencyReport/UsageFrequencyReport.router'
+import { makeMobilityPeriodicReportRouter } from './slices/MobilityPeriodicReport/MobilityPeriodicReport.router'
+import { makeMarkUrbanWarningZoneRouter } from './slices/MarkUrbanWarningZone/MarkUrbanWarningZone.router'
+import { makeHighDensityZoneMapRouter } from './slices/HighDensityZoneMap/HighDensityZoneMap.router'
+import { makeDefineSensitiveZoneRouter } from './slices/DefineSensitiveZone/DefineSensitiveZone.router'
+import { makeFleetDistributionMapRouter } from './slices/FleetDistributionMap/FleetDistributionMap.router'
+import { makeLowAvailabilityAlertRouter } from './slices/LowAvailabilityAlert/LowAvailabilityAlert.router'
+import { makeReceiveMalfunctionReportRouter } from './slices/ReceiveMalfunctionReport/ReceiveMalfunctionReport.router'
+import { makeVerifyParkingPositionRouter } from './slices/VerifyParkingPosition/VerifyParkingPosition.router'
+import { makeMaintenanceQueueRouter } from './slices/MaintenanceQueue/MaintenanceQueue.router'
+import { makeVehicleGPSHistoryRouter } from './slices/VehicleGPSHistory/VehicleGPSHistory.router'
+import { makeManageSupportTicketsRouter } from './slices/ManageSupportTickets/ManageSupportTickets.router'
+import { makeConfigureParkingBonusRouter } from './slices/ConfigureParkingBonus/ConfigureParkingBonus.router'
+import { makeSuspendUserAccountRouter } from './slices/SuspendUserAccount/SuspendUserAccount.router'
+import { makeRemoteLockVehicleRouter } from './slices/RemoteLockVehicle/RemoteLockVehicle.router'
+import { makeExpiredBookingsMonitorRouter } from './slices/ExpiredBookingsMonitor/ExpiredBookingsMonitor.router'
 
 const app = express()
 app.use(express.json())
 
-app.use('/api', nearbyVehiclesRouter)
-app.use('/api', bookVehicleRouter)
-app.use('/api', estimateRideCostRouter)
-app.use('/api', endRideRouter)
-app.use('/api', rideSummaryRouter)
-app.use('/api', vehicleDetailsRouter)
-app.use('/api', estimateWalkTimeRouter)
-app.use('/api', suggestBestVehicleRouter)
-app.use('/api', applyPromotionRouter)
-app.use('/api', openSupportTicketRouter)
-app.use('/api', reportDamagedVehicleRouter)
-app.use('/api', vehicleBatteryStatusRouter)
-app.use('/api', unlockVehicleRouter)
-app.use('/api', unlockMethodRouter)
-app.use('/api', managePaymentMethodRouter)
-app.use('/api', pauseRideRouter)
-app.use('/api', usageFrequencyReportRouter)
-app.use('/api', mobilityPeriodicReportRouter)
-app.use('/api', markUrbanWarningZoneRouter)
-app.use('/api', highDensityZoneMapRouter)
-app.use('/api', defineSensitiveZoneRouter)
-app.use('/api', fleetDistributionMapRouter)
-app.use('/api', lowAvailabilityAlertRouter)
-app.use('/api', receiveMalfunctionReportRouter)
-app.use('/api', verifyParkingPositionRouter)
-app.use('/api', maintenanceQueueRouter)
-app.use('/api', vehicleGPSHistoryRouter)
-app.use('/api', manageSupportTicketsRouter)
-app.use('/api', configureParkingBonusRouter)
-app.use('/api', suspendUserAccountRouter)
-app.use('/api', remoteLockVehicleRouter)
-app.use('/api', expiredBookingsMonitorRouter)
+app.use('/api', healthRouter)
+app.use('/api', makeNearbyVehiclesRouter(container.nearbyVehicles))
+app.use('/api', makeBookVehicleRouter(container.bookVehicle))
+app.use('/api', makeEstimateRideCostRouter(container.estimateRideCost))
+app.use('/api', makeEndRideRouter(container.endRide))
+app.use('/api', makeRideSummaryRouter(container.rideSummary))
+app.use('/api', makeVehicleDetailsRouter(container.vehicleDetails))
+app.use('/api', makeEstimateWalkTimeRouter(container.estimateWalkTime))
+app.use('/api', makeSuggestBestVehicleRouter(container.suggestBestVehicle))
+app.use('/api', makeApplyPromotionRouter(container.applyPromotion))
+app.use('/api', makeOpenSupportTicketRouter(container.openSupportTicket))
+app.use('/api', makeReportDamagedVehicleRouter(container.reportDamagedVehicle))
+app.use('/api', makeVehicleBatteryStatusRouter(container.vehicleBatteryStatus))
+app.use('/api', makeUnlockVehicleRouter(container.unlockVehicle))
+app.use('/api', makeUnlockMethodRouter(container.unlockMethod))
+app.use('/api', makeManagePaymentMethodRouter(container.managePaymentMethod))
+app.use('/api', makePauseRideRouter(container.pauseRide))
+app.use('/api', makeUsageFrequencyReportRouter(container.usageFrequencyReport))
+app.use('/api', makeMobilityPeriodicReportRouter(container.mobilityPeriodicReport))
+app.use('/api', makeMarkUrbanWarningZoneRouter(container.markUrbanWarningZone))
+app.use('/api', makeHighDensityZoneMapRouter(container.highDensityZoneMap))
+app.use('/api', makeDefineSensitiveZoneRouter(container.defineSensitiveZone))
+app.use('/api', makeFleetDistributionMapRouter(container.fleetDistributionMap))
+app.use('/api', makeLowAvailabilityAlertRouter(container.lowAvailabilityAlert))
+app.use('/api', makeReceiveMalfunctionReportRouter(container.receiveMalfunctionReport))
+app.use('/api', makeVerifyParkingPositionRouter(container.verifyParkingPosition))
+app.use('/api', makeMaintenanceQueueRouter(container.maintenanceQueue))
+app.use('/api', makeVehicleGPSHistoryRouter(container.vehicleGPSHistory))
+app.use('/api', makeManageSupportTicketsRouter(container.manageSupportTickets))
+app.use('/api', makeConfigureParkingBonusRouter(container.configureParkingBonus))
+app.use('/api', makeSuspendUserAccountRouter(container.suspendUserAccount))
+app.use('/api', makeRemoteLockVehicleRouter(container.remoteLockVehicle))
+app.use('/api', makeExpiredBookingsMonitorRouter(container.expiredBookingsMonitor))
 
 export default app

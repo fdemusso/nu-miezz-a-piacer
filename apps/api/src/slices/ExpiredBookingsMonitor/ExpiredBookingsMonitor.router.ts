@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeExpiredBookingsMonitorHandler } from './ExpiredBookingsMonitor.handler'
 import type { ExpiredBookingsMonitorRequest } from './ExpiredBookingsMonitor.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeExpiredBookingsMonitorHandler(container.expiredBookingsMonitor)
+export function makeExpiredBookingsMonitorRouter(deps: Container['expiredBookingsMonitor']): Router {
+  const router = Router()
+  const handler = makeExpiredBookingsMonitorHandler(deps)
 
-router.get('/operator/bookings/expired', async (req, res) => {
-  const input = req.query as unknown as ExpiredBookingsMonitorRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/operator/bookings/expired', async (req, res) => {
+    const input = req.query as unknown as ExpiredBookingsMonitorRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as expiredBookingsMonitorRouter }
+  return router
+}

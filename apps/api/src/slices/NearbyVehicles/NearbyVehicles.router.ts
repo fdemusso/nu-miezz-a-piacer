@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeNearbyVehiclesHandler } from './NearbyVehicles.handler'
 import type { NearbyVehiclesRequest } from './NearbyVehicles.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeNearbyVehiclesHandler(container.nearbyVehicles)
+export function makeNearbyVehiclesRouter(deps: Container['nearbyVehicles']): Router {
+  const router = Router()
+  const handler = makeNearbyVehiclesHandler(deps)
 
-router.get('/vehicles/nearby', async (req, res) => {
-  const input = req.query as unknown as NearbyVehiclesRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/vehicles/nearby', async (req, res) => {
+    const input = req.query as unknown as NearbyVehiclesRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as nearbyVehiclesRouter }
+  return router
+}

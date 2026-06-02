@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makePauseRideHandler } from './PauseRide.handler'
 import type { PauseRideRequest } from './PauseRide.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makePauseRideHandler(container.pauseRide)
+export function makePauseRideRouter(deps: Container['pauseRide']): Router {
+  const router = Router()
+  const handler = makePauseRideHandler(deps)
 
-router.post('/rides/:rideId/pause', async (req, res) => {
-  const input = req.body as unknown as PauseRideRequest
-  const result = await handler(input)
-  res.status(201).json(result)
-})
+  router.post('/rides/:rideId/pause', async (req, res) => {
+    const input = req.body as unknown as PauseRideRequest
+    const result = await handler(input)
+    res.status(201).json(result)
+  })
 
-export { router as pauseRideRouter }
+  return router
+}

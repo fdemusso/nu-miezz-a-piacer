@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import { makeUsageFrequencyReportHandler } from './UsageFrequencyReport.handler'
 import type { UsageFrequencyReportRequest } from './UsageFrequencyReport.types'
-import { container } from '../../composition/container'
+import type { Container } from '../../composition/types'
 
-const router = Router()
-const handler = makeUsageFrequencyReportHandler(container.usageFrequencyReport)
+export function makeUsageFrequencyReportRouter(deps: Container['usageFrequencyReport']): Router {
+  const router = Router()
+  const handler = makeUsageFrequencyReportHandler(deps)
 
-router.get('/admin/reports/usage-frequency', async (req, res) => {
-  const input = req.query as unknown as UsageFrequencyReportRequest
-  const result = await handler(input)
-  res.status(200).json(result)
-})
+  router.get('/admin/reports/usage-frequency', async (req, res) => {
+    const input = req.query as unknown as UsageFrequencyReportRequest
+    const result = await handler(input)
+    res.status(200).json(result)
+  })
 
-export { router as usageFrequencyReportRouter }
+  return router
+}
