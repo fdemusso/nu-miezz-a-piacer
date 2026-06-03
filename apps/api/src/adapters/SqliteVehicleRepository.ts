@@ -1,5 +1,5 @@
 import type { Vehicle, Coordinates, IVehicleRepository } from '@vsa/contracts'
-import { getDb } from './db'
+import type { Db } from './db'
 
 const EARTH_R = 6_371_000
 
@@ -34,23 +34,33 @@ export class InMemoryVehicleRepository implements IVehicleRepository {
 }
 
 export class SqliteVehicleRepository implements IVehicleRepository {
+  constructor(private readonly db: Db) {}
+
   async findById(vehicleId: string): Promise<Vehicle | null> {
-    const row = getDb().prepare('SELECT * FROM vehicles WHERE id = ?').get(vehicleId) as VehicleRow | undefined
+    const row = this.db.prepare('SELECT * FROM vehicles WHERE id = ?').get(vehicleId) as VehicleRow | undefined
     return row ? rowToVehicle(row) : null
   }
 
   async findNearby(position: Coordinates, radiusMeters: number): Promise<Vehicle[]> {
-    const all = await this.findAll()
-    return all.filter(v => haversine(v.position, position) <= radiusMeters)
+    // Bounding-box pre-filter in SQL; Haversine confirms exact distance on the smaller set.
+    const deltaLat = radiusMeters / 111_320
+    const deltaLng = radiusMeters / (111_320 * Math.cos((position.lat * Math.PI) / 180))
+    const rows = this.db.prepare(
+      'SELECT * FROM vehicles WHERE lat BETWEEN ? AND ? AND lng BETWEEN ? AND ?',
+    ).all(
+      position.lat - deltaLat, position.lat + deltaLat,
+      position.lng - deltaLng, position.lng + deltaLng,
+    ) as VehicleRow[]
+    return rows.map(rowToVehicle).filter(v => haversine(v.position, position) <= radiusMeters)
   }
 
   async findAll(): Promise<Vehicle[]> {
-    const rows = getDb().prepare('SELECT * FROM vehicles').all() as VehicleRow[]
+    const rows = this.db.prepare('SELECT * FROM vehicles').all() as VehicleRow[]
     return rows.map(rowToVehicle)
   }
 
   async save(vehicle: Vehicle): Promise<void> {
-    getDb()
+    this.db
       .prepare('INSERT OR REPLACE INTO vehicles (id, type, status, battery_level, lat, lng, license_plate) VALUES (?, ?, ?, ?, ?, ?, ?)')
       .run(vehicle.id, vehicle.type, vehicle.status, vehicle.batteryLevel, vehicle.position.lat, vehicle.position.lng, vehicle.licensePlate)
   }

@@ -1,5 +1,5 @@
 import type { Ride, IRideRepository } from '@vsa/contracts'
-import { getDb } from './db'
+import type { Db } from './db'
 
 export class InMemoryRideRepository implements IRideRepository {
   private byId = new Map<string, Ride>()
@@ -15,28 +15,35 @@ export class InMemoryRideRepository implements IRideRepository {
     return null
   }
 
-  async save(ride: Ride): Promise<void> {
-    this.byId.set(ride.id, ride)
-  }
-
   async findAll(): Promise<Ride[]> {
     return [...this.byId.values()]
+  }
+
+  async save(ride: Ride): Promise<void> {
+    this.byId.set(ride.id, ride)
   }
 }
 
 export class SqliteRideRepository implements IRideRepository {
+  constructor(private readonly db: Db) {}
+
   async findById(rideId: string): Promise<Ride | null> {
-    const row = getDb().prepare('SELECT * FROM rides WHERE id = ?').get(rideId) as RideRow | undefined
+    const row = this.db.prepare('SELECT * FROM rides WHERE id = ?').get(rideId) as RideRow | undefined
     return row ? rowToRide(row) : null
   }
 
   async findActiveByUser(userId: string): Promise<Ride | null> {
-    const row = getDb().prepare('SELECT * FROM rides WHERE user_id = ? AND ended_at IS NULL LIMIT 1').get(userId) as RideRow | undefined
+    const row = this.db.prepare('SELECT * FROM rides WHERE user_id = ? AND ended_at IS NULL LIMIT 1').get(userId) as RideRow | undefined
     return row ? rowToRide(row) : null
   }
 
+  async findAll(): Promise<Ride[]> {
+    const rows = this.db.prepare('SELECT * FROM rides').all() as RideRow[]
+    return rows.map(rowToRide)
+  }
+
   async save(ride: Ride): Promise<void> {
-    getDb()
+    this.db
       .prepare(`
         INSERT OR REPLACE INTO rides
           (id, user_id, vehicle_id, started_at, ended_at, start_lat, start_lng, end_lat, end_lng, cost_amount, cost_currency, paused)
@@ -51,11 +58,6 @@ export class SqliteRideRepository implements IRideRepository {
         ride.cost?.amount ?? null, ride.cost?.currency ?? null,
         ride.paused ? 1 : 0,
       )
-  }
-
-  async findAll(): Promise<Ride[]> {
-    const rows = getDb().prepare('SELECT * FROM rides').all() as RideRow[]
-    return rows.map(rowToRide)
   }
 }
 

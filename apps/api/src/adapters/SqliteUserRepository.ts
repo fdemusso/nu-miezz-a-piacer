@@ -1,5 +1,5 @@
 import type { User, IUserRepository } from '@vsa/contracts'
-import { getDb } from './db'
+import type { Db } from './db'
 
 export class InMemoryUserRepository implements IUserRepository {
   private byId = new Map<string, User>()
@@ -21,18 +21,20 @@ export class InMemoryUserRepository implements IUserRepository {
 }
 
 export class SqliteUserRepository implements IUserRepository {
+  constructor(private readonly db: Db) {}
+
   async findById(userId: string): Promise<User | null> {
-    const row = getDb().prepare('SELECT * FROM users WHERE id = ?').get(userId) as UserRow | undefined
+    const row = this.db.prepare('SELECT * FROM users WHERE id = ?').get(userId) as UserRow | undefined
     return row ? rowToUser(row) : null
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const row = getDb().prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as UserRow | undefined
+    const row = this.db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as UserRow | undefined
     return row ? rowToUser(row) : null
   }
 
   async save(user: User): Promise<void> {
-    getDb()
+    this.db
       .prepare('INSERT OR REPLACE INTO users (id, email, role, name, suspended) VALUES (?, ?, ?, ?, ?)')
       .run(user.id, user.email.toLowerCase(), user.role, user.name, user.suspended ? 1 : 0)
   }

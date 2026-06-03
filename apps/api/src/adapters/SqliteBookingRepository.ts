@@ -1,5 +1,5 @@
 import type { Booking, IBookingRepository } from '@vsa/contracts'
-import { getDb } from './db'
+import type { Db } from './db'
 
 export class InMemoryBookingRepository implements IBookingRepository {
   private byId = new Map<string, Booking>()
@@ -25,24 +25,26 @@ export class InMemoryBookingRepository implements IBookingRepository {
 }
 
 export class SqliteBookingRepository implements IBookingRepository {
+  constructor(private readonly db: Db) {}
+
   async findById(bookingId: string): Promise<Booking | null> {
-    const row = getDb().prepare('SELECT * FROM bookings WHERE id = ?').get(bookingId) as BookingRow | undefined
+    const row = this.db.prepare('SELECT * FROM bookings WHERE id = ?').get(bookingId) as BookingRow | undefined
     return row ? rowToBooking(row) : null
   }
 
   async findActiveByUser(userId: string): Promise<Booking[]> {
-    const rows = getDb().prepare("SELECT * FROM bookings WHERE user_id = ? AND status = 'active'").all(userId) as BookingRow[]
+    const rows = this.db.prepare("SELECT * FROM bookings WHERE user_id = ? AND status = 'active'").all(userId) as BookingRow[]
     return rows.map(rowToBooking)
   }
 
   async findExpired(): Promise<Booking[]> {
     const now = new Date().toISOString()
-    const rows = getDb().prepare("SELECT * FROM bookings WHERE status = 'active' AND expires_at < ?").all(now) as BookingRow[]
+    const rows = this.db.prepare("SELECT * FROM bookings WHERE status = 'active' AND expires_at < ?").all(now) as BookingRow[]
     return rows.map(rowToBooking)
   }
 
   async save(booking: Booking): Promise<void> {
-    getDb()
+    this.db
       .prepare('INSERT OR REPLACE INTO bookings (id, user_id, vehicle_id, created_at, expires_at, status) VALUES (?, ?, ?, ?, ?, ?)')
       .run(booking.id, booking.userId, booking.vehicleId, booking.createdAt.toISOString(), booking.expiresAt.toISOString(), booking.status)
   }

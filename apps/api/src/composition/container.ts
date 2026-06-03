@@ -13,16 +13,18 @@ import {
   GpsTrackingService, StandardMaintenanceService, StandardSupportService,
   StandardReportingService,
 } from '../adapters/services'
+import { getDb } from '../adapters/db'
 
 const backend = process.env.DB_BACKEND ?? 'memory'
 
 export function buildContainer() {
-  const userRepo = backend === 'sqlite' ? new SqliteUserRepository() : new InMemoryUserRepository()
-  const vehicleRepo = backend === 'sqlite' ? new SqliteVehicleRepository() : new InMemoryVehicleRepository()
-  const bookingRepo = backend === 'sqlite' ? new SqliteBookingRepository() : new InMemoryBookingRepository()
-  const rideRepo = backend === 'sqlite' ? new SqliteRideRepository() : new InMemoryRideRepository()
-  const zoneRepo = backend === 'sqlite' ? new SqliteZoneRepository() : new InMemoryZoneRepository()
-  const fleetZoneRepo = backend === 'sqlite' ? new SqliteFleetZoneRepository() : new InMemoryFleetZoneRepository()
+  const db = backend === 'sqlite' ? getDb() : null
+  const userRepo = db ? new SqliteUserRepository(db) : new InMemoryUserRepository()
+  const vehicleRepo = db ? new SqliteVehicleRepository(db) : new InMemoryVehicleRepository()
+  const bookingRepo = db ? new SqliteBookingRepository(db) : new InMemoryBookingRepository()
+  const rideRepo = db ? new SqliteRideRepository(db) : new InMemoryRideRepository()
+  const zoneRepo = db ? new SqliteZoneRepository(db) : new InMemoryZoneRepository()
+  const fleetZoneRepo = db ? new SqliteFleetZoneRepository(db) : new InMemoryFleetZoneRepository()
 
   const authService = new JwtAuthService()
   const zoneValidator = new GeoZoneValidator()

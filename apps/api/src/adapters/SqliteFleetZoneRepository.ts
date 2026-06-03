@@ -1,5 +1,5 @@
 import type { FleetZone, IFleetZoneRepository } from '@vsa/contracts'
-import { getDb } from './db'
+import type { Db } from './db'
 
 export class InMemoryFleetZoneRepository implements IFleetZoneRepository {
   private byId = new Map<string, FleetZone>()
@@ -18,18 +18,20 @@ export class InMemoryFleetZoneRepository implements IFleetZoneRepository {
 }
 
 export class SqliteFleetZoneRepository implements IFleetZoneRepository {
+  constructor(private readonly db: Db) {}
+
   async findAll(): Promise<FleetZone[]> {
-    const rows = getDb().prepare('SELECT * FROM fleet_zones').all() as FleetZoneRow[]
+    const rows = this.db.prepare('SELECT * FROM fleet_zones').all() as FleetZoneRow[]
     return rows.map(rowToFleetZone)
   }
 
   async findById(zoneId: string): Promise<FleetZone | null> {
-    const row = getDb().prepare('SELECT * FROM fleet_zones WHERE id = ?').get(zoneId) as FleetZoneRow | undefined
+    const row = this.db.prepare('SELECT * FROM fleet_zones WHERE id = ?').get(zoneId) as FleetZoneRow | undefined
     return row ? rowToFleetZone(row) : null
   }
 
   async save(zone: FleetZone): Promise<void> {
-    getDb()
+    this.db
       .prepare('INSERT OR REPLACE INTO fleet_zones (id, name, boundary, vehicle_count, target_count) VALUES (?, ?, ?, ?, ?)')
       .run(zone.id, zone.name, JSON.stringify(zone.boundary), zone.vehicleCount, zone.targetCount)
   }

@@ -1,10 +1,12 @@
 import { SqliteUserRepository, SqliteVehicleRepository, SqliteZoneRepository, SqliteFleetZoneRepository } from './adapters/repositories'
+import { getDb } from './adapters/db'
 import type { User, Vehicle, ZoneRule, FleetZone } from '@vsa/contracts'
 
-const userRepo = new SqliteUserRepository()
-const vehicleRepo = new SqliteVehicleRepository()
-const zoneRepo = new SqliteZoneRepository()
-const fleetZoneRepo = new SqliteFleetZoneRepository()
+const db = getDb()
+const userRepo = new SqliteUserRepository(db)
+const vehicleRepo = new SqliteVehicleRepository(db)
+const zoneRepo = new SqliteZoneRepository(db)
+const fleetZoneRepo = new SqliteFleetZoneRepository(db)
 
 const users: User[] = [
   { id: 'u-customer-1', email: 'customer@test.com', role: 'customer', name: 'Mario Rossi', suspended: false },

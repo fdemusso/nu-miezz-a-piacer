@@ -1,13 +1,11 @@
 import type {
-  TimeRange, MobilityReport, FleetZone, Ride, IReportingService,
-  IFleetZoneRepository,
+  TimeRange, MobilityReport, FleetZone, IReportingService,
+  IFleetZoneRepository, IRideRepository, Ride,
 } from '@vsa/contracts'
-
-interface RideSource { findAll(): Promise<Ride[]> }
 
 export class StandardReportingService implements IReportingService {
   constructor(
-    private readonly rides?: RideSource,
+    private readonly rides?: IRideRepository,
     private readonly fleetZones?: IFleetZoneRepository,
   ) {}
 

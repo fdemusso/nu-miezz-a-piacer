@@ -2,13 +2,16 @@ import Database from 'better-sqlite3'
 import { mkdirSync } from 'fs'
 import { join } from 'path'
 
-let _db: Database.Database | null = null
+export type Db = Database.Database
 
-export function getDb(): Database.Database {
+let _db: Db | null = null
+
+export function getDb(): Db {
   if (_db) return _db
   const dataDir = join(process.cwd(), 'data')
   mkdirSync(dataDir, { recursive: true })
   _db = new Database(join(dataDir, 'dev.sqlite'))
+  _db.pragma('foreign_keys = ON')
   _db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -28,16 +31,16 @@ export function getDb(): Database.Database {
     );
     CREATE TABLE IF NOT EXISTS bookings (
       id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      vehicle_id TEXT NOT NULL,
+      user_id TEXT NOT NULL REFERENCES users(id),
+      vehicle_id TEXT NOT NULL REFERENCES vehicles(id),
       created_at TEXT NOT NULL,
       expires_at TEXT NOT NULL,
       status TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS rides (
       id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      vehicle_id TEXT NOT NULL,
+      user_id TEXT NOT NULL REFERENCES users(id),
+      vehicle_id TEXT NOT NULL REFERENCES vehicles(id),
       started_at TEXT NOT NULL,
       ended_at TEXT,
       start_lat REAL NOT NULL,

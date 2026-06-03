@@ -168,6 +168,7 @@ export interface IBookingRepository {
 export interface IRideRepository {
   findById(rideId: string): Promise<Ride | null>
   findActiveByUser(userId: string): Promise<Ride | null>
+  findAll(): Promise<Ride[]>
   save(ride: Ride): Promise<void>
 }
 
