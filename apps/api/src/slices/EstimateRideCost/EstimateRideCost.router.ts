@@ -8,9 +8,12 @@ export function makeEstimateRideCostRouter(deps: Container['estimateRideCost']):
   const handler = makeEstimateRideCostHandler(deps)
 
   router.get('/rides/estimate-cost', async (req, res) => {
-    const input = req.query as unknown as EstimateRideCostRequest
-    const result = await handler(input)
-    res.status(200).json(result)
+    try {
+      const result = await handler(req.query as unknown as EstimateRideCostRequest)
+      res.status(200).json(result)
+    } catch (err: any) {
+      res.status(err?.status ?? 500).json({ error: err?.message ?? 'Internal server error' })
+    }
   })
 
   return router

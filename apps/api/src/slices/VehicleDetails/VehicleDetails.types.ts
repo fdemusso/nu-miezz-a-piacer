@@ -1,11 +1,7 @@
-import type { } from '@vsa/contracts'
+import type { Vehicle } from '@vsa/contracts'
 
 export interface VehicleDetailsRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  vehicleId: string
 }
 
-export interface VehicleDetailsResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
-}
+export type VehicleDetailsResponse = Vehicle

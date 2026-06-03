@@ -8,6 +8,19 @@ export function makeDefineSensitiveZoneHandler(deps: {
   return async function defineSensitiveZoneHandler(
     req: DefineSensitiveZoneRequest
   ): Promise<DefineSensitiveZoneResponse> {
-    return {} as DefineSensitiveZoneResponse
+    if (req.boundary.length < 3) {
+      throw Object.assign(new Error('boundary must have at least 3 points'), { status: 400 })
+    }
+
+    const zone = {
+      id: crypto.randomUUID(),
+      type: 'sensitive' as const,
+      name: req.name,
+      boundary: req.boundary,
+    }
+
+    await deps.zoneRepo.save(zone)
+
+    return { zone }
   }
 }

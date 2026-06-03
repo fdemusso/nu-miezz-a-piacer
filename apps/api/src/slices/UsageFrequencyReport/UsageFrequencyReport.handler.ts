@@ -7,6 +7,11 @@ export function makeUsageFrequencyReportHandler(deps: {
   return async function usageFrequencyReportHandler(
     req: UsageFrequencyReportRequest
   ): Promise<UsageFrequencyReportResponse> {
-    return {} as UsageFrequencyReportResponse
+    const from = new Date(req.from)
+    const to = new Date(req.to)
+
+    const data = await deps.reportingService.getUsageFrequency({ from, to })
+
+    return { from: req.from, to: req.to, data }
   }
 }

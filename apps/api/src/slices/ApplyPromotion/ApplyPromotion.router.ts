@@ -8,9 +8,12 @@ export function makeApplyPromotionRouter(deps: Container['applyPromotion']): Rou
   const handler = makeApplyPromotionHandler(deps)
 
   router.post('/promotions/apply', async (req, res) => {
-    const input = req.body as unknown as ApplyPromotionRequest
-    const result = await handler(input)
-    res.status(201).json(result)
+    try {
+      const result = await handler(req.body as ApplyPromotionRequest)
+      res.status(200).json(result)
+    } catch (err: any) {
+      res.status(err?.status ?? 500).json({ error: err?.message ?? 'Internal server error' })
+    }
   })
 
   return router

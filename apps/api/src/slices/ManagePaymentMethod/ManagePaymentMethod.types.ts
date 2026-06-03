@@ -1,11 +1,12 @@
-import type { } from '@vsa/contracts'
+import type { PaymentMethod } from '@vsa/contracts'
 
 export interface ManagePaymentMethodRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  action: 'add' | 'remove' | 'list'
+  userId: string
+  method?: PaymentMethod
+  methodId?: string
 }
 
 export interface ManagePaymentMethodResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  methods?: PaymentMethod[]
 }

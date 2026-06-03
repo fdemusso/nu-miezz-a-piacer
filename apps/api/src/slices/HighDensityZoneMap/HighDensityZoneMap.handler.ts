@@ -5,8 +5,9 @@ export function makeHighDensityZoneMapHandler(deps: {
   reportingService: IReportingService
 }) {
   return async function highDensityZoneMapHandler(
-    req: HighDensityZoneMapRequest
+    _req: HighDensityZoneMapRequest
   ): Promise<HighDensityZoneMapResponse> {
-    return {} as HighDensityZoneMapResponse
+    const zones = await deps.reportingService.getHighDensityZones()
+    return { zones }
   }
 }

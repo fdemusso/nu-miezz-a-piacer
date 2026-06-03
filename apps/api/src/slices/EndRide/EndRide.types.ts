@@ -1,11 +1,12 @@
-import type { } from '@vsa/contracts'
+import type { CostEstimate } from '@vsa/contracts'
 
 export interface EndRideRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  userId: string
+  endLat: number
+  endLng: number
 }
 
 export interface EndRideResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  rideId: string
+  cost: CostEstimate
 }

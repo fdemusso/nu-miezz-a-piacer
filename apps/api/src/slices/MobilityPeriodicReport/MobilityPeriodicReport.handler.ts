@@ -7,6 +7,11 @@ export function makeMobilityPeriodicReportHandler(deps: {
   return async function mobilityPeriodicReportHandler(
     req: MobilityPeriodicReportRequest
   ): Promise<MobilityPeriodicReportResponse> {
-    return {} as MobilityPeriodicReportResponse
+    const from = new Date(req.from)
+    const to = new Date(req.to)
+
+    const report = await deps.reportingService.getMobilityReport({ from, to })
+
+    return { report }
   }
 }

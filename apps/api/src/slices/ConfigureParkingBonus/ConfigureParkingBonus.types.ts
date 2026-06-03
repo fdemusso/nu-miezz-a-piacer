@@ -1,11 +1,11 @@
-import type { } from '@vsa/contracts'
+import type { Money, ParkingBonusRule } from '@vsa/contracts'
 
 export interface ConfigureParkingBonusRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  zoneId: string
+  bonusAmount: Money
+  description: string
 }
 
 export interface ConfigureParkingBonusResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  rule: ParkingBonusRule
 }

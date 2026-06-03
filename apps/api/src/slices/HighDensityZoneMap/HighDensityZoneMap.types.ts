@@ -1,11 +1,7 @@
-import type { } from '@vsa/contracts'
+import type { FleetZone } from '@vsa/contracts'
 
-export interface HighDensityZoneMapRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
-}
+export interface HighDensityZoneMapRequest {}
 
 export interface HighDensityZoneMapResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  zones: FleetZone[]
 }

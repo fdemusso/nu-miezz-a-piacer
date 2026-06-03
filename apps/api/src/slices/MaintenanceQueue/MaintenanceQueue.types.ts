@@ -1,11 +1,9 @@
-import type { } from '@vsa/contracts'
+import type { VehicleConditionReport } from '@vsa/contracts'
 
 export interface MaintenanceQueueRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  // no input needed
 }
 
 export interface MaintenanceQueueResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  queue: VehicleConditionReport[]
 }

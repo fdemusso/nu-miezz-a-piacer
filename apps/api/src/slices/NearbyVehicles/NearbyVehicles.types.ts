@@ -1,11 +1,18 @@
-import type { } from '@vsa/contracts'
+import type { VehicleType, Coordinates } from '@vsa/contracts'
 
 export interface NearbyVehiclesRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  lat: string
+  lng: string
+  radiusMeters?: string
+}
+
+export interface NearbyVehicleItem {
+  id: string
+  type: VehicleType
+  position: Coordinates
+  batteryLevel: number
 }
 
 export interface NearbyVehiclesResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  vehicles: NearbyVehicleItem[]
 }

@@ -1,11 +1,9 @@
-import type { } from '@vsa/contracts'
+import type { CostEstimate } from '@vsa/contracts'
 
 export interface EstimateRideCostRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  vehicleId: string
+  durationSeconds: string
+  promoCode?: string
 }
 
-export interface EstimateRideCostResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
-}
+export type EstimateRideCostResponse = CostEstimate

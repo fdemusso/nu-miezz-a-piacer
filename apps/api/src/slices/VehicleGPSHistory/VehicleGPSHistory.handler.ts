@@ -7,6 +7,12 @@ export function makeVehicleGPSHistoryHandler(deps: {
   return async function vehicleGPSHistoryHandler(
     req: VehicleGPSHistoryRequest
   ): Promise<VehicleGPSHistoryResponse> {
-    return {} as VehicleGPSHistoryResponse
+    const { vehicleId, from: fromStr, to: toStr } = req
+    const from = new Date(fromStr)
+    const to = new Date(toStr)
+
+    const history = await deps.gpsTrackingService.getHistory(vehicleId, { from, to })
+
+    return { vehicleId, history }
   }
 }

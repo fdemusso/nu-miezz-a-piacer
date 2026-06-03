@@ -1,11 +1,10 @@
-import type { } from '@vsa/contracts'
+import type { MobilityReport } from '@vsa/contracts'
 
 export interface MobilityPeriodicReportRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  from: string
+  to: string
 }
 
 export interface MobilityPeriodicReportResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  report: MobilityReport
 }

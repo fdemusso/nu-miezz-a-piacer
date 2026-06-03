@@ -1,11 +1,21 @@
-import type { } from '@vsa/contracts'
+import type { CostEstimate, Coordinates, VehicleType } from '@vsa/contracts'
 
 export interface SuggestBestVehicleRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  fromLat: number
+  fromLng: number
+  toLat: number
+  toLng: number
+}
+
+export interface VehicleSuggestion {
+  vehicleId: string
+  type: VehicleType
+  position: Coordinates
+  walkSeconds: number
+  routeSeconds: number
+  estimatedCost: CostEstimate
 }
 
 export interface SuggestBestVehicleResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  suggestions: VehicleSuggestion[]
 }

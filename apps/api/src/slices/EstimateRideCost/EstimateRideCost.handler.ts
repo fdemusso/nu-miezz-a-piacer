@@ -9,6 +9,10 @@ export function makeEstimateRideCostHandler(deps: {
   return async function estimateRideCostHandler(
     req: EstimateRideCostRequest
   ): Promise<EstimateRideCostResponse> {
-    return {} as EstimateRideCostResponse
+    const vehicle = await deps.vehicleRepo.findById(req.vehicleId)
+    if (!vehicle) throw Object.assign(new Error('Vehicle not found'), { status: 404 })
+    const cost = await deps.pricingService.estimateCost(vehicle, parseFloat(req.durationSeconds))
+    if (req.promoCode) return deps.promotionService.apply(req.promoCode, cost)
+    return cost
   }
 }

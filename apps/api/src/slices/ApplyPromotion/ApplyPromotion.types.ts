@@ -1,11 +1,9 @@
-import type { } from '@vsa/contracts'
+import type { Promotion } from '@vsa/contracts'
 
 export interface ApplyPromotionRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  code: string
 }
 
 export interface ApplyPromotionResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  promotion: Promotion | null
 }

@@ -1,11 +1,22 @@
-import type { } from '@vsa/contracts'
+import type { SupportTicket } from '@vsa/contracts'
 
-export interface ManageSupportTicketsRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+export interface ListTicketsRequest {
+  // no input needed
 }
 
-export interface ManageSupportTicketsResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+export interface ListTicketsResponse {
+  tickets: SupportTicket[]
 }
+
+export interface UpdateTicketStatusRequest {
+  ticketId: string
+  status: 'open' | 'in_progress' | 'resolved'
+}
+
+export interface UpdateTicketStatusResponse {
+  ticket: SupportTicket
+}
+
+// Legacy aliases kept for backward compat with the handler import
+export type ManageSupportTicketsRequest = ListTicketsRequest
+export type ManageSupportTicketsResponse = ListTicketsResponse

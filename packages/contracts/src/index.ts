@@ -207,6 +207,7 @@ export interface IBillingService {
   charge(userId: string, amount: Money): Promise<void>
   addPaymentMethod(userId: string, method: PaymentMethod): Promise<void>
   removePaymentMethod(userId: string, methodId: string): Promise<void>
+  listPaymentMethods(userId: string): Promise<PaymentMethod[]>
 }
 
 export interface IPromotionService {
@@ -245,6 +246,7 @@ export interface ISupportService {
   openTicket(userId: string, subject: string, body: string): Promise<SupportTicket>
   listTickets(): Promise<SupportTicket[]>
   getTicketsByUser(userId: string): Promise<SupportTicket[]>
+  updateTicketStatus(ticketId: string, status: SupportTicket['status']): Promise<SupportTicket>
 }
 
 export interface IReportingService {

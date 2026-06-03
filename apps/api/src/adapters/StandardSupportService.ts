@@ -24,4 +24,12 @@ export class StandardSupportService implements ISupportService {
   async getTicketsByUser(userId: string): Promise<SupportTicket[]> {
     return [...this.byId.values()].filter(t => t.userId === userId)
   }
+
+  async updateTicketStatus(ticketId: string, status: SupportTicket['status']): Promise<SupportTicket> {
+    const ticket = this.byId.get(ticketId)
+    if (!ticket) throw Object.assign(new Error('Ticket not found'), { status: 404 })
+    const updated = { ...ticket, status }
+    this.byId.set(ticketId, updated)
+    return updated
+  }
 }

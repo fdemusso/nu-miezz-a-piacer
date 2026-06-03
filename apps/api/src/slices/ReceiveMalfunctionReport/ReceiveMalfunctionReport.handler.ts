@@ -5,8 +5,10 @@ export function makeReceiveMalfunctionReportHandler(deps: {
   maintenanceService: IMaintenanceService
 }) {
   return async function receiveMalfunctionReportHandler(
-    req: ReceiveMalfunctionReportRequest
+    _req: ReceiveMalfunctionReportRequest
   ): Promise<ReceiveMalfunctionReportResponse> {
-    return {} as ReceiveMalfunctionReportResponse
+    const queue = await deps.maintenanceService.getQueue()
+    const reports = queue.filter(r => r.severity === 'medium' || r.severity === 'high')
+    return { reports }
   }
 }

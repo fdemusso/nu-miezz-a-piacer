@@ -7,6 +7,8 @@ export function makeOpenSupportTicketHandler(deps: {
   return async function openSupportTicketHandler(
     req: OpenSupportTicketRequest
   ): Promise<OpenSupportTicketResponse> {
-    return {} as OpenSupportTicketResponse
+    const { userId, subject, body } = req
+    const ticket = await deps.supportService.openTicket(userId, subject, body)
+    return { ticket }
   }
 }

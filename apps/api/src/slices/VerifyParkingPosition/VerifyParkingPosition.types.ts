@@ -1,11 +1,12 @@
-import type { } from '@vsa/contracts'
+import type { Coordinates } from '@vsa/contracts'
 
 export interface VerifyParkingPositionRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  vehicleId: string
 }
 
 export interface VerifyParkingPositionResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  vehicleId: string
+  position: Coordinates
+  valid: boolean
+  reason: string | null
 }

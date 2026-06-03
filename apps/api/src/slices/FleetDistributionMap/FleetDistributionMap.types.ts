@@ -1,11 +1,19 @@
-import type { } from '@vsa/contracts'
+import type { VehicleType, VehicleStatus } from '@vsa/contracts'
 
-export interface FleetDistributionMapRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+export interface FleetDistributionMapRequest {}
+
+export interface FleetDistributionZoneEntry {
+  zoneId: string
+  name: string
+  count: number
+  vehicles: Array<{
+    id: string
+    type: VehicleType
+    status: VehicleStatus
+    batteryLevel: number
+  }>
 }
 
 export interface FleetDistributionMapResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  zones: FleetDistributionZoneEntry[]
 }

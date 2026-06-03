@@ -1,11 +1,9 @@
-import type { } from '@vsa/contracts'
+import type { UnlockMethodType } from '@vsa/contracts'
 
 export interface UnlockMethodRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  vehicleId: string
 }
 
 export interface UnlockMethodResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  methods: UnlockMethodType[]
 }

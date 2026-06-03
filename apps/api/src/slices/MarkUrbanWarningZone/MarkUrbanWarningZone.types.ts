@@ -1,11 +1,11 @@
-import type { } from '@vsa/contracts'
+import type { GeoPoint, ZoneRule } from '@vsa/contracts'
 
 export interface MarkUrbanWarningZoneRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  name: string
+  type: 'sensitive' | 'forbidden'
+  boundary: GeoPoint[]
 }
 
 export interface MarkUrbanWarningZoneResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  zone: ZoneRule
 }

@@ -8,6 +8,13 @@ export function makeUnlockMethodHandler(deps: {
   return async function unlockMethodHandler(
     req: UnlockMethodRequest
   ): Promise<UnlockMethodResponse> {
-    return {} as UnlockMethodResponse
+    const { vehicleId } = req
+
+    const vehicle = await deps.vehicleRepo.findById(vehicleId)
+    if (!vehicle) throw Object.assign(new Error('Vehicle not found'), { status: 404 })
+
+    const methods = await deps.unlockService.getAvailableMethods(vehicle)
+
+    return { methods }
   }
 }

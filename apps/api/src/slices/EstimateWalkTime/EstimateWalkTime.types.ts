@@ -1,11 +1,9 @@
-import type { } from '@vsa/contracts'
+import type { WalkEstimate } from '@vsa/contracts'
 
 export interface EstimateWalkTimeRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  fromLat: string
+  fromLng: string
+  vehicleId: string
 }
 
-export interface EstimateWalkTimeResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
-}
+export type EstimateWalkTimeResponse = WalkEstimate

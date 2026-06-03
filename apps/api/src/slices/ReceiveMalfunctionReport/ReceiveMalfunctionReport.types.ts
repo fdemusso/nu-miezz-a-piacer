@@ -1,11 +1,9 @@
-import type { } from '@vsa/contracts'
+import type { VehicleConditionReport } from '@vsa/contracts'
 
 export interface ReceiveMalfunctionReportRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  // no input needed — fetches all from service
 }
 
 export interface ReceiveMalfunctionReportResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  reports: VehicleConditionReport[]
 }

@@ -8,6 +8,14 @@ export function makeSuspendUserAccountHandler(deps: {
   return async function suspendUserAccountHandler(
     req: SuspendUserAccountRequest
   ): Promise<SuspendUserAccountResponse> {
-    return {} as SuspendUserAccountResponse
+    const { userId } = req
+
+    const user = await deps.userRepo.findById(userId)
+    if (!user) throw Object.assign(new Error('User not found'), { status: 404 })
+
+    await deps.authService.suspendUser(userId)
+    await deps.userRepo.save({ ...user, suspended: true })
+
+    return { suspended: true, userId }
   }
 }

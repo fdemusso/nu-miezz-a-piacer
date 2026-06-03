@@ -1,11 +1,13 @@
-import type { } from '@vsa/contracts'
+export interface LowAvailabilityAlertRequest {}
 
-export interface LowAvailabilityAlertRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+export interface LowAvailabilityAlertZone {
+  id: string
+  name: string
+  vehicleCount: number
+  targetCount: number
 }
 
 export interface LowAvailabilityAlertResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  alertsSent: number
+  zones: LowAvailabilityAlertZone[]
 }

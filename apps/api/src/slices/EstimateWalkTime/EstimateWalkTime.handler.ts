@@ -8,6 +8,9 @@ export function makeEstimateWalkTimeHandler(deps: {
   return async function estimateWalkTimeHandler(
     req: EstimateWalkTimeRequest
   ): Promise<EstimateWalkTimeResponse> {
-    return {} as EstimateWalkTimeResponse
+    const vehicle = await deps.vehicleRepo.findById(req.vehicleId)
+    if (!vehicle) throw Object.assign(new Error('Vehicle not found'), { status: 404 })
+    const from = { lat: parseFloat(req.fromLat), lng: parseFloat(req.fromLng) }
+    return deps.routingService.estimateWalk(from, vehicle.position)
   }
 }

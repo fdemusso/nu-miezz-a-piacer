@@ -8,9 +8,12 @@ export function makeVehicleDetailsRouter(deps: Container['vehicleDetails']): Rou
   const handler = makeVehicleDetailsHandler(deps)
 
   router.get('/vehicles/:vehicleId', async (req, res) => {
-    const input = req.query as unknown as VehicleDetailsRequest
-    const result = await handler(input)
-    res.status(200).json(result)
+    try {
+      const result = await handler({ vehicleId: req.params.vehicleId })
+      res.status(200).json(result)
+    } catch (err: any) {
+      res.status(err?.status ?? 500).json({ error: err?.message ?? 'Internal server error' })
+    }
   })
 
   return router

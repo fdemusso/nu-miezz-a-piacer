@@ -5,8 +5,9 @@ export function makeMaintenanceQueueHandler(deps: {
   maintenanceService: IMaintenanceService
 }) {
   return async function maintenanceQueueHandler(
-    req: MaintenanceQueueRequest
+    _req: MaintenanceQueueRequest
   ): Promise<MaintenanceQueueResponse> {
-    return {} as MaintenanceQueueResponse
+    const queue = await deps.maintenanceService.getQueue()
+    return { queue }
   }
 }

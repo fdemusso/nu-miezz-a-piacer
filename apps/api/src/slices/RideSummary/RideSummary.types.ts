@@ -1,11 +1,12 @@
-import type { } from '@vsa/contracts'
+import type { Ride, VehicleType } from '@vsa/contracts'
 
 export interface RideSummaryRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  rideId: string
 }
 
 export interface RideSummaryResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  ride: Ride
+  vehicleType: VehicleType
+  vehiclePlate: string
+  durationSeconds: number | null
 }

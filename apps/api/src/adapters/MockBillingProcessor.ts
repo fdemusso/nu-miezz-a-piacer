@@ -21,5 +21,9 @@ export class MockBillingProcessor implements IBillingService {
     this.methods.set(userId, list.filter(m => m.id !== methodId))
   }
 
+  async listPaymentMethods(userId: string): Promise<PaymentMethod[]> {
+    return [...(this.methods.get(userId) ?? [])]
+  }
+
   getChargesForTest(): Charge[] { return [...this.charges] }
 }

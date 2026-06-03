@@ -8,6 +8,14 @@ export function makePauseRideHandler(deps: {
   return async function pauseRideHandler(
     req: PauseRideRequest
   ): Promise<PauseRideResponse> {
-    return {} as PauseRideResponse
+    const { userId } = req
+
+    const ride = await deps.rideRepo.findActiveByUser(userId)
+    if (!ride) throw Object.assign(new Error('Active ride not found'), { status: 404 })
+
+    ride.paused = !ride.paused
+    await deps.rideRepo.save(ride)
+
+    return { rideId: ride.id, paused: ride.paused }
   }
 }

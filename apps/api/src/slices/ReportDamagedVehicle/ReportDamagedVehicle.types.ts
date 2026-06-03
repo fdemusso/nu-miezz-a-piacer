@@ -1,11 +1,10 @@
-import type { } from '@vsa/contracts'
-
 export interface ReportDamagedVehicleRequest {
-  // TODO: definire i campi della request
-  [key: string]: unknown
+  vehicleId: string
+  description: string
+  severity: 'low' | 'medium' | 'high'
 }
 
 export interface ReportDamagedVehicleResponse {
-  // TODO: definire i campi della response
-  [key: string]: unknown
+  reported: boolean
+  maintenanceRequired: boolean
 }
