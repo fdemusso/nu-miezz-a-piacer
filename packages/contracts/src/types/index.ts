@@ -1,5 +1,30 @@
 import { VehicleType, VehicleStatus, BookingStatus, RideStatus } from '../enums';
 
+export interface FleetZone {
+  id: string;
+  name: string;
+  center: Coordinates;
+  radiusKm: number;
+}
+
+export interface NearbyVehiclesItem {
+  id: string;
+  plateOrCode: string;
+  type: VehicleType;
+  status: VehicleStatus;
+  batteryLevel: number;
+  distanceMeters: number;
+  estimatedWalkMinutes: number;
+  currentPosition: Coordinates;
+  zoneId?: string;
+}
+
+export interface NearbyVehiclesResponse {
+  userPosition: Coordinates;
+  radiusKm: number;
+  vehicles: NearbyVehiclesItem[];
+}
+
 export interface Coordinates {
   lat: number;
   lng: number;

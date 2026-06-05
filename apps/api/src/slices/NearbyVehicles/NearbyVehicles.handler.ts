@@ -1,6 +1,19 @@
 import { Request, Response } from 'express';
 import { DEFAULT_SEARCH_RADIUS_KM, MAX_NEARBY_VEHICLES } from '@mvp/config';
+import { NearbyVehiclesItem, Coordinates } from '@mvp/contracts';
 import { NearbyVehiclesDeps } from './NearbyVehicles.types';
+
+function haversineMeters(a: Coordinates, b: Coordinates): number {
+  const R = 6371000;
+  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
+  const x =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((a.lat * Math.PI) / 180) *
+      Math.cos((b.lat * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
 
 export function createNearbyVehiclesHandler(deps: NearbyVehiclesDeps) {
   return async (req: Request, res: Response): Promise<void> => {
@@ -13,9 +26,26 @@ export function createNearbyVehiclesHandler(deps: NearbyVehiclesDeps) {
       return;
     }
 
-    const vehicles = await deps.vehicleRepo.findNearby({ lat, lng }, radiusKm);
-    const limited = vehicles.slice(0, MAX_NEARBY_VEHICLES);
+    const userPosition = { lat, lng };
+    const rawVehicles = await deps.vehicleRepo.findNearby(userPosition, radiusKm);
 
-    res.json({ vehicles: limited, userLocation: { lat, lng }, radiusKm });
+    const items: NearbyVehiclesItem[] = rawVehicles
+      .slice(0, MAX_NEARBY_VEHICLES)
+      .map((v) => {
+        const distanceMeters = Math.round(haversineMeters(userPosition, v.location));
+        const estimatedWalkMinutes = Math.ceil(distanceMeters / 83);
+        return {
+          id: v.id,
+          plateOrCode: v.licensePlate ?? `${v.type}-${v.id.slice(-3).toUpperCase()}`,
+          type: v.type,
+          status: v.status,
+          batteryLevel: v.battery.level,
+          distanceMeters,
+          estimatedWalkMinutes,
+          currentPosition: v.location,
+        };
+      });
+
+    res.json({ userPosition, radiusKm, vehicles: items });
   };
 }

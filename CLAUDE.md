@@ -173,3 +173,17 @@ Quando ricevi un task:
 3. mantieni compilazione e typecheck puliti;
 4. segnala chiaramente TODO e semplificazioni MVP;
 5. implementa una sola slice completa per volta, salvo istruzioni diverse.
+
+## Codebase exploration
+
+- Prefer Graphify as the first step to understand the codebase.
+- Do not waste tokens rebuilding or refreshing the graph unless explicitly requested.
+- Use the graph to identify the minimum set of files to inspect.
+- After graph exploration, open only the files strictly needed for the current slice/task.
+- Prefer one slice at a time over broad repository-wide changes.
+
+## Parallel work
+
+- Use multi-agent / parallel exploration only for clearly separable subtasks.
+- Do not split work across agents if the task is small or tightly coupled.
+- Merge results conservatively and preserve VSA boundaries.

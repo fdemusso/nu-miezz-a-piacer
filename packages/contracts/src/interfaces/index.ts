@@ -1,4 +1,4 @@
-import { Coordinates, Vehicle, Booking, Ride, Money } from '../types';
+import { Coordinates, Vehicle, Booking, Ride, Money, FleetZone } from '../types';
 import { VehicleStatus, BookingStatus, RideStatus, UserRole } from '../enums';
 
 export interface User {
@@ -48,6 +48,16 @@ export interface IUnlockService {
 export interface IZoneValidator {
   isInServiceZone(coords: Coordinates): Promise<boolean>;
   isInParkingZone(coords: Coordinates): Promise<{ valid: boolean; zoneId?: string }>;
+}
+
+export interface IFleetZoneRepository {
+  findAll(): Promise<FleetZone[]>;
+  findById(id: string): Promise<FleetZone | null>;
+}
+
+export interface IGpsTrackingService {
+  getCurrentPosition(vehicleId: string): Promise<Coordinates | null>;
+  resolveUserPosition(provided: Coordinates | null): Promise<Coordinates>;
 }
 
 export interface IBillingService {

@@ -1,4 +1,4 @@
-import { Vehicle, Coordinates } from '@mvp/contracts';
+import { Coordinates, NearbyVehiclesResponse } from '@mvp/contracts';
 
 export interface NearbyVehiclesQuery {
   lat: number;
@@ -6,12 +6,10 @@ export interface NearbyVehiclesQuery {
   radiusKm?: number;
 }
 
-export interface NearbyVehiclesResponse {
-  vehicles: Vehicle[];
-  userLocation: Coordinates;
-  radiusKm: number;
-}
+export type { NearbyVehiclesResponse };
 
 export interface NearbyVehiclesDeps {
   vehicleRepo: import('@mvp/contracts').IVehicleRepository;
 }
+
+export type UserPosition = Coordinates;

@@ -9,3 +9,7 @@ dist/
 .DS_Store
 coverage/
 .claude/
+promt/
+.venv/
+.agents/
+graphify-out/

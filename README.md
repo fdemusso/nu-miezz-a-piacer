@@ -9,7 +9,6 @@ Mobile-first vehicle sharing app. Vertical Slice Architecture in a Turborepo mon
 | Frontend | Next.js 14 (App Router) + React + Tailwind + shadcn/ui |
 | State server | TanStack Query |
 | State client | Zustand |
-| Forms | react-hook-form + zod |
 | Backend | Node.js + Express + TypeScript |
 | Database | SQLite via Drizzle ORM |
 | Shared types | `@mvp/contracts` |
@@ -28,13 +27,12 @@ mvp/
 │   │       │   ├── ui/       # shadcn components
 │   │       │   └── layout/   # AppLayout, Header, BottomNav
 │   │       ├── lib/          # utils, api client, query-client
-│   │       ├── stores/       # Zustand stores
 │   │       └── providers/    # AppProviders (QueryClient)
 │   └── api/              # Express backend (port 3001)
 │       └── src/
 │           ├── slices/       # One folder per VSA slice
 │           ├── adapters/     # Concrete repo/service implementations
-│           ├── db/           # Drizzle schema + bootstrap
+│           ├── db/           # Drizzle schema + bootstrap + seed
 │           ├── shared/       # Middleware, error handler
 │           ├── composition-root.ts  # Wires adapters → slices
 │           ├── app.ts        # Express app factory
@@ -50,16 +48,47 @@ mvp/
 # 1. Install dependencies
 pnpm install
 
-# 2. Copy env files
-cp apps/api/.env.example apps/api/.env
-
-# 3. Start all apps in dev mode
+# 2. Start all apps in dev mode (DB + seed are auto-initialized on first startup)
 pnpm dev
 ```
 
 - Web: http://localhost:3000
 - API: http://localhost:3001
 - Health: http://localhost:3001/health
+
+> No manual DB migration needed. Tables are created and seed data is inserted automatically on first startup.
+
+## Test NearbyVehicles
+
+```bash
+# Start API only
+cd apps/api && pnpm dev
+
+# Query nearby vehicles (demo coords: Milan Duomo)
+curl "http://localhost:3001/api/vehicles/nearby?lat=45.4654&lng=9.1859&radiusKm=2"
+```
+
+Response shape:
+```json
+{
+  "userPosition": { "lat": 45.4654, "lng": 9.1859 },
+  "radiusKm": 2,
+  "vehicles": [
+    {
+      "id": "v1",
+      "plateOrCode": "EL-001",
+      "type": "SCOOTER",
+      "status": "AVAILABLE",
+      "batteryLevel": 85,
+      "distanceMeters": 184,
+      "estimatedWalkMinutes": 3,
+      "currentPosition": { "lat": 45.467, "lng": 9.1865 }
+    }
+  ]
+}
+```
+
+**Frontend geolocation:** the web app tries `navigator.geolocation`. If denied or unavailable, it falls back silently to Milan Duomo coordinates and shows a small banner.
 
 ## VSA conventions
 
@@ -80,23 +109,18 @@ Each slice is self-contained. No cross-slice imports.
 - Concrete adapters live in `apps/api/src/adapters/`
 - Dependency injection happens only in `composition-root.ts`
 
-## MVP slices
+## Implemented slices
 
-| Slice | Frontend | API |
-|---|---|---|
-| NearbyVehicles | `GET /` | `GET /api/vehicles/nearby` |
-| VehicleDetails | `GET /vehicles/:id` | `GET /api/vehicles/:vehicleId` |
-| BookVehicle | `POST /book/:vehicleId` | `POST /api/bookings` |
-| UnlockVehicle | `POST /unlock/:bookingId` | `POST /api/rides/unlock` |
-| EndRide | `POST /ride/:rideId/end` | `POST /api/rides/:rideId/end` |
+| Slice | Status | Frontend | API |
+|---|---|---|---|
+| NearbyVehicles | ✅ Done | `GET /` | `GET /api/vehicles/nearby` |
+| VehicleDetails | scaffold | `GET /vehicles/:id` | `GET /api/vehicles/:vehicleId` |
+| BookVehicle | scaffold | `POST /book/:vehicleId` | `POST /api/bookings` |
+| UnlockVehicle | scaffold | `POST /unlock/:bookingId` | `POST /api/rides/unlock` |
+| EndRide | scaffold | `POST /ride/:rideId/end` | `POST /api/rides/:rideId/end` |
 
-## Next steps (TODO)
+## TODO — next slice: VehicleDetails
 
-- [ ] Wire Next.js routes to slice pages (`app/vehicles/[id]/page.tsx` etc.)
-- [ ] Implement Drizzle repository methods (currently stub)
-- [ ] Run `drizzle-kit generate` + `drizzle-kit push` to bootstrap DB
-- [ ] Add geolocation to NearbyVehicles (browser API)
-- [ ] Add map component to NearbyVehicles (e.g. Mapbox GL or Leaflet)
-- [ ] Replace `MockUnlockService` with real IoT adapter
-- [ ] Add auth (JWT middleware — not yet in scope)
-- [ ] Add `NEXT_PUBLIC_API_URL` to `apps/web/.env.local`
+- [ ] `apps/web/src/app/vehicles/[id]/page.tsx` — route for vehicle detail
+- [ ] Implement `VehicleDetails` slice end-to-end (handler, page, hook)
+- [ ] `DrizzleVehicleRepository.findById` is already implemented and ready
