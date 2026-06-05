@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,10 +8,17 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MapPin, Zap, Bike, Car, AlertCircle, Navigation, Clock, Play } from 'lucide-react';
-import { VehicleType, VehicleStatus } from '@mvp/contracts';
+import { VehicleType, VehicleStatus, BookingStatus } from '@mvp/contracts';
+import { apiFetch } from '@/lib/api';
 import { useAppStore } from '@/stores/app.store';
 import { useNearbyVehicles } from './NearbyVehicles.hook';
 import type { NearbyVehiclesItem } from './NearbyVehicles.types';
+
+const NON_CANCELLABLE_STATUSES = new Set([
+  BookingStatus.CONVERTED_TO_RIDE,
+  BookingStatus.CANCELLED,
+  BookingStatus.EXPIRED,
+]);
 
 function vehicleIcon(type: VehicleType) {
   if (type === VehicleType.BIKE) return <Bike className="h-5 w-5" />;
@@ -55,6 +63,24 @@ function ActiveSessionBanner() {
   const activeRide = useAppStore((s) => s.activeRide);
   const activeBooking = useAppStore((s) => s.activeBooking);
   const selectedVehicle = useAppStore((s) => s.selectedVehicle);
+  const clearSession = useAppStore((s) => s.clearSession);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState(false);
+
+  const handleCancel = async () => {
+    if (!activeBooking) return;
+    if (!window.confirm('Annullare la prenotazione?')) return;
+    setCancelling(true);
+    setCancelError(false);
+    try {
+      await apiFetch(`/api/bookings/${activeBooking.id}`, { method: 'DELETE' });
+      clearSession();
+    } catch {
+      setCancelError(true);
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   if (activeRide) {
     const startedAt = new Date(activeRide.startedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
@@ -82,8 +108,9 @@ function ActiveSessionBanner() {
   if (activeBooking) {
     const expiresAt = new Date(activeBooking.expiresAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
     const label = selectedVehicle ? `${selectedVehicle.model}` : 'Veicolo';
+    const isCancellable = !NON_CANCELLABLE_STATUSES.has(activeBooking.status);
     return (
-      <Link href={`/vehicles/${activeBooking.vehicleId}/unlock`}>
+      <div className="space-y-1">
         <div className="flex items-center justify-between rounded-lg bg-blue-50 border border-blue-200 px-4 py-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
@@ -94,11 +121,27 @@ function ActiveSessionBanner() {
               <p className="text-xs text-blue-700">{label} · scade alle {expiresAt}</p>
             </div>
           </div>
-          <Button size="sm" className="shrink-0 bg-blue-700 hover:bg-blue-800">
-            Sblocca
-          </Button>
+          <div className="flex gap-2 shrink-0">
+            {isCancellable && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                onClick={handleCancel}
+                disabled={cancelling}
+              >
+                {cancelling ? '…' : 'Annulla'}
+              </Button>
+            )}
+            <Button asChild size="sm" className="bg-blue-700 hover:bg-blue-800">
+              <Link href={`/vehicles/${activeBooking.vehicleId}/unlock`}>Sblocca</Link>
+            </Button>
+          </div>
         </div>
-      </Link>
+        {cancelError && (
+          <p className="text-xs text-destructive px-1">Errore durante la cancellazione. Riprova.</p>
+        )}
+      </div>
     );
   }
 
