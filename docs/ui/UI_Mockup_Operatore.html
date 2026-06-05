@@ -1,1197 +1,633 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>nu miezz a piacer — Mockup Interfaccia Operatore</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nu miezz a piacer · Wireframe Operator</title>
 <style>
+  /* ─────────────────────────────────────────────────────────────
+     WIREFRAME KIT — monocromatico, niente colori brand.
+     Tutto è greybox: serve a discutere STRUTTURA e FLUSSO.
+     (stesso kit di customer.html, senza frame mobile — operatore web-only)
+     ───────────────────────────────────────────────────────────── */
   :root{
-    --ink:#080c17; --mut:#6b7280; --line:#c9ccd1;
+    --ink:#080c17; --mut:#6b7280; --line:#c9;
     --bg:#f8f9fd; --paper:#ffffff;
     --wire:#d4d7db; --wire2:#bcc0c5; --dark:#3260d7;
     --primary:#3260d7; --secondary:#83a1ef; --accent:#4e7cf3; --danger:#b00;
-    --ok:#16794a; --warn:#b8730a; --crit:#b00; --info:#3260d7;
-    --r:10px;
-    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --r:10px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     --sans:Inter,-apple-system,Segoe UI,Roboto,sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 80px}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.45}
+  a{color:inherit}
+  header.top{padding:28px 24px;border-bottom:1px solid var(--wire2);background:var(--paper);position:sticky;top:0;z-index:50}
+  header.top h1{margin:0 0 4px;font-size:20px}
+  header.top p{margin:0;color:var(--mut);font-size:13px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
+  .legend b{color:var(--ink);font-weight:600}
+  .legend .sw{display:inline-block;width:22px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px;border:1px solid var(--wire2)}
+  nav.toc{padding:18px 24px;background:var(--paper);border-bottom:1px solid var(--wire2);font-size:13px}
+  nav.toc a{display:inline-block;margin:0 14px 8px 0;color:var(--mut);text-decoration:none}
+  nav.toc a:hover{color:var(--ink)}
+  main{max-width:1180px;margin:0 auto;padding:8px 24px 80px}
 
-  /* ── page header ── */
-  .pagehead{background:var(--ink);color:#fff;padding:32px 40px}
-  .pagehead h1{font-size:24px;letter-spacing:-.02em}
-  .pagehead p{color:#aeb6c4;font-size:14px;margin-top:6px;max-width:760px}
-  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-  .legend span{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;background:#1a2236;color:#cdd5e3}
+  /* SCREEN BLOCK */
+  .screen{padding:40px 0;border-bottom:1px dashed var(--wire2)}
+  .screen-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .screen-head .num{font-family:var(--mono);font-size:13px;color:var(--mut)}
+  .screen-head h2{margin:0;font-size:18px}
+  .screen-head .tag{font-size:11px;font-family:var(--mono);background:var(--wire);padding:2px 8px;border-radius:20px;color:var(--dark)}
+  .screen-sub{color:var(--mut);font-size:13px;margin:0 0 20px;max-width:760px}
+  .frames{display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start}
+  .device{display:flex;flex-direction:column;gap:8px}
+  .device .label{font-family:var(--mono);font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
 
-  /* ── toc ── */
-  .toc{background:var(--paper);border-bottom:1px solid var(--line);padding:18px 40px;position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .toc b{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-right:6px}
-  .toc a{font-size:12px;font-family:var(--mono);color:var(--primary);text-decoration:none;padding:4px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
-  .toc a:hover{border-color:var(--primary);background:#eef2fd}
+  /* DESKTOP / BROWSER */
+  .desktop{width:760px;background:var(--paper);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid var(--wire2)}
+  .desktop .chrome{height:30px;background:#e7e9ec;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid var(--wire2)}
+  .desktop .chrome i{width:10px;height:10px;border-radius:50%;background:#c4c8cd;display:inline-block}
+  .desktop .chrome .url{flex:1;margin-left:10px;height:16px;background:#fff;border-radius:4px;border:1px solid var(--wire2);font:11px var(--mono);color:var(--mut);display:flex;align-items:center;padding:0 8px}
+  .viewport{padding:0;min-height:420px;display:flex;flex-direction:column}
 
-  /* ── screen block ── */
-  .screen{padding:40px;border-bottom:1px solid var(--line);scroll-margin-top:70px}
-  .screen-head{margin-bottom:24px}
-  .screen-head .num{display:inline-block;font-family:var(--mono);font-size:12px;background:var(--primary);color:#fff;padding:3px 9px;border-radius:6px}
-  .screen-head h2{font-size:21px;margin-top:10px;letter-spacing:-.01em}
-  .screen-head .file{font-family:var(--mono);font-size:13px;color:var(--mut);margin-top:3px}
-  .slice-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-  .slice-tags .st{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;background:#eef2fd;color:var(--dark);border:1px solid #d3defb}
-
-  /* ── frames ── */
-  .frames{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start}
-  .frame-wrap{display:flex;flex-direction:column;gap:8px}
-  .frame-label{font-family:var(--mono);font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
-
-  .mobile{width:340px;height:680px;border:10px solid #11151f;border-radius:34px;background:var(--paper);overflow:hidden;position:relative;box-shadow:0 10px 40px rgba(8,12,23,.18);display:flex;flex-direction:column}
-  .mobile .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:22px;background:#11151f;border-radius:0 0 14px 14px;z-index:30}
-  .desktop{width:760px;height:560px;border:1px solid var(--wire2);border-radius:12px;background:var(--paper);overflow:hidden;box-shadow:0 10px 40px rgba(8,12,23,.12);display:flex;flex-direction:column}
-  .browser-bar{height:34px;background:#eceef2;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;padding:0 12px;flex-shrink:0}
-  .browser-bar i{width:11px;height:11px;border-radius:50%;display:inline-block;background:var(--wire2)}
-  .browser-bar .url{margin-left:12px;font-family:var(--mono);font-size:11px;color:var(--mut);background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 10px;flex:1}
-  .viewport{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
-
-  /* ── BottomNav (mobile+desktop) ── */
-  .bn{height:56px;flex-shrink:0;background:var(--paper);border-top:1px solid var(--line);display:flex;align-items:stretch;z-index:40}
-  .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--mut);font-size:10px;font-weight:600;position:relative}
-  .bn-item .bi{font-size:18px;line-height:1}
-  .bn-item.on{color:var(--primary)}
-  .bn-item.on::before{content:"";position:absolute;top:0;left:25%;right:25%;height:3px;border-radius:0 0 3px 3px;background:var(--primary)}
-  .bn-item .ct{position:absolute;top:6px;right:50%;transform:translateX(18px);background:var(--danger);color:#fff;font-size:8px;font-family:var(--mono);min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 3px}
-  .desktop .bn{height:60px}
-  .desktop .bn-item{flex-direction:row;gap:8px;font-size:13px;max-width:200px}
-
-  /* ── content area inside frame (above bn) ── */
-  .stage{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
-  .scroll{flex:1;overflow:auto}
-
-  /* ── primitives ── */
-  .topbar{height:52px;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 14px;position:relative;z-index:10;flex-shrink:0}
-  .mobile .topbar{padding-top:6px}
-  .icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;color:var(--ink)}
-  .brand{font-weight:700;font-size:14px;letter-spacing:-.01em}
-  .grow{flex:1}
-
-  .btn{font-family:var(--sans);font-size:13px;font-weight:600;border-radius:8px;padding:9px 14px;border:1px solid transparent;cursor:default;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
-  .btn.pri{background:var(--primary);color:#fff}
-  .btn.sec{background:#eef2fd;color:var(--dark);border-color:#d3defb}
-  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-  .btn.danger{background:#fbeaea;color:var(--danger);border-color:#f0cccc}
-  .btn.success{background:#e7f5ee;color:var(--ok);border-color:#c5e8d6}
-  .btn.block{width:100%}
-  .btn.lg{padding:13px 16px;font-size:15px}
-  .btn.sm{padding:6px 10px;font-size:12px}
-
-  .badge{font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
-  .badge.green{background:#e7f5ee;color:var(--ok)}
-  .badge.orange{background:#fbf0e0;color:var(--warn)}
-  .badge.red{background:#fbeaea;color:var(--crit)}
-  .badge.blue{background:#e7eefb;color:var(--info)}
-  .badge.gray{background:#eef0f3;color:var(--mut)}
-  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-  .dot.green{background:var(--ok)}.dot.orange{background:var(--warn)}.dot.red{background:var(--crit)}.dot.blue{background:var(--info)}
-
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px}
-  .card + .card{margin-top:10px}
-  .row{display:flex;align-items:center;gap:10px}
-  .col{display:flex;flex-direction:column}
-  .muted{color:var(--mut)}
-  .sm{font-size:12px}.xs{font-size:11px}.lg-t{font-size:20px;font-weight:700}
-  .mono{font-family:var(--mono)}
-
-  .map{position:absolute;inset:0;background:
-      linear-gradient(0deg,rgba(50,96,215,.04),rgba(50,96,215,.04)),
-      repeating-linear-gradient(0deg,transparent,transparent 38px,rgba(8,12,23,.05) 38px,rgba(8,12,23,.05) 39px),
-      repeating-linear-gradient(90deg,transparent,transparent 38px,rgba(8,12,23,.05) 38px,rgba(8,12,23,.05) 39px),
-      var(--bg)}
-  .pin{position:absolute;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-  .pin span{transform:rotate(45deg);display:block;text-align:center;line-height:20px;font-size:10px;color:#fff}
-  .pin.green{background:var(--ok)}.pin.orange{background:var(--warn)}.pin.red{background:var(--crit)}.pin.blue{background:var(--info)}
-  .fab{position:absolute;bottom:16px;right:16px;width:46px;height:46px;border-radius:50%;background:var(--paper);border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;font-size:18px;z-index:12}
-  .map-legend{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:8px;padding:8px 10px;z-index:12}
-  .map-legend .row{gap:6px;font-size:10px;margin:3px 0}
-
-  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:18px 18px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.18);z-index:20;display:flex;flex-direction:column}
-  .sheet .handle{width:40px;height:4px;border-radius:2px;background:var(--wire2);margin:10px auto 6px}
-  .sheet-body{padding:0 14px 14px;overflow:auto}
-
-  .tabs{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px}
-  .tabs .tab{flex:1;text-align:center;font-size:12px;font-weight:600;padding:7px;border-radius:6px;color:var(--mut)}
-  .tabs .tab.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-
-  .field{margin-bottom:12px}
-  .field label{display:block;font-size:11px;font-weight:600;color:var(--mut);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
-  .input{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13px;background:var(--paper);color:var(--ink)}
-  .input.ph{color:var(--mut)}
-  .switch{width:38px;height:22px;border-radius:11px;background:var(--primary);position:relative;flex-shrink:0}
-  .switch::after{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:#fff}
-
-  .bar{height:8px;border-radius:5px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
-  .bar i{display:block;height:100%;background:var(--ok)}
-
+  /* WIRE PRIMITIVES */
+  .appbar{display:flex;align-items:center;gap:10px;padding:14px 14px;border-bottom:1px solid var(--wire);font-weight:600;font-size:14px}
+  .appbar .sp{flex:1}
+  .body{flex:1;overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:12px}
+  .body.nopad{padding:0}
+  .wb{background:var(--wire);border-radius:8px}
+  .card{border:1px solid var(--wire2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+  .row{display:flex;gap:10px;align-items:center}
+  .col{display:flex;flex-direction:column;gap:8px}
+  .between{justify-content:space-between}
+  .line{height:9px;background:var(--wire);border-radius:5px}
+  .line.t{height:12px}
+  .w40{width:40%}.w50{width:50%}.w60{width:60%}.w70{width:70%}.w80{width:80%}.w30{width:30%}.w25{width:25%}.full{width:100%}
+  .icon{width:34px;height:34px;border-radius:9px;background:var(--wire2);flex:none}
+  .icon.sm{width:24px;height:24px;border-radius:6px}
+  .icon.lg{width:48px;height:48px;border-radius:12px}
+  .icon.rnd{border-radius:50%}
+  .btn{background:var(--dark);color:#fff;border-radius:9px;padding:11px;text-align:center;font-size:13px;font-weight:600}
+  .btn.ghost{background:transparent;color:var(--dark);border:1.5px solid var(--wire2)}
+  .btn.danger{background:transparent;color:var(--danger);border:1.5px solid #e3b6b6}
+  .btn.sm{padding:8px 12px;font-size:12px}
+  .input{border:1.5px solid var(--wire2);border-radius:9px;padding:11px;font-size:12px;color:var(--mut);background:var(--paper)}
+  .chip{border:1px solid var(--wire2);border-radius:20px;padding:5px 11px;font-size:11px;color:var(--dark);background:var(--paper);white-space:nowrap}
+  .chip.solid{background:var(--dark);color:#fff;border-color:var(--dark)}
+  .muted{color:var(--mut);font-size:11px}
+  .h{font-weight:600;font-size:13px}
+  .big{font-size:22px;font-weight:700}
+  .pin{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--dark);transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .pin.o{background:#fff;border:2px solid var(--dark)}
+  .pin.lg{width:18px;height:18px}
+  /* MAP placeholder */
+  .map{flex:1;position:relative;background:
+      linear-gradient(0deg,rgba(0,0,0,.04) 1px,transparent 1px) 0 0/100% 26px,
+      linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px) 0 0/26px 100%,
+      #f3f4f6;
+    overflow:hidden}
+  .map .road{position:absolute;background:#e3e5e8}
+  .map .me{position:absolute;width:16px;height:16px;border-radius:50%;background:#3a3f45;border:3px solid #fff;box-shadow:0 0 0 4px rgba(58,63,69,.18)}
+  .map .zone{position:absolute;border:2px dashed var(--dark);background:rgba(58,63,69,.06);border-radius:8px}
+  .maplegend{position:absolute;top:10px;left:10px;background:var(--paper);border:1px solid var(--wire2);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:5px}
+  .maplegend .row{gap:6px}
+  .maplegend .sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--wire2)}
+  /* bottom nav */
+  .bnav{display:flex;border-top:1px solid var(--wire);background:var(--paper)}
+  .bnav div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0}
+  .bnav .ic{width:20px;height:20px;border-radius:6px;background:var(--wire2)}
+  .bnav .ic.on{background:var(--dark)}
+  .bnav .lbl{font-size:9px;color:var(--mut);letter-spacing:.02em;text-align:center;line-height:1}
+  .bnav .lbl.on{color:var(--dark);font-weight:700}
+  /* overlay sheet */
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:18px 18px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:12px 14px 16px;display:flex;flex-direction:column;gap:10px}
+  .grab{width:38px;height:4px;border-radius:3px;background:var(--wire2);margin:0 auto 4px}
+  .badge{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:5px;background:var(--wire);color:var(--dark)}
+  .toast{position:absolute;left:14px;right:14px;bottom:14px;background:var(--dark);color:#fff;border-radius:10px;padding:11px 13px;font-size:12px;display:flex;gap:8px;align-items:center}
+  /* tabs (segmented) */
+  .seg{display:flex;gap:4px;background:var(--bg);border:1px solid var(--wire2);border-radius:9px;padding:3px}
+  .seg div{flex:1;text-align:center;font-size:11px;font-weight:600;padding:6px;border-radius:6px;color:var(--mut)}
+  .seg div.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  /* table */
   .tbl{width:100%;border-collapse:collapse;font-size:12px}
-  .tbl th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);padding:8px 10px;border-bottom:1px solid var(--line);background:var(--bg)}
-  .tbl td{padding:9px 10px;border-bottom:1px solid var(--line)}
-  .tbl tr:hover td{background:#f5f7fc}
+  .tbl th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);padding:7px 10px;border-bottom:1px solid var(--wire);background:var(--bg);font-weight:600}
+  .tbl td{padding:8px 10px;border-bottom:1px solid var(--wire)}
+  /* desktop two-pane */
+  .pane{display:flex;height:460px}
+  .pane .left{flex:1.4;border-right:1px solid var(--wire);display:flex;flex-direction:column}
+  .pane .right{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+  .topbar{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--wire)}
+  .topbar .sp{flex:1}
+  .scrollarea{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .scrim{position:absolute;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;padding:20px}
+  .dialog{background:var(--paper);border-radius:12px;padding:16px;width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
 
-  .alert{border-radius:8px;padding:10px 12px;font-size:12px;display:flex;gap:8px;align-items:flex-start}
-  .alert.red{background:#fbeaea;color:var(--crit);border:1px solid #f0cccc}
-  .alert.green{background:#e7f5ee;color:var(--ok);border:1px solid #c5e8d6}
-  .alert.orange{background:#fbf0e0;color:var(--warn);border:1px solid #f0ddb8}
-
-  .scrim{position:absolute;inset:0;background:rgba(8,12,23,.4);z-index:24}
-  /* "Altro" overflow sheet */
-  .more-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:16px 16px 0 0;z-index:42;padding:8px 12px 14px;box-shadow:0 -8px 30px rgba(0,0,0,.2)}
-  .more-sheet .handle{width:40px;height:4px;border-radius:2px;background:var(--wire2);margin:8px auto 10px}
-  .more-item{display:flex;align-items:center;gap:12px;padding:11px 8px;border-radius:8px;font-size:14px;border-bottom:1px solid var(--line)}
-  .more-item:last-child{border-bottom:none}
-  .more-item .ic{width:22px;text-align:center;font-size:16px}
-
-  .pad{padding:14px;background:var(--bg)}
-
-  /* doc block */
-  .doc{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  .doc .panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px}
-  .doc .panel.full{grid-column:1 / -1}
-  .doc h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .doc h3::before{content:"";width:14px;height:14px;border-radius:3px;background:var(--primary)}
-  .doc ul{list-style:none}
-  .doc li{font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px}
-  .doc li:last-child{border-bottom:none}
-  .doc li .k{font-family:var(--mono);font-size:11px;color:var(--dark);background:#eef2fd;border:1px solid #d3defb;border-radius:5px;padding:1px 6px;flex-shrink:0;align-self:flex-start}
-  .doc code{font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink)}
-  .fn{font-family:var(--mono);font-size:12px}
-  .fn .arrow{color:var(--mut)}
-  .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{font-family:var(--mono);font-size:11px;background:var(--ink);color:#fff;border-radius:6px;padding:3px 8px}
-
-  @media (max-width:920px){
-    .doc{grid-template-columns:1fr}
-    .pagehead,.toc,.screen{padding-left:18px;padding-right:18px}
-  }
+  /* ANNOTATION */
+  .annot{margin-top:24px;border:1px solid var(--wire2);border-left:3px solid var(--dark);border-radius:8px;background:var(--paper)}
+  .annot .ah{padding:10px 16px;border-bottom:1px solid var(--wire);font-size:12px;font-family:var(--mono);color:var(--mut);display:flex;gap:8px;flex-wrap:wrap}
+  .annot .ah b{color:var(--ink)}
+  .annot .grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  @media(max-width:780px){.annot .grid{grid-template-columns:1fr}}
+  .annot .cell{padding:14px 16px;border-top:1px solid var(--wire);border-right:1px solid var(--wire)}
+  .annot .cell:nth-child(even){border-right:0}
+  .annot h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)}
+  .annot ul{margin:0;padding-left:16px;font-size:13px}
+  .annot li{margin:3px 0}
+  .annot code{font-family:var(--mono);font-size:12px;background:var(--wire);padding:1px 5px;border-radius:4px}
+  .pillset{display:flex;flex-wrap:wrap;gap:6px}
+  .pillset .p{font-family:var(--mono);font-size:11px;border:1px solid var(--wire2);border-radius:6px;padding:3px 7px;background:#fafbfc}
+  .note{font-size:12px;color:var(--mut);background:#fafbfc;border:1px dashed var(--wire2);border-radius:8px;padding:10px 12px;margin-top:14px}
+  .kbd{font-family:var(--mono);font-size:11px;background:var(--wire);border-radius:4px;padding:1px 5px}
 </style>
 </head>
 <body>
 
-<header class="pagehead">
-  <h1>nu miezz a piacer — Mockup Interfaccia <span style="color:var(--secondary)">Operatore</span></h1>
-  <p>Sketch a bassa fedeltà delle schermate del profilo <b>operator</b>. Ogni schermata mostra il frame <b>mobile</b> (340px) e <b>desktop</b> (760px) affiancati, seguito dalla documentazione: note, funzioni → slice, slice VSA e componenti shadcn. Navigazione via <b>BottomNav</b> (5 tab: Mappa · Manutenzione · Ticket · Scadute · Altro). Login condiviso col cliente (fuori scope). Mappe = placeholder, implementazione con <b>Leaflet + OSM</b>. Sorgente: <code style="color:#cdd5e3;background:#1a2236;border:none;padding:2px 6px;border-radius:5px">UI_Schema_VSA.md</code>.</p>
+<header class="top">
+  <h1>nu miezz a piacer — Wireframe <b>Operator</b> (web only)</h1>
+  <p>Greybox / lo-fi. Serve a discutere struttura, flusso e mappatura slice→pagina→componenti. Colori e branding NON sono finali. Interfaccia operatore: solo browser desktop.</p>
   <div class="legend">
-    <span>● AVAILABLE verde</span>
-    <span>● IN_USE blu</span>
-    <span>● MAINTENANCE arancio</span>
-    <span>● OUT_OF_SERVICE rosso</span>
-    <span>severità: CRITICAL · HIGH · MEDIUM · LOW</span>
+    <span><span class="sw" style="background:var(--wire)"></span> contenuto / dato dinamico</span>
+    <span><span class="sw" style="background:var(--primary)"></span> azione primaria (CTA)</span>
+    <span><span class="sw" style="background:var(--paper)"></span> input / outline</span>
+    <span><b>Navigazione:</b> BottomNav 5 voci (Mappa · Manut. · Ticket · Scadute · Altro)</span>
   </div>
 </header>
 
 <nav class="toc">
-  <b>Schermate</b>
-  <a href="#s1">1 · Home Flotta</a>
-  <a href="#s2">2 · Segnalazioni</a>
-  <a href="#s3">3 · Dettaglio Veicolo</a>
-  <a href="#s4">4 · Coda Manutenzione</a>
-  <a href="#s5">5 · Storico GPS</a>
-  <a href="#s6">6 · Ticket Supporto</a>
-  <a href="#s7">7 · Prenotazioni Scadute</a>
-  <a href="#s8">8 · Bonus Parcheggio</a>
-  <a href="#s9">9 · Gestione Utenti</a>
+  <a href="#s01">01 · Mappa flotta</a>
+  <a href="#s02">02 · Segnalazioni</a>
+  <a href="#s03">03 · Dettaglio veicolo</a>
+  <a href="#s04">04 · Coda manutenzione</a>
+  <a href="#s05">05 · Storico GPS</a>
+  <a href="#s06">06 · Ticket supporto</a>
+  <a href="#s07">07 · Prenotazioni scadute</a>
+  <a href="#s08">08 · Bonus parcheggio</a>
+  <a href="#s09">09 · Gestione utenti</a>
+  <a href="#nav">★ Nav / Riepilogo</a>
 </nav>
 
-<!-- ════════════════════ SCREEN 1 — HOME FLOTTA ════════════════════ -->
-<section class="screen" id="s1">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 1</span>
-    <h2>Home Operatore — Mappa Flotta</h2>
-    <div class="file">OperatorHomeScreen · route <code>/op/fleet</code> · BottomNav tab “Mappa”</div>
-    <div class="slice-tags"><span class="st">FleetDistributionMap · OP.01</span><span class="st">LowAvailabilityAlert · OP.02</span><span class="st">IGpsTrackingService</span></div>
-  </div>
+<main>
 
+<!-- ════════════════════════ 01 MAPPA FLOTTA ════════════════════════ -->
+<section class="screen" id="s01">
+  <div class="screen-head"><span class="num">01</span><h2>Home — Mappa flotta</h2><span class="tag">hub</span></div>
+  <p class="screen-sub">Schermata-cuore dell'operatore. Mappa full-screen con <b>tutti</b> i veicoli come pin (colore = stato). La search bar del cliente è sostituita dal bottone <b>Segnalazioni</b> con contatore. Banner di allerta quando una zona scende sotto soglia di disponibilità.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · 340px</div>
-      <div class="mobile">
-        <div class="notch"></div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/fleet</span></div>
         <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">Mappa Flotta</b><div class="grow"></div><button class="btn pri sm">🔔 Segnalazioni · 3</button></div>
-            <div class="stage" style="position:relative">
-              <div class="map">
-                <div class="map-legend">
-                  <div class="row"><span class="dot green"></span> Disponibile</div>
-                  <div class="row"><span class="dot blue"></span> In uso</div>
-                  <div class="row"><span class="dot orange"></span> Manutenzione</div>
-                  <div class="row"><span class="dot red"></span> Fuori servizio</div>
-                </div>
-                <div class="pin green" style="top:90px;left:70px"><span>🛴</span></div>
-                <div class="pin blue" style="top:160px;left:170px"><span>🚲</span></div>
-                <div class="pin orange" style="top:230px;left:90px"><span>🚗</span></div>
-                <div class="pin red" style="top:290px;left:210px"><span>🛴</span></div>
-                <div style="position:absolute;bottom:70px;left:14px;right:14px" class="alert red">⚠️ <b>Zona Centro</b> sotto soglia: 2 veicoli</div>
-                <div class="fab">📍</div>
+          <div class="topbar"><div class="icon sm rnd"></div><div class="line w25"></div><div class="sp"></div><div class="chip solid">Segnalazioni · 3</div><div class="chip">Centra</div></div>
+          <div class="pane">
+            <div class="left map">
+              <div class="maplegend">
+                <div class="row"><span class="sw" style="background:var(--wire)"></span><span class="muted">Disponibile · 41</span></div>
+                <div class="row"><span class="sw" style="background:var(--wire2)"></span><span class="muted">In uso · 18</span></div>
+                <div class="row"><span class="sw" style="background:#fff;border:1px solid var(--wire2)"></span><span class="muted">Manut./fuori · 7</span></div>
               </div>
+              <div class="road" style="left:0;right:0;top:180px;height:16px"></div>
+              <div class="road" style="top:0;bottom:0;left:170px;width:14px"></div>
+              <div class="pin" style="left:90px;top:100px"></div><div class="pin" style="left:280px;top:130px"></div>
+              <div class="pin o" style="left:200px;top:280px"></div><div class="pin o" style="left:320px;top:240px"></div>
+              <div class="pin" style="left:120px;top:210px"></div>
+            </div>
+            <div class="right">
+              <div class="h">Stato flotta</div>
+              <div class="card"><div class="row between"><div class="muted">Disponibili</div><div class="big" style="font-size:18px">41</div></div></div>
+              <div class="card"><div class="row between"><div class="muted">In uso</div><div class="big" style="font-size:18px">18</div></div></div>
+              <div class="card" style="border-color:var(--danger)"><div class="h">1 zona sotto soglia</div><div class="muted">richiede ribilanciamento</div></div>
             </div>
           </div>
-          <div class="bn">
-            <div class="bn-item on"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · 760px</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/fleet</span></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">nu miezz ·op</b><span class="muted sm">Mappa Flotta</span><div class="grow"></div><button class="btn sec sm">🔔 Segnalazioni · 3</button><button class="btn ghost sm">📍 Centra</button></div>
-            <div class="stage" style="position:relative">
-              <div class="map">
-                <div class="map-legend">
-                  <div class="row"><span class="dot green"></span> Disponibile · 41</div>
-                  <div class="row"><span class="dot blue"></span> In uso · 18</div>
-                  <div class="row"><span class="dot orange"></span> Manutenzione · 5</div>
-                  <div class="row"><span class="dot red"></span> Fuori servizio · 2</div>
-                </div>
-                <div class="pin green" style="top:80px;left:200px"><span>🛴</span></div>
-                <div class="pin blue" style="top:120px;left:340px"><span>🚲</span></div>
-                <div class="pin orange" style="top:190px;left:260px"><span>🚗</span></div>
-                <div class="pin red" style="top:240px;left:430px"><span>🛴</span></div>
-                <div class="pin green" style="top:160px;left:520px"><span>🛴</span></div>
-                <div style="position:absolute;top:14px;right:14px;max-width:240px" class="alert red">⚠️ <b>Zona Centro</b> sotto soglia (2/5)</div>
-                <div class="fab">📍</div>
-              </div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item on"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic on"></div><span class="lbl on">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Manut.</span></div>
+            <div><div class="ic"></div><span class="lbl">Ticket</span></div>
+            <div><div class="ic"></div><span class="lbl">Scadute</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> FleetMapPage · <b>Route:</b> <code>/op/fleet</code> · <b>Slice:</b> <b>FleetDistributionMap</b> + LowAvailabilityAlert</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadFleet()</code> → <code>FleetDistributionMap</code> (GET <code>/api/fleet/distribution</code>)</li>
+        <li>pin colorato per <code>VehicleStatus</code> (available/in_use/maintenance/out_of_service)</li>
+        <li><code>checkThresholds()</code> ⇐ <code>LowAvailabilityAlert</code> (zona &lt; soglia ⇒ banner)</li>
+        <li>click pin → pannello Dettaglio veicolo (03) · Segnalazioni → pannello (02)</li>
+        <li>Centra → <code>IGpsTrackingService</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Button</span><span class="p">Badge</span><span class="p">Card</span><span class="p">Alert</span><span class="p">Sheet</span><span class="p">Tooltip</span></div>
+        <p class="muted" style="margin-top:8px">Mappa: libreria esterna (<code>react-leaflet</code> + OSM) — non shadcn. BottomNav custom (4 tab + Altro).</p>
+      </div>
+    </div>
+    <div class="note">📌 I colori-stato della legenda sono indicativi: definiti in fase di theming.</div>
+  </div>
+</section>
 
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Mappa full-screen con <b>tutti</b> i veicoli flotta, pin colorato per stato. FAB GPS in basso a dx.</li>
-        <li>Bottone <b>Segnalazioni</b> (badge counter) in topbar → apre pannello (schermata 2).</li>
-        <li>Banner rosso pulsante su FleetZone sotto soglia minima (OP.02).</li>
-        <li><b>Navigazione via BottomNav</b> identica su mobile e desktop. Tab “Altro” apre sheet con: Storico GPS, Bonus parcheggio, Gestione utenti, Logout.</li>
-        <li>Tap su pin → Dettaglio Veicolo (schermata 3).</li>
-      </ul>
+<!-- ════════════════════════ 02 SEGNALAZIONI ════════════════════════ -->
+<section class="screen" id="s02">
+  <div class="screen-head"><span class="num">02</span><h2>Pannello segnalazioni</h2><span class="tag">pannello dx</span></div>
+  <p class="screen-sub">Pannello laterale destro sopra la mappa. Lista segnalazioni filtrabile per stato, con severità e azioni rapide: blocco remoto, verifica parcheggio, manutenzione, risolvi.</p>
+  <div class="frames">
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/fleet → segnalazioni</span></div>
+        <div class="viewport"><div class="pane">
+          <div class="left map"><div class="pin o" style="left:160px;top:140px"></div><div class="pin" style="left:240px;top:200px"></div></div>
+          <div class="right">
+            <div class="row between"><div class="h">Segnalazioni</div><span class="chip">3 critiche</span></div>
+            <div class="seg"><div class="on">Da gestire</div><div>In corso</div><div>Risolte</div></div>
+            <div class="card" style="border-color:var(--danger)"><div class="row between"><div class="line t w40"></div><span class="chip">Critica</span></div><div class="line w70"></div><div class="row" style="gap:6px"><div class="btn danger sm">Blocca</div><div class="btn ghost sm">Verifica</div><div class="btn sm">Manut.</div></div></div>
+            <div class="card"><div class="row between"><div class="line t w40"></div><span class="chip">Alta</span></div><div class="line w60"></div><div class="row" style="gap:6px"><div class="btn ghost sm">Verifica</div><div class="btn ghost sm">Risolvi</div></div></div>
+            <div class="card"><div class="row between"><div class="line t w30"></div><span class="chip">Bassa</span></div><div class="line w70"></div></div>
+          </div>
+        </div></div>
+      </div>
     </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useFleetDistributionMap() <span class="arrow">→</span> GET /api/fleet/distribution</span></li>
-        <li><span class="k">poll</span><span class="fn">LowAvailabilityAlert <span class="arrow">→</span> zone.available &lt; threshold</span></li>
-        <li><span class="k">tap pin</span><span class="fn">openVehicleSheet(vehicleId)</span></li>
-        <li><span class="k">🔔</span><span class="fn">openMaintenancePanel()</span></li>
-        <li><span class="k">📍</span><span class="fn">IGpsTrackingService.centerOnOperator()</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">button</span><span class="chip">badge</span><span class="chip">alert</span><span class="chip">tooltip</span><span class="chip">sheet (BottomNav “Altro”)</span><span class="chip">avatar</span><span class="chip" style="background:var(--mut)">+ react-leaflet / leaflet (mappa)</span><span class="chip" style="background:var(--mut)">BottomNav = custom (no shadcn)</span></div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> MaintenancePanel (pannello dx) · <b>Slice:</b> <b>ReceiveMalfunctionReport</b> + MaintenanceQueue + VerifyParkingPosition + RemoteLockVehicle</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadQueue()</code> → <code>MaintenanceQueue</code> (GET <code>/api/maintenance/queue</code>)</li>
+        <li><code>filterByStatus('todo'|'wip'|'done')</code></li>
+        <li><code>remoteLock(id)</code> → <code>RemoteLockVehicle</code> (con AlertDialog)</li>
+        <li><code>verifyParking(id)</code> → <code>VerifyParkingPosition</code></li>
+        <li><code>resolve(reportId)</code> → <code>ReceiveMalfunctionReport</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Sheet</span><span class="p">Tabs</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Button</span><span class="p">AlertDialog</span><span class="p">ScrollArea</span></div>
+        <p class="muted" style="margin-top:8px">Severità = <code>Badge</code> con variante per livello. Blocco remoto sempre dietro conferma.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 2 — SEGNALAZIONI ════════════════════ -->
-<section class="screen" id="s2">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 2</span>
-    <h2>Pannello Segnalazioni</h2>
-    <div class="file">MaintenancePanelSheet · bottom sheet (mobile) / pannello laterale (desktop)</div>
-    <div class="slice-tags"><span class="st">ReceiveMalfunctionReport · OP.03</span><span class="st">MaintenanceQueue · OP.05</span><span class="st">VerifyParkingPosition · OP.04</span><span class="st">RemoteLockVehicle · OP.10</span></div>
-  </div>
-
+<!-- ════════════════════════ 03 DETTAGLIO VEICOLO ════════════════════════ -->
+<section class="screen" id="s03">
+  <div class="screen-head"><span class="num">03</span><h2>Dettaglio veicolo</h2><span class="tag">pannello dx</span></div>
+  <p class="screen-sub">Si apre da click sul pin. Pannello laterale con stato, batteria/autonomia, ultima posizione, ultima manutenzione, blocco remoto e apertura segnalazione.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · bottom sheet</div>
-      <div class="mobile">
-        <div class="notch"></div>
-        <div class="viewport">
-          <div class="stage" style="position:relative">
-            <div class="map"></div>
-            <div class="sheet" style="top:110px">
-              <div class="handle"></div>
-              <div class="sheet-body">
-                <div class="tabs" style="margin-bottom:12px"><div class="tab on">Da gestire · 3</div><div class="tab">In corso</div><div class="tab">Risolte</div></div>
-                <div class="card">
-                  <div class="row"><b class="mono sm">SC-0421</b><span class="badge red">CRITICAL</span><div class="grow"></div><span class="xs muted">2 min fa</span></div>
-                  <div class="sm" style="margin-top:6px">Freno posteriore non risponde</div>
-                  <div class="row sm muted xs" style="margin-top:4px">🛴 Scooter · Via Toledo 12</div>
-                  <div class="row" style="margin-top:10px;gap:6px"><button class="btn danger sm" style="flex:1">Blocca</button><button class="btn pri sm" style="flex:1">Manutenzione</button></div>
-                </div>
-                <div class="card">
-                  <div class="row"><b class="mono sm">BK-0188</b><span class="badge orange">HIGH</span><div class="grow"></div><span class="xs muted">18 min fa</span></div>
-                  <div class="sm" style="margin-top:6px">Cestino danneggiato, parcheggio dubbio</div>
-                  <div class="row" style="margin-top:10px;gap:6px"><button class="btn sec sm" style="flex:1">Verifica parcheggio</button><button class="btn success sm" style="flex:1">Risolto</button></div>
-                </div>
-              </div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/fleet → v-123</span></div>
+        <div class="viewport"><div class="pane">
+          <div class="left map"><div class="pin lg" style="left:170px;top:140px"></div></div>
+          <div class="right">
+            <div class="row between"><div class="col" style="gap:4px"><div class="line t w60"></div><span class="badge">Manutenzione</span></div><div class="icon lg"></div></div>
+            <div class="row" style="gap:8px">
+              <div class="card" style="flex:1;align-items:center"><div class="big">72%</div><div class="muted">batteria</div></div>
+              <div class="card" style="flex:1;align-items:center"><div class="big">~18 km</div><div class="muted">autonomia</div></div>
             </div>
+            <div class="card"><div class="row between"><span class="muted">Ultima posizione</span><div class="chip">Storico GPS</div></div><div class="line w70"></div></div>
+            <div class="card"><div class="row between"><span class="muted">Ultima manutenzione</span><div class="line w30"></div></div></div>
+            <div class="row" style="gap:8px"><div class="btn danger" style="flex:1">Blocca da remoto</div><div class="btn ghost" style="flex:1">Apri segnalazione</div></div>
           </div>
-          <div class="bn">
-            <div class="bn-item on"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · pannello laterale</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/fleet → segnalazioni</span></div>
-        <div class="viewport">
-          <div class="stage" style="position:relative">
-            <div class="map"></div>
-            <div style="position:absolute;top:0;right:0;bottom:0;width:380px;background:var(--paper);border-left:1px solid var(--line);padding:16px;overflow:auto;box-shadow:-8px 0 30px rgba(0,0,0,.08)">
-              <div class="row"><b>Segnalazioni</b><div class="grow"></div><span class="badge red">3 critiche</span></div>
-              <div class="tabs" style="margin:12px 0"><div class="tab on">Da gestire</div><div class="tab">In corso</div><div class="tab">Risolte</div></div>
-              <div class="card">
-                <div class="row"><b class="mono sm">SC-0421</b><span class="badge red">CRITICAL</span><div class="grow"></div><span class="xs muted">2 min fa</span></div>
-                <div class="sm" style="margin-top:6px">Freno posteriore · 🛴 Via Toledo 12</div>
-                <div class="row" style="margin-top:10px;gap:6px"><button class="btn danger sm">Blocca</button><button class="btn sec sm">Verifica</button><button class="btn pri sm">Manut.</button></div>
-              </div>
-              <div class="card">
-                <div class="row"><b class="mono sm">BK-0188</b><span class="badge orange">HIGH</span><div class="grow"></div><span class="xs muted">18 min</span></div>
-                <div class="sm" style="margin-top:6px">Cestino danneggiato · 🚲 P.za Dante</div>
-                <div class="row" style="margin-top:10px;gap:6px"><button class="btn sec sm">Verifica parcheggio</button><button class="btn success sm">Risolto</button></div>
-              </div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item on"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
+        </div></div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Mobile: bottom sheet drag-up con handle, swipe-down chiude. Desktop: pannello fisso a destra sopra mappa.</li>
-        <li>Tab filtra: <code>Da gestire</code> / <code>In corso</code> / <code>Risolte</code>.</li>
-        <li>Badge severità: CRITICAL rosso · HIGH arancio · MEDIUM giallo · LOW grigio.</li>
-        <li>Tap card → dettaglio (descrizione, foto, mini-mappa posizione).</li>
-        <li><b>Blocca da remoto</b> → AlertDialog conferma (azione irreversibile).</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useMaintenanceQueue() <span class="arrow">→</span> GET /api/maintenance/queue</span></li>
-        <li><span class="k">tab</span><span class="fn">filterByStatus('todo'|'wip'|'done')</span></li>
-        <li><span class="k">Blocca</span><span class="fn">RemoteLockVehicle <span class="arrow">→</span> POST /api/vehicles/:id/lock</span></li>
-        <li><span class="k">Verifica</span><span class="fn">VerifyParkingPosition <span class="arrow">→</span> POST /api/parking/verify</span></li>
-        <li><span class="k">Risolto</span><span class="fn">ReceiveMalfunctionReport.resolve(id)</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">drawer</span><span class="chip">sheet</span><span class="chip">tabs</span><span class="chip">card</span><span class="chip">badge</span><span class="chip">button</span><span class="chip">alert-dialog</span><span class="chip">scroll-area</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> VehicleOperatorPanel · <b>Slice:</b> <b>VehicleDetails</b> + VehicleBatteryStatus + VehicleGPSHistory + RemoteLockVehicle</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>getVehicle(id)</code> → <code>IVehicleRepository.findById</code></li>
+        <li>batteria/autonomia ⇐ <code>VehicleBatteryStatus</code></li>
+        <li>Storico GPS → <code>/op/gps/:id</code> (05)</li>
+        <li><code>remoteLock(id)</code> → <code>RemoteLockVehicle</code> (conferma)</li>
+        <li>Apri segnalazione → precompila <code>VehicleConditionReport</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Sheet</span><span class="p">Card</span><span class="p">Progress</span><span class="p">Badge</span><span class="p">Separator</span><span class="p">Button</span><span class="p">AlertDialog</span></div>
+        <p class="muted" style="margin-top:8px"><code>Progress</code> per batteria; <code>Badge</code> per <code>VehicleStatus</code>.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 3 — DETTAGLIO VEICOLO ════════════════════ -->
-<section class="screen" id="s3">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 3</span>
-    <h2>Dettaglio Veicolo (Operatore)</h2>
-    <div class="file">VehicleOperatorSheet · tap su pin mappa</div>
-    <div class="slice-tags"><span class="st">VehicleDetails · UT.06</span><span class="st">VehicleBatteryStatus · UT.12</span><span class="st">VehicleGPSHistory · OP.06</span><span class="st">RemoteLockVehicle · OP.10</span></div>
-  </div>
-
+<!-- ════════════════════════ 04 CODA MANUTENZIONE ════════════════════════ -->
+<section class="screen" id="s04">
+  <div class="screen-head"><span class="num">04</span><h2>Coda manutenzione</h2><span class="tag">tab · tabella</span></div>
+  <p class="screen-sub">Full-page della coda interventi (stessa sorgente del pannello segnalazioni). Data table ordinabile per severità/data, con assegnazione operatore.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · bottom sheet</div>
-      <div class="mobile">
-        <div class="notch"></div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/maintenance</span></div>
         <div class="viewport">
-          <div class="stage" style="position:relative">
-            <div class="map"></div>
-            <div class="sheet" style="top:200px">
-              <div class="handle"></div>
-              <div class="sheet-body">
-                <div class="row"><div class="lg-t mono">SC-0421</div><span class="badge orange">MAINTENANCE</span></div>
-                <div class="muted sm">🛴 Scooter · targa NA-77231</div>
-                <div class="card" style="margin-top:12px">
-                  <div class="row sm"><span>🔋 Batteria</span><div class="grow"></div><b>72%</b></div>
-                  <div class="bar" style="margin-top:6px"><i style="width:72%"></i></div>
-                </div>
-                <div class="card">
-                  <div class="sm muted xs">📍 Ultima posizione</div>
-                  <div style="height:80px;border-radius:8px;margin-top:6px;position:relative" class="map"></div>
-                  <div class="row sm" style="margin-top:8px"><span class="muted">Via Toledo 12</span><div class="grow"></div><button class="btn ghost sm">Storico GPS →</button></div>
-                </div>
-                <div class="row" style="margin-top:12px;gap:8px"><button class="btn danger" style="flex:1">🔒 Blocca da remoto</button><button class="btn sec" style="flex:1">Apri segnalazione</button></div>
-              </div>
-            </div>
+          <div class="topbar"><div class="icon sm rnd"></div><div class="line w25"></div><div class="sp"></div><div class="seg" style="width:240px"><div class="on">Tutte</div><div>Critiche</div><div>Mie</div></div></div>
+          <div class="scrollarea">
+            <table class="tbl">
+              <thead><tr><th>Veicolo</th><th>Problema</th><th>Severità</th><th>Zona</th><th>Stato</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><span class="chip">Critica</span></td><td><div class="line w50"></div></td><td><span class="badge">in attesa</span></td><td><div class="btn ghost sm">Assegna</div></td></tr>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><span class="chip">Alta</span></td><td><div class="line w50"></div></td><td><span class="badge">assegnata</span></td><td><div class="btn ghost sm">Apri</div></td></tr>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><span class="chip">Alta</span></td><td><div class="line w50"></div></td><td><span class="badge">in attesa</span></td><td><div class="btn ghost sm">Assegna</div></td></tr>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><span class="chip">Bassa</span></td><td><div class="line w50"></div></td><td><span class="badge">in attesa</span></td><td><div class="btn ghost sm">Assegna</div></td></tr>
+              </tbody>
+            </table>
           </div>
-          <div class="bn">
-            <div class="bn-item on"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · pannello laterale</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/fleet → SC-0421</span></div>
-        <div class="viewport">
-          <div class="stage" style="position:relative">
-            <div class="map"></div>
-            <div style="position:absolute;top:0;right:0;bottom:0;width:400px;background:var(--paper);border-left:1px solid var(--line);padding:18px;overflow:auto;box-shadow:-8px 0 30px rgba(0,0,0,.08)">
-              <div class="row"><div class="lg-t mono">SC-0421</div><span class="badge orange">MAINTENANCE</span><div class="grow"></div><span class="icon-btn">✕</span></div>
-              <div class="muted sm">🛴 Scooter · targa NA-77231</div>
-              <div class="card" style="margin-top:14px">
-                <div class="row sm"><span>🔋 Batteria</span><div class="grow"></div><b>72%</b></div>
-                <div class="bar" style="margin-top:6px"><i style="width:72%"></i></div>
-              </div>
-              <div class="card">
-                <div class="sm muted">📍 Ultima posizione GPS</div>
-                <div style="height:110px;border-radius:8px;margin-top:8px;position:relative" class="map"></div>
-                <div class="row sm" style="margin-top:8px"><span class="muted">Via Toledo 12</span><div class="grow"></div><button class="btn ghost sm">Storico GPS →</button></div>
-              </div>
-              <div class="card sm"><span class="muted">Ultima manutenzione:</span> 28/05/2026 · freni</div>
-              <div class="row" style="margin-top:14px;gap:8px"><button class="btn danger" style="flex:1">🔒 Blocca da remoto</button><button class="btn sec" style="flex:1">Apri segnalazione</button></div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item on"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Manut.</span></div>
+            <div><div class="ic"></div><span class="lbl">Ticket</span></div>
+            <div><div class="ic"></div><span class="lbl">Scadute</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Riusa <code>VehicleDetails</code> cliente + azioni operative (blocco remoto, segnalazione, storico GPS).</li>
-        <li>Battery bar colore dinamico: verde &gt;50%, arancio 20-50%, rosso &lt;20%.</li>
-        <li>Link Storico GPS → schermata 5 precompilata sul veicolo.</li>
-        <li>"Apri segnalazione" precompila <code>VehicleConditionReport</code> con vehicleId.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useVehicleDetails(id) <span class="arrow">→</span> GET /api/vehicles/:id</span></li>
-        <li><span class="k">battery</span><span class="fn">VehicleBatteryStatus(id)</span></li>
-        <li><span class="k">GPS →</span><span class="fn">navigate('/op/gps/'+id)</span></li>
-        <li><span class="k">🔒</span><span class="fn">RemoteLockVehicle <span class="arrow">→</span> conferma + POST lock</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">sheet</span><span class="chip">dialog</span><span class="chip">card</span><span class="chip">badge</span><span class="chip">progress</span><span class="chip">button</span><span class="chip">alert-dialog</span><span class="chip">separator</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> MaintenanceQueuePage · <b>Route:</b> <code>/op/maintenance</code> · <b>Slice:</b> <b>MaintenanceQueue</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadQueue()</code> → GET <code>/api/maintenance/queue</code></li>
+        <li><code>sortBy('severity'|'createdAt')</code> (default severità DESC)</li>
+        <li><code>assign(id, operatorId)</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Table</span><span class="p">Tabs</span><span class="p">Badge</span><span class="p">Button</span><span class="p">Card</span><span class="p">DropdownMenu</span><span class="p">Skeleton</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 4 — CODA MANUTENZIONE ════════════════════ -->
-<section class="screen" id="s4">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 4</span>
-    <h2>Coda Manutenzione</h2>
-    <div class="file">MaintenanceQueueScreen · route <code>/op/maintenance</code> · BottomNav tab “Manut.”</div>
-    <div class="slice-tags"><span class="st">MaintenanceQueue · OP.05</span></div>
-  </div>
-
+<!-- ════════════════════════ 05 STORICO GPS ════════════════════════ -->
+<section class="screen" id="s05">
+  <div class="screen-head"><span class="num">05</span><h2>Storico GPS veicolo</h2><span class="tag">Altro · mappa + timeline</span></div>
+  <p class="screen-sub">Tracciato storico delle posizioni di un veicolo: polyline sulla mappa + timeline delle tappe. Selettore intervallo (24h / 7gg / custom). Raggiunta da "Altro" o dal Dettaglio veicolo.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · lista card</div>
-      <div class="mobile">
-        <div class="notch"></div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/gps/v-123</span></div>
         <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">Coda manutenzione</b></div>
-            <div class="scroll pad">
-              <div class="tabs" style="margin-bottom:12px"><div class="tab on">Tutte · 5</div><div class="tab">Critiche</div><div class="tab">Mie</div></div>
-              <div class="card"><div class="row"><b class="mono sm">SC-0421</b><span class="badge red">CRITICAL</span></div><div class="sm" style="margin-top:6px">Freno posteriore · Via Toledo 12</div><div class="row sm muted xs" style="margin-top:6px">in attesa · 2 min</div></div>
-              <div class="card"><div class="row"><b class="mono sm">CR-0099</b><span class="badge orange">HIGH</span></div><div class="sm" style="margin-top:6px">Batteria 8% · Chiaia</div><div class="row sm muted xs" style="margin-top:6px">assegnata a M.R.</div></div>
-              <div class="card"><div class="row"><b class="mono sm">BK-0188</b><span class="badge orange">HIGH</span></div><div class="sm" style="margin-top:6px">Cestino danneggiato · P.za Dante</div></div>
-              <div class="card"><div class="row"><b class="mono sm">CR-0033</b><span class="badge gray">LOW</span></div><div class="sm" style="margin-top:6px">Pulizia abitacolo</div></div>
+          <div class="topbar"><div class="icon sm"></div><div class="line w25"></div><div class="sp"></div><div class="chip">Ultime 24h</div><div class="chip">7 giorni</div><div class="chip">Custom</div></div>
+          <div class="pane">
+            <div class="left map">
+              <svg style="position:absolute;inset:0" width="100%" height="100%"><polyline points="100,80 220,160 320,140 420,260" fill="none" stroke="#3a3f45" stroke-width="3"/></svg>
+              <div class="pin o" style="left:92px;top:68px"></div><div class="pin" style="left:412px;top:248px"></div>
+            </div>
+            <div class="right">
+              <div class="h">Timeline</div>
+              <div class="card row between"><div class="line w30"></div><div class="line w50"></div></div>
+              <div class="card row between"><div class="line w30"></div><div class="line w50"></div></div>
+              <div class="card row between"><div class="line w30"></div><div class="line w50"></div></div>
+              <div class="card row between"><div class="line w30"></div><div class="line w50"></div></div>
             </div>
           </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item on"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · data table</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/maintenance</span></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">nu miezz ·op</b><span class="muted sm">Coda manutenzione</span><div class="grow"></div><div class="tabs" style="width:280px"><div class="tab on">Tutte</div><div class="tab">Critiche</div><div class="tab">Mie</div></div></div>
-            <div class="scroll" style="padding:14px">
-              <table class="tbl">
-                <thead><tr><th>Veicolo</th><th>Tipo</th><th>Problema</th><th>Severità</th><th>Zona</th><th>Stato</th><th></th></tr></thead>
-                <tbody>
-                  <tr><td class="mono">SC-0421</td><td>🛴</td><td>Freno posteriore</td><td><span class="badge red">CRITICAL</span></td><td>Via Toledo</td><td><span class="badge gray">in attesa</span></td><td><button class="btn sec sm">Assegna</button></td></tr>
-                  <tr><td class="mono">CR-0099</td><td>🚗</td><td>Batteria 8%</td><td><span class="badge orange">HIGH</span></td><td>Chiaia</td><td><span class="badge blue">M.R.</span></td><td><button class="btn ghost sm">Apri</button></td></tr>
-                  <tr><td class="mono">BK-0188</td><td>🚲</td><td>Cestino danneggiato</td><td><span class="badge orange">HIGH</span></td><td>P.za Dante</td><td><span class="badge gray">in attesa</span></td><td><button class="btn sec sm">Assegna</button></td></tr>
-                  <tr><td class="mono">CR-0033</td><td>🚗</td><td>Pulizia abitacolo</td><td><span class="badge gray">LOW</span></td><td>Vomero</td><td><span class="badge gray">in attesa</span></td><td><button class="btn sec sm">Assegna</button></td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item on"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Manut.</span></div>
+            <div><div class="ic"></div><span class="lbl">Ticket</span></div>
+            <div><div class="ic"></div><span class="lbl">Scadute</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Versione full-page della coda (stessa sorgente del pannello segnalazioni).</li>
-        <li>Mobile: lista card. Desktop: data table ordinabile per severità/data.</li>
-        <li>Ordinamento default: severità DESC, poi timestamp ASC.</li>
-        <li>"Assegna" → assegna intervento all'operatore loggato.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useMaintenanceQueue() <span class="arrow">→</span> GET /api/maintenance/queue</span></li>
-        <li><span class="k">sort</span><span class="fn">sortBy('severity'|'createdAt')</span></li>
-        <li><span class="k">Assegna</span><span class="fn">MaintenanceQueue.assign(id, opId)</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">table</span><span class="chip">tabs</span><span class="chip">badge</span><span class="chip">button</span><span class="chip">card</span><span class="chip">dropdown-menu</span><span class="chip">skeleton</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> VehicleGPSHistoryPage · <b>Route:</b> <code>/op/gps/:vehicleId</code> · <b>Slice:</b> <b>VehicleGPSHistory</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadHistory(id, range)</code> → GET <code>/api/vehicles/:id/gps?from&amp;to</code></li>
+        <li><code>setRange(from, to)</code> (popover/date-range)</li>
+        <li>click tappa → <code>centerMap(point)</code></li>
+        <li>empty state se nessun dato nel range</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Popover</span><span class="p">Calendar</span><span class="p">Select</span><span class="p">Card</span><span class="p">ScrollArea</span><span class="p">Skeleton</span></div>
+        <p class="muted" style="margin-top:8px">Polyline = layer Leaflet (esterno).</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 5 — STORICO GPS ════════════════════ -->
-<section class="screen" id="s5">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 5</span>
-    <h2>Storico GPS Veicolo</h2>
-    <div class="file">VehicleGPSHistoryScreen · route <code>/op/gps/:vehicleId</code> · BottomNav tab “Altro”</div>
-    <div class="slice-tags"><span class="st">VehicleGPSHistory · OP.06</span><span class="st">IGpsTrackingService</span></div>
-  </div>
-
+<!-- ════════════════════════ 06 TICKET SUPPORTO ════════════════════════ -->
+<section class="screen" id="s06">
+  <div class="screen-head"><span class="num">06</span><h2>Ticket supporto</h2><span class="tag">tab · master-detail</span></div>
+  <p class="screen-sub">Gestione ticket aperti dagli utenti. Master-detail con thread di risposta e azioni prendi-in-carico / chiudi.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile</div>
-      <div class="mobile">
-        <div class="notch"></div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/tickets</span></div>
         <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><div class="icon-btn">←</div><b class="brand mono">SC-0421 · GPS</b></div>
-            <div class="stage" style="position:relative">
-              <div class="map" style="bottom:170px">
-                <svg style="position:absolute;inset:0" width="100%" height="100%"><polyline points="72,52 130,90 212,132" fill="none" stroke="#3260d7" stroke-width="3"/></svg>
-                <div class="pin blue" style="top:30px;left:60px"><span></span></div>
-                <div class="pin green" style="top:112px;left:200px"><span></span></div>
-              </div>
-              <div style="position:absolute;left:0;right:0;bottom:0;height:170px;background:var(--paper);border-top:1px solid var(--line);padding:12px;overflow:auto">
-                <div class="field" style="margin-bottom:8px"><label>Intervallo</label><div class="input ph">Ultime 24 ore ▾</div></div>
-                <div class="card sm"><div class="row"><span class="mono xs">14:32</span><div class="grow"></div><span class="muted xs">Via Toledo 12</span></div></div>
-                <div class="card sm"><div class="row"><span class="mono xs">13:05</span><div class="grow"></div><span class="muted xs">P.za Municipio</span></div></div>
+          <div class="pane">
+            <div class="left" style="flex:1;display:flex;flex-direction:column">
+              <div style="padding:12px 14px"><div class="seg"><div class="on">Aperti</div><div>In carico</div><div>Chiusi</div></div></div>
+              <div class="scrollarea" style="padding-top:0">
+                <div class="card" style="border-color:var(--dark)"><div class="row between"><div class="line t w30"></div><span class="badge">aperto</span></div><div class="line w70"></div></div>
+                <div class="card"><div class="row between"><div class="line t w30"></div><span class="badge">in carico</span></div><div class="line w60"></div></div>
+                <div class="card"><div class="row between"><div class="line t w30"></div><span class="badge">aperto</span></div><div class="line w70"></div></div>
               </div>
             </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · mappa + timeline</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/gps/SC-0421</span></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand mono">SC-0421</b><span class="muted sm">Storico GPS</span><div class="grow"></div><div class="input ph" style="width:180px">Ultime 24 ore ▾</div></div>
-            <div class="stage" style="flex-direction:row">
-              <div class="map" style="position:relative;flex:1">
-                <svg style="position:absolute;inset:0" width="100%" height="100%"><polyline points="120,80 240,160 360,140 460,260" fill="none" stroke="#3260d7" stroke-width="3"/></svg>
-                <div class="pin blue" style="top:68px;left:108px"><span></span></div>
-                <div class="pin green" style="top:248px;left:448px"><span></span></div>
-              </div>
-              <div style="width:240px;border-left:1px solid var(--line);background:var(--paper);padding:12px;overflow:auto">
-                <div class="xs muted" style="text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Timeline</div>
-                <div class="card sm"><b class="mono xs">14:32</b><div class="muted xs">Via Toledo 12 · sosta</div></div>
-                <div class="card sm"><b class="mono xs">13:05</b><div class="muted xs">P.za Municipio · in uso</div></div>
-                <div class="card sm"><b class="mono xs">11:40</b><div class="muted xs">Stazione Centrale</div></div>
-              </div>
+            <div class="right">
+              <div class="row between"><div class="line t w40"></div><span class="badge">aperto</span></div>
+              <div class="muted">utente · corsa collegata</div>
+              <div class="card"><div class="line w80"></div><div class="line w60"></div></div>
+              <div class="input" style="height:60px;align-items:flex-start">Risposta…</div>
+              <div class="row" style="gap:6px"><div class="btn sm">Invia</div><div class="btn ghost sm">Prendi in carico</div><div class="btn ghost sm">Chiudi</div></div>
             </div>
           </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Manut.</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Ticket</span></div>
+            <div><div class="ic"></div><span class="lbl">Scadute</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Tracciato GPS come polyline; pin inizio (verde) / fine (blu).</li>
-        <li>Selettore intervallo (popover): 24h / 7gg / custom range.</li>
-        <li>Timeline laterale cliccabile: tap tappa → centra mappa.</li>
-        <li>Empty state se nessun dato nel range.</li>
-        <li>Accesso da tab “Altro” o link da Dettaglio Veicolo.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useVehicleGPSHistory(id, range)</span></li>
-        <li><span class="k"></span><span class="fn"><span class="arrow">→</span> GET /api/vehicles/:id/gps?from&amp;to</span></li>
-        <li><span class="k">range</span><span class="fn">setRange(from, to)</span></li>
-        <li><span class="k">tap</span><span class="fn">centerMap(point)</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">popover</span><span class="chip">calendar</span><span class="chip">select</span><span class="chip">card</span><span class="chip">scroll-area</span><span class="chip">empty</span><span class="chip" style="background:var(--mut)">+ leaflet polyline</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ManageSupportTicketsPage · <b>Route:</b> <code>/op/tickets</code> · <b>Slice:</b> <b>ManageSupportTickets</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadTickets(status)</code> → GET <code>/api/tickets?status</code></li>
+        <li><code>selectTicket(id)</code> → dettaglio + thread</li>
+        <li><code>reply(id, text)</code> · <code>assign(id, me)</code> · <code>close(id)</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Tabs</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Textarea</span><span class="p">Button</span><span class="p">ScrollArea</span><span class="p">Avatar</span><span class="p">Resizable</span><span class="p">AlertDialog</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 6 — TICKET SUPPORTO ════════════════════ -->
-<section class="screen" id="s6">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 6</span>
-    <h2>Ticket Supporto</h2>
-    <div class="file">ManageSupportTicketsScreen · route <code>/op/tickets</code> · BottomNav tab “Ticket”</div>
-    <div class="slice-tags"><span class="st">ManageSupportTickets · OP.07</span></div>
-  </div>
-
+<!-- ════════════════════════ 07 PRENOTAZIONI SCADUTE ════════════════════════ -->
+<section class="screen" id="s07">
+  <div class="screen-head"><span class="num">07</span><h2>Prenotazioni scadute</h2><span class="tag">tab · monitor</span></div>
+  <p class="screen-sub">Monitor delle prenotazioni oltre il TTL: il veicolo resta RESERVED bloccando la disponibilità. Auto-refresh; azioni libera-veicolo (con conferma) e contatta-utente.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · lista → dettaglio</div>
-      <div class="mobile">
-        <div class="notch"></div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/expired-bookings</span></div>
         <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">Ticket supporto</b></div>
-            <div class="scroll pad">
-              <div class="tabs" style="margin-bottom:12px"><div class="tab on">Aperti · 4</div><div class="tab">In carico</div><div class="tab">Chiusi</div></div>
-              <div class="card"><div class="row"><b class="mono sm">#T-1042</b><span class="badge orange">aperto</span></div><div class="sm" style="margin-top:6px">"Addebito non riconosciuto"</div><div class="row sm muted xs" style="margin-top:6px">Marco V. · 12 min fa</div></div>
-              <div class="card"><div class="row"><b class="mono sm">#T-1039</b><span class="badge blue">in carico</span></div><div class="sm" style="margin-top:6px">"Scooter non si sblocca"</div></div>
-              <div class="card"><div class="row"><b class="mono sm">#T-1037</b><span class="badge orange">aperto</span></div><div class="sm" style="margin-top:6px">"Promo non applicata"</div></div>
-            </div>
+          <div class="topbar"><div class="icon sm rnd"></div><div class="line w25"></div><div class="sp"></div><span class="badge">auto-refresh 30s</span></div>
+          <div class="scrollarea">
+            <div class="card" style="border-color:var(--danger);padding:10px"><div class="muted" style="color:var(--danger)">3 veicoli RESERVED trattenuti — liberarli per renderli disponibili</div></div>
+            <table class="tbl">
+              <thead><tr><th>Veicolo</th><th>Utente</th><th>Prenotata</th><th>Scaduta</th><th>Zona</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><div class="line w50"></div></td><td><span class="chip">+6 min</span></td><td><div class="line w50"></div></td><td><div class="row" style="gap:4px"><div class="btn sm">Libera</div><div class="btn ghost sm">Contatta</div></div></td></tr>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><div class="line w50"></div></td><td><span class="chip">+2 min</span></td><td><div class="line w50"></div></td><td><div class="row" style="gap:4px"><div class="btn sm">Libera</div><div class="btn ghost sm">Contatta</div></div></td></tr>
+                <tr><td><div class="line w60"></div></td><td><div class="line w70"></div></td><td><div class="line w50"></div></td><td><span class="chip">+1 min</span></td><td><div class="line w50"></div></td><td><div class="row" style="gap:4px"><div class="btn sm">Libera</div><div class="btn ghost sm">Contatta</div></div></td></tr>
+              </tbody>
+            </table>
           </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item on"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · master-detail</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/tickets</span></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="stage" style="flex-direction:row">
-              <div style="width:280px;border-right:1px solid var(--line);background:var(--paper);overflow:auto">
-                <div style="padding:12px"><div class="tabs"><div class="tab on">Aperti</div><div class="tab">In carico</div><div class="tab">Chiusi</div></div></div>
-                <div style="padding:0 12px">
-                  <div class="card" style="border-color:var(--primary)"><div class="row"><b class="mono sm">#T-1042</b><span class="badge orange">aperto</span></div><div class="sm" style="margin-top:4px">Addebito non riconosciuto</div></div>
-                  <div class="card"><div class="row"><b class="mono sm">#T-1039</b><span class="badge blue">in carico</span></div><div class="sm" style="margin-top:4px">Scooter non si sblocca</div></div>
-                  <div class="card"><div class="row"><b class="mono sm">#T-1037</b><span class="badge orange">aperto</span></div><div class="sm" style="margin-top:4px">Promo non applicata</div></div>
-                </div>
-              </div>
-              <div style="flex:1;padding:18px;overflow:auto">
-                <div class="row"><div class="lg-t mono">#T-1042</div><span class="badge orange">aperto</span></div>
-                <div class="muted sm">Marco V. · corsa R-8841 · 12 min fa</div>
-                <div class="card" style="margin-top:14px">"Addebitato importo non corrispondente. Corsa di 12 minuti ma vedo 28 minuti."</div>
-                <div class="field" style="margin-top:14px"><label>Risposta</label><div class="input ph" style="height:60px">Scrivi una risposta…</div></div>
-                <div class="row" style="gap:8px"><button class="btn pri sm">Invia</button><button class="btn sec sm">Prendi in carico</button><button class="btn success sm">Chiudi ticket</button></div>
-              </div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item on"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Manut.</span></div>
+            <div><div class="ic"></div><span class="lbl">Ticket</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Scadute</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Mobile: lista → dettaglio (push). Desktop: master-detail affiancato.</li>
-        <li>Tab per stato: Aperti / In carico / Chiusi.</li>
-        <li>Dettaglio: contesto (utente, corsa collegata) + thread risposte.</li>
-        <li>"Prendi in carico" assegna; "Chiudi" richiede conferma.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useManageSupportTickets(status)</span></li>
-        <li><span class="k">open</span><span class="fn">selectTicket(id) <span class="arrow">→</span> GET /api/tickets/:id</span></li>
-        <li><span class="k">reply</span><span class="fn">ManageSupportTickets.reply(id, text)</span></li>
-        <li><span class="k">close</span><span class="fn">ManageSupportTickets.close(id)</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">tabs</span><span class="chip">card</span><span class="chip">badge</span><span class="chip">textarea</span><span class="chip">button</span><span class="chip">scroll-area</span><span class="chip">avatar</span><span class="chip">resizable</span><span class="chip">alert-dialog</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ExpiredBookingsMonitorPage · <b>Route:</b> <code>/op/expired-bookings</code> · <b>Slice:</b> <b>ExpiredBookingsMonitor</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>poll()</code> → GET <code>/api/bookings/expired</code> (refresh 30s)</li>
+        <li><code>release(bookingId)</code> → veicolo torna AVAILABLE (conferma)</li>
+        <li><code>notifyUser(userId)</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Table</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Alert</span><span class="p">Button</span><span class="p">AlertDialog</span><span class="p">Sonner</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 7 — PRENOTAZIONI SCADUTE ════════════════════ -->
-<section class="screen" id="s7">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 7</span>
-    <h2>Prenotazioni Scadute</h2>
-    <div class="file">ExpiredBookingsMonitorScreen · route <code>/op/expired-bookings</code> · BottomNav tab “Scadute”</div>
-    <div class="slice-tags"><span class="st">ExpiredBookingsMonitor · OP.11</span></div>
-  </div>
-
+<!-- ════════════════════════ 08 BONUS PARCHEGGIO ════════════════════════ -->
+<section class="screen" id="s08">
+  <div class="screen-head"><span class="num">08</span><h2>Configura bonus parcheggio</h2><span class="tag">Altro · form</span></div>
+  <p class="screen-sub">Definisce una <code>ParkingBonusRule</code>: incentivo a parcheggiare in zone sotto-rifornite. Mappa con il poligono della zona incentivo + form laterale.</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile</div>
-      <div class="mobile">
-        <div class="notch"></div>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/parking-bonus</span></div>
         <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">Prenotazioni scadute</b></div>
-            <div class="scroll pad">
-              <div class="alert orange" style="margin-bottom:12px">⏱️ 3 prenotazioni scadute trattengono veicoli RESERVED</div>
-              <div class="card"><div class="row"><b class="mono sm">SC-0210</b><span class="badge red">scaduta +6 min</span></div><div class="sm" style="margin-top:6px">Prenotata da Anna G.</div><div class="row" style="margin-top:10px;gap:6px"><button class="btn pri sm" style="flex:1">Libera</button><button class="btn ghost sm" style="flex:1">Contatta</button></div></div>
-              <div class="card"><div class="row"><b class="mono sm">BK-0455</b><span class="badge orange">scaduta +2 min</span></div><div class="sm" style="margin-top:6px">Prenotata da Luca T.</div><div class="row" style="margin-top:10px;gap:6px"><button class="btn pri sm" style="flex:1">Libera</button><button class="btn ghost sm" style="flex:1">Contatta</button></div></div>
+          <div class="pane">
+            <div class="left map"><div class="zone" style="left:80px;top:80px;width:200px;height:150px"></div></div>
+            <div class="right">
+              <div class="row between"><div class="h">Regola</div><div style="width:38px;height:22px;border-radius:11px;background:var(--dark)"></div></div>
+              <div class="muted">Zona incentivo</div><div class="input">Seleziona zona</div>
+              <div class="muted">Tipo bonus</div><div class="input">Credito €</div>
+              <div class="row" style="gap:8px"><div class="input" style="flex:1">Valore</div><div class="input" style="flex:1">Validità</div></div>
+              <div class="btn full">Salva regola</div>
             </div>
           </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item on"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · data table</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/expired-bookings</span></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">nu miezz ·op</b><span class="muted sm">Prenotazioni scadute</span><div class="grow"></div><span class="badge orange">auto-refresh 30s</span></div>
-            <div class="scroll" style="padding:14px">
-              <div class="alert orange" style="margin-bottom:12px">⏱️ 3 prenotazioni scadute trattengono veicoli RESERVED — liberarli per renderli disponibili.</div>
-              <table class="tbl">
-                <thead><tr><th>Veicolo</th><th>Utente</th><th>Prenotata</th><th>Scaduta da</th><th>Zona</th><th></th></tr></thead>
-                <tbody>
-                  <tr><td class="mono">SC-0210</td><td>Anna G.</td><td>14:20</td><td><span class="badge red">+6 min</span></td><td>Centro</td><td><button class="btn pri sm">Libera</button> <button class="btn ghost sm">Contatta</button></td></tr>
-                  <tr><td class="mono">BK-0455</td><td>Luca T.</td><td>14:24</td><td><span class="badge orange">+2 min</span></td><td>Vomero</td><td><button class="btn pri sm">Libera</button> <button class="btn ghost sm">Contatta</button></td></tr>
-                  <tr><td class="mono">CR-0301</td><td>Sara M.</td><td>14:25</td><td><span class="badge orange">+1 min</span></td><td>Chiaia</td><td><button class="btn pri sm">Libera</button> <button class="btn ghost sm">Contatta</button></td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item on"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Manut.</span></div>
+            <div><div class="ic"></div><span class="lbl">Ticket</span></div>
+            <div><div class="ic"></div><span class="lbl">Scadute</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Monitor prenotazioni oltre TTL: veicolo resta RESERVED bloccando disponibilità.</li>
-        <li>Auto-refresh polling (30s), badge "scaduta da +Xmin" cresce.</li>
-        <li>"Libera" → riporta a AVAILABLE, richiede conferma (impatta utente).</li>
-        <li>"Contatta" apre canale notifica verso utente.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useExpiredBookingsMonitor()</span></li>
-        <li><span class="k">poll</span><span class="fn"><span class="arrow">→</span> GET /api/bookings/expired</span></li>
-        <li><span class="k">libera</span><span class="fn">ExpiredBookingsMonitor.release(id)</span></li>
-        <li><span class="k">contatta</span><span class="fn">notifyUser(userId)</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">table</span><span class="chip">card</span><span class="chip">badge</span><span class="chip">alert</span><span class="chip">button</span><span class="chip">alert-dialog</span><span class="chip">sonner</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ConfigureParkingBonusPage · <b>Route:</b> <code>/op/parking-bonus</code> · <b>Slice:</b> <b>ConfigureParkingBonus</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadRule(zoneId)</code> · <code>setActive(bool)</code></li>
+        <li><code>save(rule)</code> → POST <code>/api/parking-bonus</code></li>
+        <li>validazione: valore &gt; 0, fascia oraria coerente</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Form</span><span class="p">Input</span><span class="p">Select</span><span class="p">Switch</span><span class="p">Label</span><span class="p">Button</span><span class="p">Card</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px">Poligono zona = layer Leaflet (esterno).</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 8 — BONUS PARCHEGGIO ════════════════════ -->
-<section class="screen" id="s8">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 8</span>
-    <h2>Configura Bonus Parcheggio</h2>
-    <div class="file">ConfigureParkingBonusScreen · route <code>/op/parking-bonus</code> · BottomNav tab “Altro”</div>
-    <div class="slice-tags"><span class="st">ConfigureParkingBonus · OP.08</span></div>
-  </div>
-
+<!-- ════════════════════════ 09 GESTIONE UTENTI ════════════════════════ -->
+<section class="screen" id="s09">
+  <div class="screen-head"><span class="num">09</span><h2>Gestione account utenti</h2><span class="tag">Altro · azione sensibile</span></div>
+  <p class="screen-sub">Ricerca utente, lista con stato account, sospensione/riattivazione. La sospensione richiede conferma con motivo obbligatorio (audit trail).</p>
   <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · form</div>
-      <div class="mobile">
-        <div class="notch"></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><div class="icon-btn">←</div><b class="brand">Bonus parcheggio</b></div>
-            <div class="scroll pad">
-              <div class="card"><div class="row"><b class="sm">Regola attiva</b><div class="grow"></div><div class="switch"></div></div></div>
-              <div class="card">
-                <div class="field"><label>Zona incentivo</label><div class="input ph">Zona Stazione ▾</div></div>
-                <div class="field"><label>Tipo bonus</label><div class="input ph">Credito € ▾</div></div>
-                <div class="field"><label>Valore</label><div class="input">€ 0,50</div></div>
-                <div class="field"><label>Validità</label><div class="row" style="gap:8px"><div class="input">08:00</div><div class="input">20:00</div></div></div>
-              </div>
-              <button class="btn pri block lg">Salva regola</button>
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/suspend-user</span></div>
+        <div class="viewport" style="position:relative">
+          <div class="topbar"><div class="icon sm rnd"></div><div class="line w25"></div><div class="sp"></div><div class="input" style="width:200px;padding:7px 10px">Cerca nome o email…</div></div>
+          <div class="scrollarea">
+            <table class="tbl">
+              <thead><tr><th>Utente</th><th>Email</th><th>Corse</th><th>Stato</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="line w70"></div></td><td><div class="line w80"></div></td><td><div class="line w30"></div></td><td><span class="badge">attivo</span></td><td><div class="btn danger sm">Sospendi</div></td></tr>
+                <tr><td><div class="line w70"></div></td><td><div class="line w80"></div></td><td><div class="line w30"></div></td><td><span class="badge">sospeso</span></td><td><div class="btn sm">Riattiva</div></td></tr>
+                <tr><td><div class="line w70"></div></td><td><div class="line w80"></div></td><td><div class="line w30"></div></td><td><span class="badge">attivo</span></td><td><div class="btn danger sm">Sospendi</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="scrim">
+            <div class="dialog">
+              <div class="h">Sospendere l'utente?</div>
+              <div class="muted">Non potrà prenotare finché sospeso.</div>
+              <div class="muted">Motivo (obbligatorio)</div>
+              <div class="input" style="height:54px;align-items:flex-start">Motivo…</div>
+              <div class="row between"><div class="btn ghost sm">Annulla</div><div class="btn danger sm">Conferma</div></div>
             </div>
           </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · mappa zona + form</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/parking-bonus</span></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><b class="brand">nu miezz ·op</b><span class="muted sm">Bonus parcheggio</span></div>
-            <div class="stage" style="flex-direction:row">
-              <div class="map" style="position:relative;flex:1">
-                <svg style="position:absolute;inset:0" width="100%" height="100%"><polygon points="120,80 280,60 320,200 160,240" fill="rgba(22,121,74,.18)" stroke="#16794a" stroke-width="2"/></svg>
-                <div class="map-legend"><div class="row"><span class="dot green"></span> Zona incentivo</div></div>
-              </div>
-              <div style="width:300px;border-left:1px solid var(--line);background:var(--paper);padding:16px;overflow:auto">
-                <div class="row" style="margin-bottom:12px"><b>Regola</b><div class="grow"></div><div class="switch"></div></div>
-                <div class="field"><label>Zona incentivo</label><div class="input ph">Zona Stazione ▾</div></div>
-                <div class="field"><label>Tipo bonus</label><div class="input ph">Credito € ▾</div></div>
-                <div class="field"><label>Valore</label><div class="input">€ 0,50</div></div>
-                <div class="field"><label>Validità oraria</label><div class="row" style="gap:8px"><div class="input">08:00</div><div class="input">20:00</div></div></div>
-                <button class="btn pri block lg">Salva regola</button>
-              </div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Manut.</span></div>
+            <div><div class="ic"></div><span class="lbl">Ticket</span></div>
+            <div><div class="ic"></div><span class="lbl">Scadute</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Altro</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Definisce <code>ParkingBonusRule</code>: incentivo a parcheggiare in zone sotto-rifornite (collega a bonus in RideSummary cliente).</li>
-        <li>Desktop: mappa mostra poligono della FleetZone incentivo.</li>
-        <li>Toggle attiva/disattiva regola senza eliminarla.</li>
-        <li>Form validato: valore &gt; 0, fascia oraria coerente.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">load</span><span class="fn">useConfigureParkingBonus(zoneId)</span></li>
-        <li><span class="k">toggle</span><span class="fn">setActive(bool)</span></li>
-        <li><span class="k">save</span><span class="fn">ConfigureParkingBonus.save(rule)</span></li>
-        <li><span class="k"></span><span class="fn"><span class="arrow">→</span> POST /api/parking-bonus</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">form</span><span class="chip">input</span><span class="chip">select</span><span class="chip">switch</span><span class="chip">label</span><span class="chip">button</span><span class="chip">card</span><span class="chip">sonner</span><span class="chip" style="background:var(--mut)">+ leaflet polygon</span></div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> SuspendUserAccountPage · <b>Route:</b> <code>/op/suspend-user</code> · <b>Slice:</b> <b>SuspendUserAccount</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>search(q)</code> → lista utenti</li>
+        <li><code>suspend(id, reason)</code> → POST <code>/api/users/:id/suspend</code></li>
+        <li><code>reactivate(id)</code></li>
+        <li>Dettaglio → profilo (storico corse, pagamenti, ticket)</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Table</span><span class="p">Input</span><span class="p">Command</span><span class="p">Badge</span><span class="p">Button</span><span class="p">AlertDialog</span><span class="p">Textarea</span><span class="p">Avatar</span><span class="p">Sonner</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ SCREEN 9 — GESTIONE UTENTI ════════════════════ -->
-<section class="screen" id="s9">
-  <div class="screen-head">
-    <span class="num">SCHERMATA 9</span>
-    <h2>Gestione Account Utenti</h2>
-    <div class="file">SuspendUserAccountScreen · route <code>/op/suspend-user</code> · BottomNav tab “Altro”</div>
-    <div class="slice-tags"><span class="st">SuspendUserAccount · OP.09</span></div>
-  </div>
-
-  <div class="frames">
-    <!-- MOBILE -->
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile</div>
-      <div class="mobile">
-        <div class="notch"></div>
-        <div class="viewport">
-          <div class="stage">
-            <div class="topbar"><div class="icon-btn">←</div><b class="brand">Gestione utenti</b></div>
-            <div class="scroll pad">
-              <div class="input ph" style="margin-bottom:12px">🔍 Cerca per nome o email…</div>
-              <div class="card"><div class="row"><div class="col"><b class="sm">Marco Verdi</b><span class="muted xs">marco.v@email.it</span></div><div class="grow"></div><span class="badge green">attivo</span></div><div class="row" style="margin-top:10px;gap:6px"><button class="btn danger sm" style="flex:1">Sospendi</button><button class="btn ghost sm" style="flex:1">Dettaglio</button></div></div>
-              <div class="card"><div class="row"><div class="col"><b class="sm">Lucia Pinto</b><span class="muted xs">lucia.p@email.it</span></div><div class="grow"></div><span class="badge red">sospeso</span></div><div class="row" style="margin-top:10px;gap:6px"><button class="btn success sm" style="flex:1">Riattiva</button><button class="btn ghost sm" style="flex:1">Dettaglio</button></div></div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
+<!-- ════════════════════════ NAV / SUMMARY ════════════════════════ -->
+<section class="screen" id="nav" style="border-bottom:0">
+  <div class="screen-head"><span class="num">★</span><h2>BottomNav &amp; Riepilogo per il team</h2></div>
+  <div class="annot" style="border-left-color:var(--primary)">
+    <div class="ah"><b>9 schermate · 11 slice operator coperte · login condiviso col customer (no-slice) · web-only</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Bottom-nav — 5 voci (4 tab + overflow)</h4><ul>
+        <li><b>Mappa</b> → <code>/op/fleet</code> (FleetDistributionMap)</li>
+        <li><b>Manut.</b> → <code>/op/maintenance</code> (MaintenanceQueue)</li>
+        <li><b>Ticket</b> → <code>/op/tickets</code> (ManageSupportTickets)</li>
+        <li><b>Scadute</b> → <code>/op/expired-bookings</code> (ExpiredBookingsMonitor)</li>
+        <li><b>Altro</b> → overlay: Storico GPS, Bonus parcheggio, Gestione utenti, Profilo, Logout</li>
+      </ul>
+      <p class="muted">Dettaglio veicolo (03) e Pannello segnalazioni (02) NON sono tab: sono pannelli contestuali sopra la mappa.</p></div>
+      <div class="cell"><h4>Componenti shadcn da installare</h4><div class="pillset">
+        <span class="p">button ✓</span><span class="p">card</span><span class="p">badge</span><span class="p">tabs</span><span class="p">table</span><span class="p">sheet</span><span class="p">dialog</span><span class="p">alert-dialog</span><span class="p">alert</span><span class="p">progress</span><span class="p">switch</span><span class="p">select</span><span class="p">input</span><span class="p">textarea</span><span class="p">label</span><span class="p">form</span><span class="p">command</span><span class="p">popover</span><span class="p">calendar</span><span class="p">avatar</span><span class="p">separator</span><span class="p">scroll-area</span><span class="p">resizable</span><span class="p">tooltip</span><span class="p">skeleton</span><span class="p">sonner</span></div>
+        <p class="muted" style="margin-top:10px"><code>npx shadcn@latest add card badge tabs table sheet dialog ...</code></p>
       </div>
     </div>
-
-    <!-- DESKTOP -->
-    <div class="frame-wrap">
-      <div class="frame-label">🖥️ Desktop · table + dialog conferma</div>
-      <div class="desktop">
-        <div class="browser-bar"><i></i><i></i><i></i><span class="url">app.numiezz.it/op/suspend-user</span></div>
-        <div class="viewport">
-          <div class="stage" style="position:relative">
-            <div class="topbar"><b class="brand">nu miezz ·op</b><span class="muted sm">Gestione utenti</span><div class="grow"></div><div class="input ph" style="width:220px">🔍 Cerca…</div></div>
-            <div class="scroll" style="padding:14px">
-              <table class="tbl">
-                <thead><tr><th>Nome</th><th>Email</th><th>Corse</th><th>Stato</th><th></th></tr></thead>
-                <tbody>
-                  <tr><td>Marco Verdi</td><td class="muted">marco.v@email.it</td><td>42</td><td><span class="badge green">attivo</span></td><td><button class="btn danger sm">Sospendi</button></td></tr>
-                  <tr><td>Lucia Pinto</td><td class="muted">lucia.p@email.it</td><td>8</td><td><span class="badge red">sospeso</span></td><td><button class="btn success sm">Riattiva</button></td></tr>
-                  <tr><td>Sara Mauro</td><td class="muted">sara.m@email.it</td><td>117</td><td><span class="badge green">attivo</span></td><td><button class="btn danger sm">Sospendi</button></td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="scrim" style="display:flex;align-items:center;justify-content:center">
-              <div class="card" style="width:340px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-                <b>Sospendere Marco Verdi?</b>
-                <div class="sm muted" style="margin:8px 0 14px">L'utente non potrà prenotare finché sospeso.</div>
-                <div class="field"><label>Motivo (obbligatorio)</label><div class="input ph">Es. pagamento non riuscito…</div></div>
-                <div class="row" style="gap:8px;justify-content:flex-end"><button class="btn ghost sm">Annulla</button><button class="btn danger sm">Conferma</button></div>
-              </div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa flotta</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manutenzione</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="cell" style="border-right:0"><h4>Decisioni aperte</h4><ul>
+      <li><b>BottomNav role-aware</b>: oggi <code>BottomNav.tsx</code> ha 3 link customer hardcoded. Va estesa con varianti per ruolo (filtrare da <code>getVisibleSlices('operator')</code>).</li>
+      <li><b>Colori-stato veicolo</b> (available/in_use/maintenance/out_of_service): definire palette in theming.</li>
+      <li><b>Libreria mappa</b> condivisa: <code>react-leaflet</code> + OSM (confermato).</li>
+      <li><b>VehicleConditionReport</b>: confermare schema per "Apri segnalazione" da dettaglio veicolo.</li>
+    </ul></div>
   </div>
-
-  <div class="doc">
-    <div class="panel">
-      <h3>Note comportamentali</h3>
-      <ul>
-        <li>Ricerca utente per nome/email; lista con stato account.</li>
-        <li>Sospensione → AlertDialog con campo motivo obbligatorio (azione sensibile, audit trail).</li>
-        <li>Riattivazione per account sospesi.</li>
-        <li>"Dettaglio" → profilo con storico corse, pagamenti, ticket.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>Funzioni → slice</h3>
-      <ul>
-        <li><span class="k">search</span><span class="fn">useSuspendUserAccount.search(q)</span></li>
-        <li><span class="k">suspend</span><span class="fn">SuspendUserAccount.suspend(id, reason)</span></li>
-        <li><span class="k"></span><span class="fn"><span class="arrow">→</span> POST /api/users/:id/suspend</span></li>
-        <li><span class="k">reactivate</span><span class="fn">SuspendUserAccount.reactivate(id)</span></li>
-      </ul>
-    </div>
-    <div class="panel full">
-      <h3>Componenti shadcn/ui</h3>
-      <div class="chips"><span class="chip">table</span><span class="chip">input</span><span class="chip">command</span><span class="chip">badge</span><span class="chip">button</span><span class="chip">alert-dialog</span><span class="chip">textarea</span><span class="chip">avatar</span><span class="chip">sonner</span></div>
-    </div>
-  </div>
+  <p class="note">Prossimo passo proposto: stesso trattamento per <b>admin</b> (dashboard KPI, heatmap, gestione zone, report) in <code>docs/ui/admin.html</code>.</p>
 </section>
 
-<!-- ════════════════════ APPENDICE — BottomNav “Altro” ════════════════════ -->
-<section class="screen" id="more">
-  <div class="screen-head">
-    <span class="num">COMPONENTE</span>
-    <h2>BottomNav · tab “Altro” (overflow sheet)</h2>
-    <div class="file">5 tab fissi + sheet overflow per le voci secondarie</div>
-  </div>
-  <div class="frames">
-    <div class="frame-wrap">
-      <div class="frame-label">📱 Mobile · sheet aperto</div>
-      <div class="mobile">
-        <div class="notch"></div>
-        <div class="viewport">
-          <div class="stage" style="position:relative">
-            <div class="map"></div>
-            <div class="scrim"></div>
-            <div class="more-sheet">
-              <div class="handle"></div>
-              <div class="more-item"><span class="ic">📍</span> Storico GPS veicolo</div>
-              <div class="more-item"><span class="ic">🎁</span> Configura bonus parcheggio</div>
-              <div class="more-item"><span class="ic">👥</span> Gestione account utenti</div>
-              <div class="more-item"><span class="ic">👤</span> Profilo &amp; impostazioni</div>
-              <div class="more-item" style="color:var(--danger)"><span class="ic">⏻</span> Logout</div>
-            </div>
-          </div>
-          <div class="bn">
-            <div class="bn-item"><span class="bi">🗺️</span>Mappa</div>
-            <div class="bn-item"><span class="bi">🔧</span>Manut.</div>
-            <div class="bn-item"><span class="bi">🎫</span>Ticket</div>
-            <div class="bn-item"><span class="bi">⏱️</span>Scadute</div>
-            <div class="bn-item on"><span class="bi">⋯</span>Altro</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="frame-wrap">
-      <div class="frame-label">Mappa tab → route</div>
-      <div class="desktop" style="height:auto;padding:0">
-        <div style="padding:20px">
-          <table class="tbl">
-            <thead><tr><th>Tab</th><th>Route</th><th>Slice</th></tr></thead>
-            <tbody>
-              <tr><td>🗺️ Mappa</td><td class="mono">/op/fleet</td><td>FleetDistributionMap · LowAvailabilityAlert</td></tr>
-              <tr><td>🔧 Manutenzione</td><td class="mono">/op/maintenance</td><td>MaintenanceQueue</td></tr>
-              <tr><td>🎫 Ticket</td><td class="mono">/op/tickets</td><td>ManageSupportTickets</td></tr>
-              <tr><td>⏱️ Scadute</td><td class="mono">/op/expired-bookings</td><td>ExpiredBookingsMonitor</td></tr>
-              <tr><td>⋯ Altro → GPS</td><td class="mono">/op/gps/:id</td><td>VehicleGPSHistory</td></tr>
-              <tr><td>⋯ Altro → Bonus</td><td class="mono">/op/parking-bonus</td><td>ConfigureParkingBonus</td></tr>
-              <tr><td>⋯ Altro → Utenti</td><td class="mono">/op/suspend-user</td><td>SuspendUserAccount</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="doc">
-    <div class="panel full">
-      <h3>Note</h3>
-      <ul>
-        <li><b>BottomNav è componente custom</b> (non shadcn) — già esiste in <code>apps/web/src/layout/BottomNav.tsx</code>, va esteso con varianti per ruolo (customer/operator/admin).</li>
-        <li>5 tab max per leggibilità. Voci secondarie (GPS, Bonus, Utenti, Profilo, Logout) nel tab <b>“Altro”</b> → apre <code>Sheet</code> shadcn dal basso.</li>
-        <li>Dettaglio Veicolo e Pannello Segnalazioni NON sono tab: sono sheet contestuali sopra la mappa.</li>
-        <li>Voci BottomNav filtrate da <code>getVisibleSlices('operator')</code> sul sliceRegistry.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<footer style="padding:30px 40px;color:var(--mut);font-size:12px">
-  Mockup VSA · profilo Operatore · 9 schermate + BottomNav · 11 slice · navigazione BottomNav · mappe Leaflet · login condiviso col cliente. Sorgente: <code style="font-family:var(--mono)">UI_Schema_VSA.md</code>.
-</footer>
-
+</main>
 </body>
 </html>
