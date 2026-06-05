@@ -23,6 +23,8 @@ function createApp() {
     app.use('/api/bookings', root.bookVehicleRouter);
     app.use('/api/rides', root.unlockVehicleRouter);
     app.use('/api/rides', root.endRideRouter);
+    app.use('/api/rides', root.pauseRideRouter);
+    app.use('/api/session', root.restoreSessionRouter);
     app.use(errorHandler_1.notFound);
     app.use(errorHandler_1.errorHandler);
     return app;

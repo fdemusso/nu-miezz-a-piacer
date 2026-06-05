@@ -9,6 +9,11 @@ function createUnlockVehicleHandler(deps) {
             res.status(400).json({ error: 'userId, bookingId, startLat, startLng required' });
             return;
         }
+        const existingRide = await deps.rideRepo.findActiveByUserId(userId);
+        if (existingRide) {
+            res.status(409).json({ error: 'Active or paused ride already exists' });
+            return;
+        }
         const booking = await deps.bookingRepo.findById(bookingId);
         if (!booking || booking.userId !== userId || booking.status !== contracts_1.BookingStatus.CONFIRMED) {
             res.status(404).json({ error: 'Valid confirmed booking not found' });

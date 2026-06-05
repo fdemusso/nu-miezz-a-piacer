@@ -13,7 +13,7 @@ export function createEndRideHandler(deps: EndRideDeps) {
     };
 
     const ride = await deps.rideRepo.findById(rideId);
-    if (!ride || ride.userId !== userId || ride.status !== RideStatus.ACTIVE) {
+    if (!ride || ride.userId !== userId || (ride.status !== RideStatus.ACTIVE && ride.status !== RideStatus.PAUSED)) {
       res.status(404).json({ error: 'Active ride not found' });
       return;
     }

@@ -13,6 +13,8 @@ import { createVehicleDetailsRouter } from './slices/VehicleDetails/VehicleDetai
 import { createBookVehicleRouter } from './slices/BookVehicle/BookVehicle.router';
 import { createUnlockVehicleRouter } from './slices/UnlockVehicle/UnlockVehicle.router';
 import { createEndRideRouter } from './slices/EndRide/EndRide.router';
+import { createPauseRideRouter } from './slices/PauseRide/PauseRide.router';
+import { createRestoreSessionRouter } from './slices/RestoreSession/RestoreSession.router';
 
 export function createCompositionRoot() {
   // Concrete adapters
@@ -36,5 +38,7 @@ export function createCompositionRoot() {
     bookVehicleRouter: createBookVehicleRouter({ bookingRepo, vehicleRepo }),
     unlockVehicleRouter: createUnlockVehicleRouter({ rideRepo, bookingRepo, vehicleRepo, unlockService, zoneValidator }),
     endRideRouter: createEndRideRouter({ rideRepo, vehicleRepo, billingService, zoneValidator }),
+    pauseRideRouter: createPauseRideRouter({ rideRepo, vehicleRepo }),
+    restoreSessionRouter: createRestoreSessionRouter({ rideRepo, bookingRepo, vehicleRepo }),
   };
 }

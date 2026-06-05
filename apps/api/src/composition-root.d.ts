@@ -4,4 +4,6 @@ export declare function createCompositionRoot(): {
     bookVehicleRouter: import("express").Router;
     unlockVehicleRouter: import("express").Router;
     endRideRouter: import("express").Router;
+    pauseRideRouter: import("express").Router;
+    restoreSessionRouter: import("express").Router;
 };

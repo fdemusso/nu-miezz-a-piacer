@@ -7,7 +7,7 @@ function createEndRideHandler(deps) {
         const rideId = req.params['rideId'];
         const { userId, endLat, endLng, distanceKm } = req.body;
         const ride = await deps.rideRepo.findById(rideId);
-        if (!ride || ride.userId !== userId || ride.status !== contracts_1.RideStatus.ACTIVE) {
+        if (!ride || ride.userId !== userId || (ride.status !== contracts_1.RideStatus.ACTIVE && ride.status !== contracts_1.RideStatus.PAUSED)) {
             res.status(404).json({ error: 'Active ride not found' });
             return;
         }

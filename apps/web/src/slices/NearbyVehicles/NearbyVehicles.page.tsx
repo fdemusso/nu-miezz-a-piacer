@@ -7,11 +7,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MapPin, Zap, Bike, Car, AlertCircle, Navigation, Clock, Play } from 'lucide-react';
-import { VehicleType, VehicleStatus, BookingStatus } from '@mvp/contracts';
+import { MapPin, Zap, Bike, Car, AlertCircle, Navigation, Clock, Play, PauseCircle } from 'lucide-react';
+import { VehicleType, VehicleStatus, BookingStatus, RideStatus } from '@mvp/contracts';
 import { apiFetch } from '@/lib/api';
 import { useAppStore } from '@/stores/app.store';
 import { useNearbyVehicles } from './NearbyVehicles.hook';
+import { useRestoreSession } from '@/slices/RestoreSession/RestoreSession.hook';
 import type { NearbyVehiclesItem } from './NearbyVehicles.types';
 
 const NON_CANCELLABLE_STATUSES = new Set([
@@ -82,7 +83,29 @@ function ActiveSessionBanner() {
     }
   };
 
-  if (activeRide) {
+  if (activeRide?.status === RideStatus.PAUSED) {
+    const label = selectedVehicle ? `${selectedVehicle.model}` : 'Veicolo';
+    return (
+      <Link href="/rides/active">
+        <div className="flex items-center justify-between rounded-lg bg-amber-50 border border-amber-200 px-4 py-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <PauseCircle className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-amber-900">Corsa in pausa</p>
+              <p className="text-xs text-amber-700">{label} · in attesa di ripresa</p>
+            </div>
+          </div>
+          <Button size="sm" className="shrink-0 bg-amber-600 hover:bg-amber-700">
+            Riprendi
+          </Button>
+        </div>
+      </Link>
+    );
+  }
+
+  if (activeRide?.status === RideStatus.ACTIVE) {
     const startedAt = new Date(activeRide.startedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
     const label = selectedVehicle ? `${selectedVehicle.model}` : 'Veicolo';
     return (
@@ -134,7 +157,7 @@ function ActiveSessionBanner() {
               </Button>
             )}
             <Button asChild size="sm" className="bg-blue-700 hover:bg-blue-800">
-              <Link href={`/vehicles/${activeBooking.vehicleId}/unlock`}>Sblocca</Link>
+              <Link href={`/vehicles/${activeBooking.vehicleId}/unlock?bookingId=${activeBooking.id}`}>Sblocca</Link>
             </Button>
           </div>
         </div>
@@ -201,6 +224,7 @@ function LoadingSkeleton() {
 }
 
 export function NearbyVehiclesPage() {
+  useRestoreSession();
   const { vehicles, isLoading, error, usingFallback } = useNearbyVehicles();
 
   return (

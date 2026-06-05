@@ -6,5 +6,6 @@ const BookVehicle_handler_1 = require("./BookVehicle.handler");
 function createBookVehicleRouter(deps) {
     const router = (0, express_1.Router)();
     router.post('/', (0, BookVehicle_handler_1.createBookVehicleHandler)(deps));
+    router.delete('/:id', (0, BookVehicle_handler_1.createCancelBookingHandler)(deps));
     return router;
 }

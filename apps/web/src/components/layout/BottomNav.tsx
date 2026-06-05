@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 const items = [
   { label: 'Nearby', icon: MapPin, href: '/' },
   { label: 'Search', icon: Search, href: '/search' },
-  { label: 'Ride', icon: Bike, href: '/ride' },
+  { label: 'Ride', icon: Bike, href: '/rides/active' },
   { label: 'History', icon: Clock, href: '/history' },
   { label: 'Profile', icon: User, href: '/profile' },
 ];

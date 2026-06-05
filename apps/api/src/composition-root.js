@@ -16,6 +16,8 @@ const VehicleDetails_router_1 = require("./slices/VehicleDetails/VehicleDetails.
 const BookVehicle_router_1 = require("./slices/BookVehicle/BookVehicle.router");
 const UnlockVehicle_router_1 = require("./slices/UnlockVehicle/UnlockVehicle.router");
 const EndRide_router_1 = require("./slices/EndRide/EndRide.router");
+const PauseRide_router_1 = require("./slices/PauseRide/PauseRide.router");
+const RestoreSession_router_1 = require("./slices/RestoreSession/RestoreSession.router");
 function createCompositionRoot() {
     // Concrete adapters
     const vehicleRepo = new DrizzleVehicleRepository_1.DrizzleVehicleRepository(db_1.db);
@@ -37,5 +39,7 @@ function createCompositionRoot() {
         bookVehicleRouter: (0, BookVehicle_router_1.createBookVehicleRouter)({ bookingRepo, vehicleRepo }),
         unlockVehicleRouter: (0, UnlockVehicle_router_1.createUnlockVehicleRouter)({ rideRepo, bookingRepo, vehicleRepo, unlockService, zoneValidator }),
         endRideRouter: (0, EndRide_router_1.createEndRideRouter)({ rideRepo, vehicleRepo, billingService, zoneValidator }),
+        pauseRideRouter: (0, PauseRide_router_1.createPauseRideRouter)({ rideRepo, vehicleRepo }),
+        restoreSessionRouter: (0, RestoreSession_router_1.createRestoreSessionRouter)({ rideRepo, bookingRepo, vehicleRepo }),
     };
 }

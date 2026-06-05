@@ -35,10 +35,10 @@ class DrizzleRideRepository {
         const rows = await this.db
             .select()
             .from(schema_1.rides)
-            .where((0, drizzle_orm_1.eq)(schema_1.rides.userId, userId))
+            .where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema_1.rides.userId, userId), (0, drizzle_orm_1.or)((0, drizzle_orm_1.eq)(schema_1.rides.status, contracts_1.RideStatus.ACTIVE), (0, drizzle_orm_1.eq)(schema_1.rides.status, contracts_1.RideStatus.PAUSED))))
+            .orderBy((0, drizzle_orm_1.desc)(schema_1.rides.startedAt))
             .limit(1);
-        const active = rows.find((r) => r.status === contracts_1.RideStatus.ACTIVE || r.status === contracts_1.RideStatus.PAUSED);
-        return active ? rowToRide(active) : null;
+        return rows[0] ? rowToRide(rows[0]) : null;
     }
     async create(data) {
         const id = crypto.randomUUID();

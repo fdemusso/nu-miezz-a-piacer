@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, desc, eq, or } from 'drizzle-orm';
 import { IRideRepository, Ride, RideStatus } from '@mvp/contracts';
 import { Db } from '../../db';
 import { rides } from '../../db/schema';
@@ -35,10 +35,15 @@ export class DrizzleRideRepository implements IRideRepository {
     const rows = await this.db
       .select()
       .from(rides)
-      .where(eq(rides.userId, userId))
+      .where(
+        and(
+          eq(rides.userId, userId),
+          or(eq(rides.status, RideStatus.ACTIVE), eq(rides.status, RideStatus.PAUSED))
+        )
+      )
+      .orderBy(desc(rides.startedAt))
       .limit(1);
-    const active = rows.find((r) => r.status === RideStatus.ACTIVE || r.status === RideStatus.PAUSED);
-    return active ? rowToRide(active) : null;
+    return rows[0] ? rowToRide(rows[0]) : null;
   }
 
   async create(data: Omit<Ride, 'id'>): Promise<Ride> {

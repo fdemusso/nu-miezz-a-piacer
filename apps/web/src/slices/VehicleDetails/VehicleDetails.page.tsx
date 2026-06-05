@@ -245,7 +245,7 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
 
   return (
     <AppLayout title="Dettaglio veicolo" hideNav>
-      <div className="p-4 space-y-3">
+      <div className="flex flex-col min-h-full p-4 gap-3">
         {isLoading && <LoadingSkeleton />}
 
         {!isLoading && error && (
@@ -282,15 +282,17 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
             <PricingCard vehicle={vehicle} />
             <SpecsCard vehicle={vehicle} />
             <FeaturesCard vehicle={vehicle} />
-            {isAvailable ? (
-              <Button className="w-full" size="lg" asChild>
-                <Link href={`/vehicles/${vehicleId}/book`}>Prenota</Link>
-              </Button>
-            ) : (
-              <Button className="w-full" size="lg" disabled>
-                Non disponibile
-              </Button>
-            )}
+            <div className="mt-auto pt-2">
+              {isAvailable ? (
+                <Button className="w-full" size="lg" asChild>
+                  <Link href={`/vehicles/${vehicleId}/book`}>Prenota</Link>
+                </Button>
+              ) : (
+                <Button className="w-full" size="lg" disabled>
+                  Non disponibile
+                </Button>
+              )}
+            </div>
           </>
         )}
       </div>
