@@ -20,7 +20,20 @@ function useGeolocation() {
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (pos) => setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (pos) => {
+        const userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        // Demo vehicles are seeded in Milan — use fallback if user is too far
+        const distKm = Math.sqrt(
+          Math.pow((userCoords.lat - FALLBACK_COORDS.lat) * 111, 2) +
+          Math.pow((userCoords.lng - FALLBACK_COORDS.lng) * 80, 2)
+        );
+        if (distKm > 50) {
+          setCoords(FALLBACK_COORDS);
+          setUsingFallback(true);
+        } else {
+          setCoords(userCoords);
+        }
+      },
       () => {
         setCoords(FALLBACK_COORDS);
         setUsingFallback(true);

@@ -115,7 +115,7 @@ Each slice is self-contained. No cross-slice imports.
 |---|---|---|---|
 | NearbyVehicles | ✅ Done | `GET /` | `GET /api/vehicles/nearby` |
 | VehicleDetails | ✅ Done | `GET /vehicles/[id]` | `GET /api/vehicles/:vehicleId` |
-| BookVehicle | scaffold | — | `POST /api/bookings` |
+| BookVehicle | ✅ Done | `GET /vehicles/[id]/book` | `POST /api/bookings` |
 | UnlockVehicle | scaffold | — | `POST /api/rides/unlock` |
 | EndRide | scaffold | — | `POST /api/rides/:rideId/end` |
 
@@ -157,9 +157,44 @@ Response shape:
 }
 ```
 
-## TODO — next slice: BookVehicle
+## Test BookVehicle
 
-- [ ] Implement `BookVehicle` slice end-to-end
-- [ ] Wire "Prenota" CTA in `VehicleDetails.page.tsx` to real booking flow
-- [ ] `DrizzleBookingRepository` already exists in adapters, ready to use
-- [ ] Booking endpoint: `POST /api/bookings` (already scaffolded in `composition-root.ts`)
+```bash
+# Start all apps
+pnpm dev
+
+# Test API directly (demo user u1, vehicle v1)
+curl -X POST http://localhost:3001/api/bookings \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"u1","vehicleId":"v1"}'
+
+# → 201 { booking: { id, userId, vehicleId, status: "CONFIRMED", expiresAt, ... } }
+
+# Error cases:
+# vehicle not found       → 404 { error: "Vehicle not found" }  [if vehicleId invalid]
+# vehicle not available   → 409 { error: "Vehicle not available" }
+# user has active booking → 409 { error: "User already has an active booking" }
+# missing fields          → 400 { error: "userId and vehicleId are required" }
+```
+
+**Frontend flow:**
+1. Open http://localhost:3000
+2. Click "Vedi dettagli" on any AVAILABLE vehicle card
+3. Click "Prenota" (sticky CTA) → navigates to `/vehicles/[id]/book`
+4. Review vehicle summary + pricing
+5. Click "Conferma prenotazione"
+6. See booking confirmation with ID, expiry time, next-step hint
+
+**What happens on booking:**
+- Vehicle status → `RESERVED` in DB
+- Booking created with `status: CONFIRMED`, expiry = now + 10 min
+- Demo user `u1` (demo@mvp.local) used as requester (no auth in MVP)
+- `setActiveBooking` called in Zustand store for future slices
+
+## TODO — next slice: UnlockVehicle
+
+- [ ] UnlockVehicle: user arrives at vehicle, triggers unlock via booking ID
+- [ ] `DrizzleRideRepository` already scaffolded but not implemented
+- [ ] `MockUnlockService` already wired in composition root
+- [ ] Frontend: new page at `/rides/unlock/[bookingId]` or `/vehicles/[id]/unlock`
+- [ ] Handler must verify booking is CONFIRMED, vehicle is RESERVED, call unlockService

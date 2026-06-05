@@ -244,7 +244,7 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
 
   return (
     <AppLayout title="Dettaglio veicolo" hideNav>
-      <div className="pb-28">
+      <div className="p-4 space-y-3">
         {isLoading && <LoadingSkeleton />}
 
         {!isLoading && error && (
@@ -276,32 +276,23 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
         )}
 
         {!isLoading && !error && vehicle && (
-          <div className="p-4 space-y-3">
+          <>
             <HeroCard vehicle={vehicle} />
             <PricingCard vehicle={vehicle} />
             <SpecsCard vehicle={vehicle} />
             <FeaturesCard vehicle={vehicle} />
-          </div>
+            {isAvailable ? (
+              <Button className="w-full" size="lg" asChild>
+                <a href={`/vehicles/${vehicleId}/book`}>Prenota</a>
+              </Button>
+            ) : (
+              <Button className="w-full" size="lg" disabled>
+                Non disponibile
+              </Button>
+            )}
+          </>
         )}
       </div>
-
-      {/* Sticky bottom CTA */}
-      {!isLoading && !error && vehicle && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t p-4">
-          <Button
-            className="w-full"
-            size="lg"
-            disabled={!isAvailable}
-          >
-            {isAvailable ? 'Prenota — prossimo step' : 'Non disponibile'}
-          </Button>
-          {isAvailable && (
-            <p className="mt-2 text-center text-xs text-muted-foreground">
-              La prenotazione sarà disponibile nel prossimo aggiornamento
-            </p>
-          )}
-        </div>
-      )}
     </AppLayout>
   );
 }
