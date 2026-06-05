@@ -1,7 +1,7 @@
 import express from 'express'
 import { container } from './composition/container'
 import { healthRouter } from './slices/Health/Health.router'
-import { authRouter } from './slices/Auth/Auth.router'
+import { makeAuthRouter } from './slices/Auth/Auth.router'
 import { makeNearbyVehiclesRouter } from './slices/NearbyVehicles/NearbyVehicles.router'
 import { makeBookVehicleRouter } from './slices/BookVehicle/BookVehicle.router'
 import { makeEstimateRideCostRouter } from './slices/EstimateRideCost/EstimateRideCost.router'
@@ -39,7 +39,7 @@ const app = express()
 app.use(express.json())
 
 app.use('/api', healthRouter)
-app.use('/api', authRouter)
+app.use('/api', makeAuthRouter(container.auth))
 app.use('/api', makeNearbyVehiclesRouter(container.nearbyVehicles))
 app.use('/api', makeBookVehicleRouter(container.bookVehicle))
 app.use('/api', makeEstimateRideCostRouter(container.estimateRideCost))

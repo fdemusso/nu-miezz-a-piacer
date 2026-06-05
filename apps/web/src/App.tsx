@@ -1,4 +1,20 @@
+/**
+ * App.tsx — root del router.
+ *
+ * Struttura:
+ *   /login            → LoginPage (pubblica, fuori da AppLayout e ProtectedRoute)
+ *   /* tutto il resto → ProtectedRoute → AppLayout → slice pages
+ *
+ * ProtectedRoute reindirizza a /login se l'utente non è autenticato.
+ * AuthProvider gestisce il token in localStorage.
+ */
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'sonner'
+
+import { AuthProvider } from './auth/AuthContext'
+import { ProtectedRoute } from './auth/ProtectedRoute'
+import { LoginPage } from './pages/LoginPage'
 import { AppLayout } from './layout/AppLayout'
 
 // ─── Customer slices ──────────────────────────────────────────────────────────
@@ -41,48 +57,59 @@ import { DefineSensitiveZonePage }   from './slices/DefineSensitiveZone/DefineSe
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          {/* Customer */}
-          <Route path="/"                      element={<NearbyVehiclesPage />} />
-          <Route path="/book/:vehicleId"        element={<BookVehiclePage />} />
-          <Route path="/estimate-cost"          element={<EstimateRideCostPage />} />
-          <Route path="/end-ride"               element={<EndRidePage />} />
-          <Route path="/ride-summary/:rideId"   element={<RideSummaryPage />} />
-          <Route path="/vehicle/:vehicleId"     element={<VehicleDetailsPage />} />
-          <Route path="/walk-time"              element={<EstimateWalkTimePage />} />
-          <Route path="/suggest"                element={<SuggestBestVehiclePage />} />
-          <Route path="/promotions"             element={<ApplyPromotionPage />} />
-          <Route path="/support/new"            element={<OpenSupportTicketPage />} />
-          <Route path="/report-damage"          element={<ReportDamagedVehiclePage />} />
-          <Route path="/battery/:vehicleId"     element={<VehicleBatteryStatusPage />} />
-          <Route path="/unlock/:vehicleId"      element={<UnlockVehiclePage />} />
-          <Route path="/unlock-method/:vehicleId" element={<UnlockMethodPage />} />
-          <Route path="/payment-methods"        element={<ManagePaymentMethodPage />} />
-          <Route path="/pause-ride"             element={<PauseRidePage />} />
+    <AuthProvider>
+      {/* Toaster per notifiche (errori login, successi, ecc.) */}
+      <Toaster position="top-center" richColors />
 
-          {/* Operator */}
-          <Route path="/op/fleet"               element={<FleetDistributionMapPage />} />
-          <Route path="/op/alerts"              element={<LowAvailabilityAlertPage />} />
-          <Route path="/op/reports"             element={<ReceiveMalfunctionReportPage />} />
-          <Route path="/op/parking-verify"      element={<VerifyParkingPositionPage />} />
-          <Route path="/op/maintenance"         element={<MaintenanceQueuePage />} />
-          <Route path="/op/gps/:vehicleId"      element={<VehicleGPSHistoryPage />} />
-          <Route path="/op/tickets"             element={<ManageSupportTicketsPage />} />
-          <Route path="/op/parking-bonus"       element={<ConfigureParkingBonusPage />} />
-          <Route path="/op/suspend-user"        element={<SuspendUserAccountPage />} />
-          <Route path="/op/remote-lock"         element={<RemoteLockVehiclePage />} />
-          <Route path="/op/expired-bookings"    element={<ExpiredBookingsMonitorPage />} />
+      <BrowserRouter>
+        <Routes>
+          {/* ── Pagina pubblica ─────────────────────────────────────────── */}
+          <Route path="/login" element={<LoginPage />} />
 
-          {/* Admin */}
-          <Route path="/admin/usage"            element={<UsageFrequencyReportPage />} />
-          <Route path="/admin/mobility-report"  element={<MobilityPeriodicReportPage />} />
-          <Route path="/admin/warning-zone"     element={<MarkUrbanWarningZonePage />} />
-          <Route path="/admin/heatmap"          element={<HighDensityZoneMapPage />} />
-          <Route path="/admin/sensitive-zone"   element={<DefineSensitiveZonePage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          {/* ── Pagine protette: richiedono login ───────────────────────── */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AppLayout />}>
+              {/* Customer */}
+              <Route path="/"                        element={<NearbyVehiclesPage />} />
+              <Route path="/book/:vehicleId"          element={<BookVehiclePage />} />
+              <Route path="/estimate-cost"            element={<EstimateRideCostPage />} />
+              <Route path="/end-ride"                 element={<EndRidePage />} />
+              <Route path="/ride-summary/:rideId"     element={<RideSummaryPage />} />
+              <Route path="/vehicle/:vehicleId"       element={<VehicleDetailsPage />} />
+              <Route path="/walk-time"                element={<EstimateWalkTimePage />} />
+              <Route path="/suggest"                  element={<SuggestBestVehiclePage />} />
+              <Route path="/promotions"               element={<ApplyPromotionPage />} />
+              <Route path="/support/new"              element={<OpenSupportTicketPage />} />
+              <Route path="/report-damage"            element={<ReportDamagedVehiclePage />} />
+              <Route path="/battery/:vehicleId"       element={<VehicleBatteryStatusPage />} />
+              <Route path="/unlock/:vehicleId"        element={<UnlockVehiclePage />} />
+              <Route path="/unlock-method/:vehicleId" element={<UnlockMethodPage />} />
+              <Route path="/payment-methods"          element={<ManagePaymentMethodPage />} />
+              <Route path="/pause-ride"               element={<PauseRidePage />} />
+
+              {/* Operator */}
+              <Route path="/op/fleet"               element={<FleetDistributionMapPage />} />
+              <Route path="/op/alerts"              element={<LowAvailabilityAlertPage />} />
+              <Route path="/op/reports"             element={<ReceiveMalfunctionReportPage />} />
+              <Route path="/op/parking-verify"      element={<VerifyParkingPositionPage />} />
+              <Route path="/op/maintenance"         element={<MaintenanceQueuePage />} />
+              <Route path="/op/gps/:vehicleId"      element={<VehicleGPSHistoryPage />} />
+              <Route path="/op/tickets"             element={<ManageSupportTicketsPage />} />
+              <Route path="/op/parking-bonus"       element={<ConfigureParkingBonusPage />} />
+              <Route path="/op/suspend-user"        element={<SuspendUserAccountPage />} />
+              <Route path="/op/remote-lock"         element={<RemoteLockVehiclePage />} />
+              <Route path="/op/expired-bookings"    element={<ExpiredBookingsMonitorPage />} />
+
+              {/* Admin */}
+              <Route path="/admin/usage"            element={<UsageFrequencyReportPage />} />
+              <Route path="/admin/mobility-report"  element={<MobilityPeriodicReportPage />} />
+              <Route path="/admin/warning-zone"     element={<MarkUrbanWarningZonePage />} />
+              <Route path="/admin/heatmap"          element={<HighDensityZoneMapPage />} />
+              <Route path="/admin/sensitive-zone"   element={<DefineSensitiveZonePage />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
