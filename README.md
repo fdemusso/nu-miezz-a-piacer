@@ -114,13 +114,52 @@ Each slice is self-contained. No cross-slice imports.
 | Slice | Status | Frontend | API |
 |---|---|---|---|
 | NearbyVehicles | ✅ Done | `GET /` | `GET /api/vehicles/nearby` |
-| VehicleDetails | scaffold | `GET /vehicles/:id` | `GET /api/vehicles/:vehicleId` |
-| BookVehicle | scaffold | `POST /book/:vehicleId` | `POST /api/bookings` |
-| UnlockVehicle | scaffold | `POST /unlock/:bookingId` | `POST /api/rides/unlock` |
-| EndRide | scaffold | `POST /ride/:rideId/end` | `POST /api/rides/:rideId/end` |
+| VehicleDetails | ✅ Done | `GET /vehicles/[id]` | `GET /api/vehicles/:vehicleId` |
+| BookVehicle | scaffold | — | `POST /api/bookings` |
+| UnlockVehicle | scaffold | — | `POST /api/rides/unlock` |
+| EndRide | scaffold | — | `POST /api/rides/:rideId/end` |
 
-## TODO — next slice: VehicleDetails
+## Test VehicleDetails
 
-- [ ] `apps/web/src/app/vehicles/[id]/page.tsx` — route for vehicle detail
-- [ ] Implement `VehicleDetails` slice end-to-end (handler, page, hook)
-- [ ] `DrizzleVehicleRepository.findById` is already implemented and ready
+```bash
+# Start all apps
+pnpm dev
+
+# Test API directly
+curl http://localhost:3001/api/vehicles/v1
+curl http://localhost:3001/api/vehicles/v8
+curl http://localhost:3001/api/vehicles/nonexistent  # → 404
+
+# Frontend flow
+# 1. Open http://localhost:3000
+# 2. Click "Vedi dettagli" on any available vehicle card
+# 3. Lands on http://localhost:3000/vehicles/v1 (or v2, v4, v6, v8)
+```
+
+Response shape:
+```json
+{
+  "vehicle": {
+    "id": "v1",
+    "type": "SCOOTER",
+    "status": "AVAILABLE",
+    "model": "Niu N1S",
+    "licensePlate": "EL-001",
+    "battery": { "level": 85, "estimatedRangeKm": 51 },
+    "specs": { "maxSpeedKmh": 45, "weightKg": 28, "maxRangeKm": 60 },
+    "features": { "hasGps": true, "hasHelmetStorage": false, "hasUsb": false, "hasLock": true },
+    "pricing": {
+      "unlockFee": { "amount": 1, "currency": "EUR" },
+      "perMinuteRate": { "amount": 0.25, "currency": "EUR" }
+    },
+    "location": { "lat": 45.467, "lng": 9.1865 }
+  }
+}
+```
+
+## TODO — next slice: BookVehicle
+
+- [ ] Implement `BookVehicle` slice end-to-end
+- [ ] Wire "Prenota" CTA in `VehicleDetails.page.tsx` to real booking flow
+- [ ] `DrizzleBookingRepository` already exists in adapters, ready to use
+- [ ] Booking endpoint: `POST /api/bookings` (already scaffolded in `composition-root.ts`)
