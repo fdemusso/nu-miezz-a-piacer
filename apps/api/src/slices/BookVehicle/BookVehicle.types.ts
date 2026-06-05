@@ -8,3 +8,13 @@ export interface BookVehicleRequest {
 export interface BookVehicleResponse {
   booking: Booking
 }
+
+export interface CancelBookingRequest {
+  bookingId: string
+  userId: string
+}
+
+export interface CancelBookingResponse {
+  booking: Booking
+}
+

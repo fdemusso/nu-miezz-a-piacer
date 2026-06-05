@@ -1,5 +1,10 @@
 import type { IUserRepository, IVehicleRepository, IBookingRepository } from '@vsa/contracts'
-import type { BookVehicleRequest, BookVehicleResponse } from './BookVehicle.types'
+import type {
+  BookVehicleRequest,
+  BookVehicleResponse,
+  CancelBookingRequest,
+  CancelBookingResponse,
+} from './BookVehicle.types'
 
 export function makeBookVehicleHandler(deps: {
   userRepo: IUserRepository
@@ -42,3 +47,32 @@ export function makeBookVehicleHandler(deps: {
     return { booking }
   }
 }
+
+export function makeCancelBookingHandler(deps: {
+  bookingRepo: IBookingRepository
+  vehicleRepo: IVehicleRepository
+}) {
+  return async function cancelBookingHandler(
+    req: CancelBookingRequest
+  ): Promise<CancelBookingResponse> {
+    const { bookingId, userId } = req
+
+    const booking = await deps.bookingRepo.findById(bookingId)
+    if (!booking) throw Object.assign(new Error('Booking not found'), { status: 404 })
+    if (booking.userId !== userId) throw Object.assign(new Error('Unauthorized'), { status: 403 })
+
+    if (booking.status === 'active') {
+      booking.status = 'expired'
+      await deps.bookingRepo.save(booking)
+
+      const vehicle = await deps.vehicleRepo.findById(booking.vehicleId)
+      if (vehicle) {
+        vehicle.status = 'available'
+        await deps.vehicleRepo.save(vehicle)
+      }
+    }
+
+    return { booking }
+  }
+}
+
