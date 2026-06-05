@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nu miezz a piacer · Wireframe Customer</title>
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     WIREFRAME KIT — monocromatico, niente colori brand.
+     Tutto è greybox: serve a discutere STRUTTURA e FLUSSO,
+     non l'estetica finale. I colori reali verranno da shadcn/Tailwind.
+     ───────────────────────────────────────────────────────────── */
+  :root{
+    --ink:#080c17; --mut:#6b7280; --line:#c9;
+    --bg:#f8f9fd; --paper:#ffffff;
+    --wire:#d4d7db; --wire2:#bcc0c5; --dark:#3260d7;
+    --primary:#3260d7; --secondary:#83a1ef; --accent:#4e7cf3; --danger:#b00;
+    --r:10px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:Inter,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.45}
+  a{color:inherit}
+  header.top{padding:28px 24px;border-bottom:1px solid var(--wire2);background:var(--paper);position:sticky;top:0;z-index:50}
+  header.top h1{margin:0 0 4px;font-size:20px}
+  header.top p{margin:0;color:var(--mut);font-size:13px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
+  .legend b{color:var(--ink);font-weight:600}
+  .legend .sw{display:inline-block;width:22px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px;border:1px solid var(--wire2)}
+  nav.toc{padding:18px 24px;background:var(--paper);border-bottom:1px solid var(--wire2);font-size:13px}
+  nav.toc a{display:inline-block;margin:0 14px 8px 0;color:var(--mut);text-decoration:none}
+  nav.toc a:hover{color:var(--ink)}
+  main{max-width:1180px;margin:0 auto;padding:8px 24px 80px}
+
+  /* SCREEN BLOCK */
+  .screen{padding:40px 0;border-bottom:1px dashed var(--wire2)}
+  .screen-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .screen-head .num{font-family:var(--mono);font-size:13px;color:var(--mut)}
+  .screen-head h2{margin:0;font-size:18px}
+  .screen-head .tag{font-size:11px;font-family:var(--mono);background:var(--wire);padding:2px 8px;border-radius:20px;color:var(--dark)}
+  .screen-sub{color:var(--mut);font-size:13px;margin:0 0 20px;max-width:760px}
+  .frames{display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start}
+  .device{display:flex;flex-direction:column;gap:8px}
+  .device .label{font-family:var(--mono);font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+
+  /* PHONE */
+  .phone{width:300px;height:620px;background:#111;border-radius:34px;padding:10px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .phone .notch{height:0}
+  .phone-screen{width:100%;height:100%;background:var(--paper);border-radius:26px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+  /* DESKTOP / BROWSER */
+  .desktop{width:560px;background:var(--paper);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid var(--wire2)}
+  .desktop .chrome{height:30px;background:#e7e9ec;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid var(--wire2)}
+  .desktop .chrome i{width:10px;height:10px;border-radius:50%;background:#c4c8cd;display:inline-block}
+  .desktop .chrome .url{flex:1;margin-left:10px;height:16px;background:#fff;border-radius:4px;border:1px solid var(--wire2);font:11px var(--mono);color:var(--mut);display:flex;align-items:center;padding:0 8px}
+  .viewport{padding:0;min-height:420px}
+
+  /* WIRE PRIMITIVES */
+  .appbar{display:flex;align-items:center;gap:10px;padding:14px 14px;border-bottom:1px solid var(--wire);font-weight:600;font-size:14px}
+  .appbar .sp{flex:1}
+  .body{flex:1;overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:12px}
+  .body.nopad{padding:0}
+  .wb{background:var(--wire);border-radius:8px}
+  .card{border:1px solid var(--wire2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+  .row{display:flex;gap:10px;align-items:center}
+  .col{display:flex;flex-direction:column;gap:8px}
+  .between{justify-content:space-between}
+  .line{height:9px;background:var(--wire);border-radius:5px}
+  .line.t{height:12px}
+  .w40{width:40%}.w50{width:50%}.w60{width:60%}.w70{width:70%}.w80{width:80%}.w30{width:30%}.w25{width:25%}.full{width:100%}
+  .icon{width:34px;height:34px;border-radius:9px;background:var(--wire2);flex:none}
+  .icon.sm{width:24px;height:24px;border-radius:6px}
+  .icon.lg{width:48px;height:48px;border-radius:12px}
+  .icon.rnd{border-radius:50%}
+  .btn{background:var(--dark);color:#fff;border-radius:9px;padding:11px;text-align:center;font-size:13px;font-weight:600}
+  .btn.ghost{background:transparent;color:var(--dark);border:1.5px solid var(--wire2)}
+  .btn.sm{padding:8px 12px;font-size:12px}
+  .input{border:1.5px solid var(--wire2);border-radius:9px;padding:11px;font-size:12px;color:var(--mut);background:var(--paper)}
+  .chip{border:1px solid var(--wire2);border-radius:20px;padding:5px 11px;font-size:11px;color:var(--dark);background:var(--paper);white-space:nowrap}
+  .chip.solid{background:var(--dark);color:#fff;border-color:var(--dark)}
+  .muted{color:var(--mut);font-size:11px}
+  .h{font-weight:600;font-size:13px}
+  .big{font-size:22px;font-weight:700}
+  .pin{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--dark);transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .pin.o{background:#fff;border:2px solid var(--dark)}
+  /* MAP placeholder */
+  .map{flex:1;position:relative;background:
+      linear-gradient(0deg,rgba(0,0,0,.04) 1px,transparent 1px) 0 0/100% 26px,
+      linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px) 0 0/26px 100%,
+      #f3f4f6;
+    overflow:hidden}
+  .map .road{position:absolute;background:#e3e5e8}
+  .map .me{position:absolute;width:16px;height:16px;border-radius:50%;background:#3a3f45;border:3px solid #fff;box-shadow:0 0 0 4px rgba(58,63,69,.18)}
+  /* bottom nav */
+  .bnav{display:flex;border-top:1px solid var(--wire);background:var(--paper)}
+  .bnav div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0}
+  .bnav .ic{width:20px;height:20px;border-radius:6px;background:var(--wire2)}
+  .bnav .ic.on{background:var(--dark)}
+  .bnav .lb{height:6px;width:60%;border-radius:4px;background:var(--wire)}
+  .bnav .lbl{font-size:9px;color:var(--mut);letter-spacing:.02em;text-align:center;line-height:1}
+  .bnav .lbl.on{color:var(--dark);font-weight:700}
+  /* bottom nav wrapper label */
+  .bnav-wrap{display:flex;flex-direction:column}
+  .bnav-title{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);text-align:center;padding:3px 0 1px;border-top:1px solid var(--wire2);background:var(--paper);border-bottom:none}
+  /* bottom sheet */
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:18px 18px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:12px 14px 16px;display:flex;flex-direction:column;gap:10px}
+  .grab{width:38px;height:4px;border-radius:3px;background:var(--wire2);margin:0 auto 4px}
+  .badge{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:5px;background:var(--wire);color:var(--dark)}
+  .toast{position:absolute;left:14px;right:14px;bottom:14px;background:var(--dark);color:#fff;border-radius:10px;padding:11px 13px;font-size:12px;display:flex;gap:8px;align-items:center}
+  /* desktop two-pane */
+  .pane{display:flex;height:460px}
+  .pane .left{flex:1.4;border-right:1px solid var(--wire)}
+  .pane .right{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+  .topbar{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--wire)}
+  .topbar .sp{flex:1}
+  .centered{max-width:420px;margin:0 auto;padding:28px 18px;display:flex;flex-direction:column;gap:14px}
+
+  /* ANNOTATION */
+  .annot{margin-top:24px;border:1px solid var(--wire2);border-left:3px solid var(--dark);border-radius:8px;background:var(--paper)}
+  .annot .ah{padding:10px 16px;border-bottom:1px solid var(--wire);font-size:12px;font-family:var(--mono);color:var(--mut);display:flex;gap:8px;flex-wrap:wrap}
+  .annot .ah b{color:var(--ink)}
+  .annot .grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  @media(max-width:780px){.annot .grid{grid-template-columns:1fr}}
+  .annot .cell{padding:14px 16px;border-top:1px solid var(--wire);border-right:1px solid var(--wire)}
+  .annot .cell:nth-child(even){border-right:0}
+  .annot h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)}
+  .annot ul{margin:0;padding-left:16px;font-size:13px}
+  .annot li{margin:3px 0}
+  .annot code{font-family:var(--mono);font-size:12px;background:var(--wire);padding:1px 5px;border-radius:4px}
+  .pillset{display:flex;flex-wrap:wrap;gap:6px}
+  .pillset .p{font-family:var(--mono);font-size:11px;border:1px solid var(--wire2);border-radius:6px;padding:3px 7px;background:#fafbfc}
+  .note{font-size:12px;color:var(--mut);background:#fafbfc;border:1px dashed var(--wire2);border-radius:8px;padding:10px 12px;margin-top:14px}
+  .kbd{font-family:var(--mono);font-size:11px;background:var(--wire);border-radius:4px;padding:1px 5px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>nu miezz a piacer — Wireframe <b>Customer</b> (mobile-first)</h1>
+  <p>Greybox / lo-fi. Serve a discutere struttura, flusso e mappatura slice→pagina→componenti. Colori e branding NON sono finali.</p>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--wire)"></span> contenuto / dato dinamico</span>
+    <span><span class="sw" style="background:var(--primary)"></span> azione primaria (CTA)</span>
+    <span><span class="sw" style="background:var(--secondary)"></span> secondario / accent</span>
+    <span><span class="sw" style="background:var(--paper)"></span> input / outline</span>
+    <span><b>Convenzione:</b> ogni schermata mostra <b>📱 mobile</b> + <b>🖥 desktop</b> e la sua scheda tecnica.</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#s00">00 · Login</a>
+  <a href="#s01">01 · Home / Mappa</a>
+  <a href="#s02">02 · Dettaglio veicolo</a>
+  <a href="#s03">03 · Prenotazione</a>
+  <a href="#s04">04 · Sblocco</a>
+  <a href="#s05">05 · Corsa attiva</a>
+  <a href="#s06">06 · Fine corsa</a>
+  <a href="#s07">07 · Riepilogo</a>
+  <a href="#s08">08 · Pagamenti</a>
+  <a href="#s09">09 · Promozioni</a>
+  <a href="#s10">10 · Supporto</a>
+  <a href="#s11">11 · Segnala danno</a>
+  <a href="#s12">12 · Profilo</a>
+</nav>
+
+<main>
+
+<!-- ════════════════════════ 00 LOGIN ════════════════════════ -->
+<section class="screen" id="s00">
+  <div class="screen-head"><span class="num">00</span><h2>Login / Registrazione</h2><span class="tag">support · no-slice</span></div>
+  <p class="screen-sub">Gate d'ingresso. Non è una slice del registry ma serve per autenticare e ottenere il <code>role</code> che decide quali slice mostrare (vedi <code>getVisibleSlices</code>). Tab login/registrati.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="body" style="justify-content:center;gap:18px;padding:24px">
+          <div class="icon lg rnd" style="margin:0 auto 6px"></div>
+          <div class="line t w60" style="margin:0 auto"></div>
+          <div class="col" style="gap:8px;margin-top:8px">
+            <div class="row" style="gap:6px;justify-content:center"><div class="chip solid">Accedi</div><div class="chip">Registrati</div></div>
+            <div class="input">email@esempio.it</div>
+            <div class="input">password</div>
+            <div class="btn full">Accedi</div>
+            <div class="muted" style="text-align:center">Password dimenticata?</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/login</span></div>
+        <div class="viewport"><div class="centered" style="padding-top:48px">
+          <div class="icon lg rnd" style="margin:0 auto"></div>
+          <div class="line t w50" style="margin:8px auto"></div>
+          <div class="row" style="gap:6px;justify-content:center"><div class="chip solid">Accedi</div><div class="chip">Registrati</div></div>
+          <div class="input">email@esempio.it</div>
+          <div class="input">password</div>
+          <div class="btn full">Accedi</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> <span>LoginPage</span> · <b>Route:</b> <code>/login</code> · <b>Slice:</b> — (cross-cutting auth)</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>signIn(email, pw)</code> → <code>IAuthService.authenticate</code></li>
+        <li><code>signUp(...)</code> (registrazione customer)</li>
+        <li>salva sessione/token, redirect a <code>/</code></li>
+        <li>su <code>user.role</code> ⇒ <code>getVisibleSlices(role)</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Tabs</span><span class="p">Card</span><span class="p">Input</span><span class="p">Label</span><span class="p">Button</span><span class="p">Form</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px">Validazione con <code>react-hook-form</code> + <code>zod</code> (consigliato).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 01 HOME / MAPPA ════════════════════════ -->
+<section class="screen" id="s01">
+  <div class="screen-head"><span class="num">01</span><h2>Home — Mappa veicoli vicini</h2><span class="tag">hub</span></div>
+  <p class="screen-sub">La schermata-cuore dell'app. Mappa full-screen con i veicoli come pin; bottom-sheet trascinabile con la lista ordinata per distanza. Integra il suggerimento "migliore per te" e il tempo a piedi per ogni veicolo.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm rnd"></div><div class="line w40"></div><div class="sp"></div><div class="icon sm"></div></div>
+        <div class="map">
+          <div class="road" style="left:0;right:0;top:120px;height:14px"></div>
+          <div class="road" style="top:0;bottom:0;left:90px;width:12px"></div>
+          <div class="me" style="left:140px;top:150px"></div>
+          <div class="pin" style="left:60px;top:70px"></div>
+          <div class="pin" style="left:170px;top:90px"></div>
+          <div class="pin o" style="left:120px;top:200px"></div>
+          <div class="pin" style="left:210px;top:170px"></div>
+          <div class="sheet" style="height:230px">
+            <div class="grab"></div>
+            <div class="row between"><div class="h">Vicino a te</div><span class="chip">Filtri</span></div>
+            <div class="card" style="border-color:var(--dark)">
+              <div class="row between"><span class="badge">★ Consigliato</span><span class="muted">120 m · 2 min 🚶</span></div>
+              <div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w60"></div><div class="line w40"></div></div><div class="btn sm">Prenota</div></div>
+            </div>
+            <div class="card"><div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w70"></div><div class="line w30"></div></div><div class="muted">340 m</div></div></div>
+          </div>
+        </div>
+        <div class="bnav-wrap">
+          <div class="bnav-title">Bottom Navigation</div>
+          <div class="bnav">
+            <div><div class="ic on"></div><span class="lbl on">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Sblocco</span></div>
+            <div><div class="ic"></div><span class="lbl">In corso</span></div>
+            <div><div class="ic"></div><span class="lbl">Account</span></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop · two-pane</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/</span></div>
+        <div class="viewport">
+          <div class="topbar"><div class="icon sm rnd"></div><div class="line w25"></div><div class="sp"></div><div class="chip">Filtri</div><div class="icon sm"></div></div>
+          <div class="pane">
+            <div class="left map">
+              <div class="road" style="left:0;right:0;top:160px;height:16px"></div>
+              <div class="road" style="top:0;bottom:0;left:140px;width:14px"></div>
+              <div class="me" style="left:220px;top:200px"></div>
+              <div class="pin" style="left:90px;top:90px"></div><div class="pin" style="left:260px;top:120px"></div>
+              <div class="pin o" style="left:180px;top:260px"></div><div class="pin" style="left:300px;top:240px"></div>
+            </div>
+            <div class="right">
+              <div class="h">Vicino a te</div>
+              <div class="card" style="border-color:var(--dark)"><div class="row between"><span class="badge">★ Consigliato</span><span class="muted">120 m · 2 min 🚶</span></div><div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w70"></div><div class="line w40"></div></div><div class="btn sm">Prenota</div></div></div>
+              <div class="card"><div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w60"></div><div class="line w30"></div></div><div class="muted">340 m</div></div></div>
+              <div class="card"><div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w70"></div><div class="line w25"></div></div><div class="muted">520 m</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> NearbyVehiclesPage · <b>Route:</b> <code>/</code> · <b>Slice:</b> <b>NearbyVehicles</b> + SuggestBestVehicle + EstimateWalkTime</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>useGeolocation()</code> → posizione utente</li>
+        <li><code>findNearby(pos, radius)</code> → <code>IVehicleRepository</code></li>
+        <li>per item: <code>estimateWalk(from,to)</code> → <code>IRoutingService</code></li>
+        <li>card consigliato ⇐ <code>SuggestBestVehicle</code></li>
+        <li>tap pin/card → <code>/vehicle/:id</code> · tap Prenota → <code>/book/:id</code></li>
+        <li>filtri per <code>VehicleType</code> (scooter/bike/ebike/car)</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Sheet/Drawer</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Button</span><span class="p">ToggleGroup</span><span class="p">ScrollArea</span><span class="p">Skeleton</span></div>
+        <p class="muted" style="margin-top:8px">Mappa: libreria esterna (<code>react-leaflet</code> / MapLibre) — non è shadcn. Bottom-nav custom (3 slice + Profilo).</p>
+      </div>
+    </div>
+    <div class="note">📌 La mappa sarà basata su GeoJSON. Implementazione affidata a Flavio.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 02 DETTAGLIO VEICOLO ════════════════════════ -->
+<section class="screen" id="s02">
+  <div class="screen-head"><span class="num">02</span><h2>Dettaglio veicolo</h2><span class="tag">sheet</span></div>
+  <p class="screen-sub">Si apre come bottom-sheet espanso (mobile) o pannello laterale (desktop). Aggrega 4 slice: dati veicolo, batteria/autonomia, tempo a piedi, stima costo. Da qui si Prenota o si Sblocca subito.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="map" style="flex:none;height:180px"><div class="me" style="left:140px;top:90px"></div><div class="pin" style="left:150px;top:60px"></div></div>
+        <div class="body">
+          <div class="row between"><div class="col"><div class="h">Scooter · AB-123</div><div class="muted">Disponibile</div></div><div class="icon lg"></div></div>
+          <div class="row" style="gap:8px">
+            <div class="card" style="flex:1;align-items:center"><div class="big">78%</div><div class="muted">batteria</div></div>
+            <div class="card" style="flex:1;align-items:center"><div class="big">~24 km</div><div class="muted">autonomia</div></div>
+            <div class="card" style="flex:1;align-items:center"><div class="big">2 min</div><div class="muted">🚶 a piedi</div></div>
+          </div>
+          <div class="card"><div class="row between"><span class="muted">Sblocco</span><span class="h">1,00 €</span></div><div class="row between"><span class="muted">al minuto</span><span class="h">0,25 €/min</span></div></div>
+          <div class="row" style="gap:8px;margin-top:auto"><div class="btn ghost" style="flex:1">Prenota</div><div class="btn" style="flex:1">Sblocca ora</div></div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop · pannello</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/vehicle/v-123</span></div>
+        <div class="viewport"><div class="pane">
+          <div class="left map"><div class="pin" style="left:160px;top:140px"></div></div>
+          <div class="right">
+            <div class="row between"><div class="col"><div class="h">Scooter · AB-123</div><div class="muted">Disponibile · 120 m</div></div><div class="icon lg"></div></div>
+            <div class="row" style="gap:8px">
+              <div class="card" style="flex:1;align-items:center"><div class="big">78%</div><div class="muted">batteria</div></div>
+              <div class="card" style="flex:1;align-items:center"><div class="big">~24 km</div><div class="muted">autonomia</div></div>
+            </div>
+            <div class="card"><div class="row between"><span class="muted">Sblocco</span><span class="h">1,00 €</span></div><div class="row between"><span class="muted">al minuto</span><span class="h">0,25 €/min</span></div></div>
+            <div class="row" style="gap:8px"><div class="btn ghost" style="flex:1">Prenota</div><div class="btn" style="flex:1">Sblocca</div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> VehicleDetailsPage · <b>Route:</b> <code>/vehicle/:vehicleId</code> · <b>Slice:</b> <b>VehicleDetails</b> + VehicleBatteryStatus + EstimateWalkTime + EstimateRideCost</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>getVehicle(id)</code> → <code>IVehicleRepository.findById</code></li>
+        <li>batteria/autonomia ⇐ <code>VehicleBatteryStatus</code> (<code>vehicle.batteryLevel</code>)</li>
+        <li><code>estimateCost(vehicle, durata)</code> → <code>IPricingService</code></li>
+        <li>CTA Prenota → <code>/book/:id</code> · Sblocca → <code>/unlock/:id</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Sheet</span><span class="p">Card</span><span class="p">Progress</span><span class="p">Badge</span><span class="p">Separator</span><span class="p">Button</span><span class="p">Skeleton</span></div>
+        <p class="muted" style="margin-top:8px"><code>Progress</code> per la batteria; <code>Badge</code> per <code>VehicleStatus</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 03 PRENOTAZIONE ════════════════════════ -->
+<section class="screen" id="s03">
+  <div class="screen-head"><span class="num">03</span><h2>Prenotazione (hold)</h2><span class="tag">timer</span></div>
+  <p class="screen-sub">Conferma blocco veicolo per N minuti con countdown ben visibile. Stato persistente: se chiudo l'app la prenotazione resta attiva fino a scadenza (<code>Booking.expiresAt</code>). Navigazione verso il veicolo + annulla.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w50"></div></div>
+        <div class="body" style="align-items:center;text-align:center">
+          <div class="muted" style="margin-top:8px">Veicolo prenotato</div>
+          <div class="big" style="font-size:40px">04:38</div>
+          <div class="muted">tempo rimasto per raggiungerlo</div>
+          <div class="card full"><div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w70"></div><div class="line w40"></div></div></div></div>
+          <div class="map full" style="flex:none;height:150px;border-radius:10px"><div class="pin" style="left:130px;top:60px"></div><div class="me" style="left:90px;top:100px"></div></div>
+          <div class="btn full" style="margin-top:auto">Naviga 🚶</div>
+          <div class="btn ghost full">Annulla prenotazione</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/book/v-123</span></div>
+        <div class="viewport"><div class="centered" style="text-align:center">
+          <div class="muted">Veicolo prenotato</div>
+          <div class="big" style="font-size:46px">04:38</div>
+          <div class="card"><div class="row"><div class="icon"></div><div class="col" style="flex:1"><div class="line w70"></div><div class="line w40"></div></div></div></div>
+          <div class="row" style="gap:8px"><div class="btn ghost" style="flex:1">Annulla</div><div class="btn" style="flex:1">Naviga</div></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> BookVehiclePage · <b>Route:</b> <code>/book/:vehicleId</code> · <b>Slice:</b> <b>BookVehicle</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>book(vehicleId)</code> → crea <code>Booking</code> (<code>IBookingRepository.save</code>)</li>
+        <li>countdown su <code>expiresAt</code>; alla scadenza → torna a <code>/</code></li>
+        <li><code>cancel(bookingId)</code> → status <code>expired</code></li>
+        <li>al raggiungimento → continua su <code>/unlock/:id</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Card</span><span class="p">Button</span><span class="p">AlertDialog</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px">Countdown custom (hook <code>setInterval</code>). <code>AlertDialog</code> per confermare annullo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 04 SBLOCCO ════════════════════════ -->
+<section class="screen" id="s04">
+  <div class="screen-head"><span class="num">04</span><h2>Sblocco veicolo</h2><span class="tag">2 slice</span></div>
+  <p class="screen-sub">Due step in un flusso: scelta metodo (QR / PIN) e poi azione di sblocco con feedback.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 scelta metodo</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w50"></div></div>
+        <div class="body">
+          <div class="h">Come vuoi sbloccare?</div>
+          <div class="card row between"><div class="row"><div class="icon"></div><div class="line w60"></div></div><div class="chip solid">QR</div></div>
+          <div class="card row between"><div class="row"><div class="icon"></div><div class="line w60"></div></div><div class="chip">PIN</div></div>
+          <div class="btn full" style="margin-top:auto">Continua</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">📱 sblocco (QR)</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w40"></div></div>
+        <div class="body" style="align-items:center;justify-content:center;text-align:center">
+          <div class="wb" style="width:170px;height:170px;border-radius:14px"></div>
+          <div class="muted">Inquadra il QR sul manubrio</div>
+          <div class="btn full" style="margin-top:18px">Sblocca</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/unlock/v-123</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="h">Come vuoi sbloccare?</div>
+          <div class="row" style="gap:8px;flex-wrap:wrap"><div class="chip solid">QR</div><div class="chip">PIN</div></div>
+          <div class="wb" style="width:160px;height:160px;border-radius:14px;margin:8px auto"></div>
+          <div class="btn full">Sblocca</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> UnlockMethodPage → UnlockVehiclePage · <b>Route:</b> <code>/unlock-method/:id</code> · <code>/unlock/:id</code> · <b>Slice:</b> <b>UnlockMethod</b> + <b>UnlockVehicle</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>getAvailableMethods(vehicle)</code> → <code>IUnlockService</code> (filtra i 2 metodi)</li>
+        <li><code>unlock(vehicleId, method)</code> → <code>IUnlockService.unlock</code></li>
+        <li>al successo → avvia <code>Ride</code>, vai a <code>/active-ride</code></li>
+        <li>QR ⇒ accesso fotocamera; PIN ⇒ tastierino</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">RadioGroup</span><span class="p">Card</span><span class="p">Button</span><span class="p">InputOTP</span><span class="p">Sonner</span><span class="p">Dialog</span></div>
+        <p class="muted" style="margin-top:8px"><code>InputOTP</code> per il PIN. Scanner QR = libreria esterna (<code>html5-qrcode</code>).</p>
+      </div>
+    </div>
+    <div class="note">❓ Da decidere: il flusso <code>UnlockMethod</code>+<code>UnlockVehicle</code> sono 2 route o 1 pagina a step (wizard)? Proposta nel mock: 1 pagina, 2 step.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 05 CORSA ATTIVA ════════════════════════ -->
+<section class="screen" id="s05">
+  <div class="screen-head"><span class="num">05</span><h2>Corsa attiva</h2><span class="tag">stateful</span></div>
+  <p class="screen-sub">Schermata persistente durante la corsa: timer e costo che salgono live, pulsante pausa e termina. Deve essere recuperabile riaprendo l'app (<code>findActiveByUser</code>).</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 in corsa</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="map"><div class="me" style="left:140px;top:160px"></div>
+          <div class="sheet" style="height:240px">
+            <div class="grab"></div>
+            <div class="row between"><span class="badge">● In corsa</span><span class="muted">Scooter AB-123</span></div>
+            <div class="row between" style="align-items:flex-end"><div class="col"><div class="muted">Tempo</div><div class="big">12:04</div></div><div class="col" style="text-align:right"><div class="muted">Costo</div><div class="big">4,01 €</div></div></div>
+            <div class="row" style="gap:8px"><div class="btn ghost" style="flex:1">⏸ Pausa</div><div class="btn" style="flex:1.4">Termina corsa</div></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">📱 in pausa</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="map"><div class="me" style="left:140px;top:160px"></div>
+          <div class="toast" style="bottom:auto;top:14px">⏸ Corsa in pausa — tariffa ridotta</div>
+          <div class="sheet" style="height:240px">
+            <div class="grab"></div>
+            <div class="row between"><span class="badge">⏸ In pausa</span><span class="muted">0,05 €/min</span></div>
+            <div class="row between" style="align-items:flex-end"><div class="col"><div class="muted">Tempo</div><div class="big">12:04</div></div><div class="col" style="text-align:right"><div class="muted">Costo</div><div class="big">4,01 €</div></div></div>
+            <div class="row" style="gap:8px"><div class="btn" style="flex:1">▶ Riprendi</div><div class="btn ghost" style="flex:1.4">Termina</div></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/active-ride</span></div>
+        <div class="viewport"><div class="pane">
+          <div class="left map"><div class="me" style="left:200px;top:200px"></div></div>
+          <div class="right">
+            <span class="badge">● In corsa</span>
+            <div class="card" style="align-items:center"><div class="muted">Tempo</div><div class="big">12:04</div></div>
+            <div class="card" style="align-items:center"><div class="muted">Costo</div><div class="big">4,01 €</div></div>
+            <div class="btn ghost">⏸ Pausa</div><div class="btn">Termina corsa</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ActiveRidePage (+ PauseRide) · <b>Route:</b> <code>/active-ride</code> · <b>Slice:</b> <b>PauseRide</b> (+ stato Ride condiviso)</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li>all'avvio: <code>findActiveByUser</code> → <code>IRideRepository</code></li>
+        <li><code>pause(rideId)</code> / <code>resume(rideId)</code> → <code>Ride.paused</code></li>
+        <li>costo live (tick client) confermato server a fine corsa</li>
+        <li>Termina → <code>/end-ride</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Card</span><span class="p">Badge</span><span class="p">Button</span><span class="p">Sheet</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px">Nota: nel registry esiste <code>PauseRide</code> ma non una slice "ActiveRide" esplicita — va aggiunta o accorpata a EndRide.</p>
+      </div>
+    </div>
+    <div class="note">❓ Manca una slice "RideInProgress / Avvia corsa": oggi <code>UnlockVehicle</code> finisce nel nulla. Da chiarire dove nasce/vive lo stato corsa.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 06 FINE CORSA ════════════════════════ -->
+<section class="screen" id="s06">
+  <div class="screen-head"><span class="num">06</span><h2>Fine corsa — parcheggio</h2><span class="tag">validazione zona</span></div>
+  <p class="screen-sub">Verifica che il parcheggio sia in zona consentita (geofencing), foto del veicolo parcheggiato, conferma. Se fuori zona → blocco/avviso.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 in zona ✓</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="map" style="flex:none;height:200px"><div class="me" style="left:130px;top:90px"></div>
+          <div class="wb" style="position:absolute;left:60px;top:40px;width:130px;height:110px;border:2px dashed var(--dark);background:rgba(58,63,69,.06);border-radius:8px"></div>
+        </div>
+        <div class="body">
+          <div class="card row between" style="border-color:var(--dark)"><span class="h">✓ Sei in zona parcheggio</span><span class="badge">OK</span></div>
+          <div class="muted">Aggiungi una foto del parcheggio</div>
+          <div class="wb" style="height:90px;border-radius:10px"></div>
+          <div class="btn full" style="margin-top:auto">Termina corsa</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">📱 fuori zona ✗</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="map" style="flex:none;height:200px"><div class="me" style="left:210px;top:150px"></div>
+          <div class="wb" style="position:absolute;left:40px;top:30px;width:120px;height:100px;border:2px dashed var(--dark);background:rgba(58,63,69,.06);border-radius:8px"></div>
+        </div>
+        <div class="body">
+          <div class="card" style="border-color:var(--danger)"><div class="h">✗ Fuori dalla zona consentita</div><div class="muted">Sposta il veicolo nell'area tratteggiata per terminare.</div></div>
+          <div class="btn ghost full" style="margin-top:auto">Vedi zone vicine</div>
+          <div class="btn full" style="opacity:.5">Termina (disabilitato)</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/end-ride</span></div>
+        <div class="viewport"><div class="pane">
+          <div class="left map"><div class="me" style="left:180px;top:180px"></div><div class="wb" style="position:absolute;left:90px;top:90px;width:160px;height:140px;border:2px dashed var(--dark);background:rgba(58,63,69,.06);border-radius:8px"></div></div>
+          <div class="right">
+            <div class="card row between" style="border-color:var(--dark)"><span class="h">✓ In zona</span><span class="badge">OK</span></div>
+            <div class="wb" style="height:100px;border-radius:10px"></div>
+            <div class="btn">Termina corsa</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> EndRidePage · <b>Route:</b> <code>/end-ride</code> · <b>Slice:</b> <b>EndRide</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>validate(pos, zones)</code> → <code>IZoneValidator</code> (<code>ParkingValidationResult</code>)</li>
+        <li>upload foto parcheggio (opzionale/obbligatoria?)</li>
+        <li><code>endRide(rideId, pos)</code> → calcolo costo, <code>IBillingService.charge</code></li>
+        <li>esito → <code>/ride-summary/:rideId</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Card</span><span class="p">Alert</span><span class="p">Button</span><span class="p">Dialog</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px"><code>Alert</code> destructive per fuori-zona; CTA termina disabilitata finché <code>valid=false</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 07 RIEPILOGO ════════════════════════ -->
+<section class="screen" id="s07">
+  <div class="screen-head"><span class="num">07</span><h2>Riepilogo corsa / Ricevuta</h2><span class="tag">+ promo</span></div>
+  <p class="screen-sub">Scontrino di fine corsa: durata, distanza, breakdown costi, metodo di pagamento, applicazione codice promo, valutazione. Punto naturale per <code>ApplyPromotion</code>.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="line w50"></div></div>
+        <div class="body">
+          <div class="col" style="align-items:center"><div class="big">5,26 €</div><div class="muted">Corsa completata · 21 min · 4,2 km</div></div>
+          <div class="card"><div class="row between"><span class="muted">Sblocco</span><span>1,00 €</span></div><div class="row between"><span class="muted">21 min × 0,25</span><span>5,25 €</span></div><div class="row between"><span class="muted">Sconto WELCOME10</span><span>−0,99 €</span></div></div>
+          <div class="row" style="gap:8px"><div class="input" style="flex:1">Codice promo</div><div class="btn sm">Applica</div></div>
+          <div class="card row between"><div class="row"><div class="icon sm"></div><div class="line w40"></div></div><span class="muted">•••• 4242</span></div>
+          <div class="row" style="gap:6px;justify-content:center;margin-top:6px"><span class="chip">★</span><span class="chip">★</span><span class="chip">★</span><span class="chip">★</span><span class="chip">★</span></div>
+          <div class="btn full" style="margin-top:auto">Fatto</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/ride-summary/r-9</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="col" style="align-items:center"><div class="big">5,26 €</div><div class="muted">21 min · 4,2 km</div></div>
+          <div class="card"><div class="row between"><span class="muted">Sblocco</span><span>1,00 €</span></div><div class="row between"><span class="muted">Minuti</span><span>5,25 €</span></div><div class="row between"><span class="muted">Sconto</span><span>−0,99 €</span></div></div>
+          <div class="row" style="gap:8px"><div class="input" style="flex:1">Codice promo</div><div class="btn sm">Applica</div></div>
+          <div class="btn full">Fatto</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> RideSummaryPage · <b>Route:</b> <code>/ride-summary/:rideId</code> · <b>Slice:</b> <b>RideSummary</b> + ApplyPromotion</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>getRide(id)</code> → <code>IRideRepository.findById</code></li>
+        <li><code>applyPromo(code, cost)</code> → <code>IPromotionService.apply</code></li>
+        <li>rating corsa (se previsto)</li>
+        <li>CTA Fatto → torna a <code>/</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Card</span><span class="p">Separator</span><span class="p">Input</span><span class="p">Button</span><span class="p">Badge</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 08 PAGAMENTI ════════════════════════ -->
+<section class="screen" id="s08">
+  <div class="screen-head"><span class="num">08</span><h2>Metodi di pagamento</h2><span class="tag">account</span></div>
+  <p class="screen-sub">Lista carte/metodi, aggiungi/rimuovi, imposta predefinito. Vive dentro Profilo.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w50"></div></div>
+        <div class="body">
+          <div class="card row between"><div class="row"><div class="icon sm"></div><div class="col"><div class="line t" style="width:80px"></div><div class="muted">•••• 4242</div></div></div><span class="badge">Default</span></div>
+          <div class="card row between"><div class="row"><div class="icon sm"></div><div class="col"><div class="line t" style="width:70px"></div><div class="muted">•••• 1881</div></div></div><div class="chip">Imposta</div></div>
+          <div class="btn ghost full" style="border-style:dashed">+ Aggiungi metodo</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">📱 aggiungi (dialog)</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="body" style="background:rgba(0,0,0,.25);justify-content:flex-end;padding:0">
+          <div class="sheet" style="position:static;border-radius:18px 18px 0 0">
+            <div class="grab"></div><div class="h">Aggiungi carta</div>
+            <div class="input">Numero carta</div>
+            <div class="row" style="gap:8px"><div class="input" style="flex:1">MM/AA</div><div class="input" style="flex:1">CVC</div></div>
+            <div class="btn full">Salva</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/payment-methods</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="h">Metodi di pagamento</div>
+          <div class="card row between"><div class="row"><div class="icon sm"></div><div class="muted">•••• 4242</div></div><span class="badge">Default</span></div>
+          <div class="card row between"><div class="row"><div class="icon sm"></div><div class="muted">•••• 1881</div></div><div class="chip">Imposta</div></div>
+          <div class="btn ghost full" style="border-style:dashed">+ Aggiungi metodo</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ManagePaymentMethodPage · <b>Route:</b> <code>/payment-methods</code> · <b>Slice:</b> <b>ManagePaymentMethod</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>listPaymentMethods(userId)</code> → <code>IBillingService</code></li>
+        <li><code>addPaymentMethod</code> / <code>removePaymentMethod</code></li>
+        <li>set default (<code>PaymentMethod.isDefault</code>)</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Card</span><span class="p">Dialog/Drawer</span><span class="p">Input</span><span class="p">Button</span><span class="p">Badge</span><span class="p">AlertDialog</span></div>
+        <p class="muted" style="margin-top:8px">In prod la carta passerebbe da provider (Stripe Elements) — qui solo placeholder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 09 PROMOZIONI ════════════════════════ -->
+<section class="screen" id="s09">
+  <div class="screen-head"><span class="num">09</span><h2>Promozioni</h2><span class="tag">account</span></div>
+  <p class="screen-sub">Inserimento codice + lista promo attive. <code>ApplyPromotion</code> appare sia qui (standalone) sia nel riepilogo corsa.</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w40"></div></div>
+        <div class="body">
+          <div class="row" style="gap:8px"><div class="input" style="flex:1">Inserisci codice</div><div class="btn sm">Applica</div></div>
+          <div class="muted">Attive</div>
+          <div class="card row between"><div class="col"><div class="line t" style="width:90px"></div><div class="muted">−10% · scade 30/06</div></div><span class="badge">attiva</span></div>
+          <div class="card row between"><div class="col"><div class="line t" style="width:70px"></div><div class="muted">−2,00 € primo viaggio</div></div><span class="badge">attiva</span></div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/promotions</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="row" style="gap:8px"><div class="input" style="flex:1">Inserisci codice</div><div class="btn sm">Applica</div></div>
+          <div class="card row between"><div class="muted">WELCOME10 · −10%</div><span class="badge">attiva</span></div>
+          <div class="card row between"><div class="muted">FIRST · −2,00 €</div><span class="badge">attiva</span></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ApplyPromotionPage · <b>Route:</b> <code>/promotions</code> · <b>Slice:</b> <b>ApplyPromotion</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>validate(code)</code> → <code>IPromotionService.validate</code> (<code>Promotion|null</code>)</li>
+        <li>salva promo nel profilo / wallet</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Input</span><span class="p">Button</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Sonner</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 10 SUPPORTO ════════════════════════ -->
+<section class="screen" id="s10">
+  <div class="screen-head"><span class="num">10</span><h2>Supporto — apri ticket</h2><span class="tag">form</span></div>
+  <p class="screen-sub">Form oggetto + descrizione, lista ticket dell'utente con stato. Speculare lato operator (ManageSupportTickets).</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 nuovo ticket</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w50"></div></div>
+        <div class="body">
+          <div class="input">Oggetto</div>
+          <div class="input" style="height:90px;align-items:flex-start">Descrivi il problema…</div>
+          <div class="btn full">Invia ticket</div>
+          <div class="muted" style="margin-top:8px">I tuoi ticket</div>
+          <div class="card row between"><div class="line w60"></div><span class="badge">aperto</span></div>
+          <div class="card row between"><div class="line w50"></div><span class="badge">risolto</span></div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/support/new</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="input">Oggetto</div>
+          <div class="input" style="height:90px">Descrivi il problema…</div>
+          <div class="btn full">Invia ticket</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> OpenSupportTicketPage · <b>Route:</b> <code>/support/new</code> · <b>Slice:</b> <b>OpenSupportTicket</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>openTicket(userId, subject, body)</code> → <code>ISupportService</code></li>
+        <li><code>getTicketsByUser(userId)</code> per la lista</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Form</span><span class="p">Input</span><span class="p">Textarea</span><span class="p">Button</span><span class="p">Card</span><span class="p">Badge</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 11 SEGNALA DANNO ════════════════════════ -->
+<section class="screen" id="s11">
+  <div class="screen-head"><span class="num">11</span><h2>Segnala veicolo danneggiato</h2><span class="tag">form</span></div>
+  <p class="screen-sub">Severità, descrizione, foto. Alimenta la coda manutenzione lato operator (MaintenanceQueue / ReceiveMalfunctionReport).</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="appbar"><div class="icon sm"></div><div class="line w60"></div></div>
+        <div class="body">
+          <div class="muted">Gravità</div>
+          <div class="row" style="gap:6px"><div class="chip">Bassa</div><div class="chip solid">Media</div><div class="chip">Alta</div></div>
+          <div class="input" style="height:80px;align-items:flex-start">Cosa non va?</div>
+          <div class="wb" style="height:80px;border-radius:10px"></div>
+          <div class="muted">+ Aggiungi foto</div>
+          <div class="btn full" style="margin-top:auto">Invia segnalazione</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/report-damage</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="row" style="gap:6px"><div class="chip">Bassa</div><div class="chip solid">Media</div><div class="chip">Alta</div></div>
+          <div class="input" style="height:80px">Cosa non va?</div>
+          <div class="wb" style="height:80px;border-radius:10px"></div>
+          <div class="btn full">Invia segnalazione</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ReportDamagedVehiclePage · <b>Route:</b> <code>/report-damage</code> · <b>Slice:</b> <b>ReportDamagedVehicle</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>reportDamage({vehicleId, description, severity})</code> → <code>IMaintenanceService</code></li>
+        <li>severità ⇒ <code>'low'|'medium'|'high'</code></li>
+        <li>vehicleId precompilato se si arriva da una corsa</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">ToggleGroup/RadioGroup</span><span class="p">Textarea</span><span class="p">Button</span><span class="p">Form</span><span class="p">Sonner</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 12 PROFILO ════════════════════════ -->
+<section class="screen" id="s12">
+  <div class="screen-head"><span class="num">12</span><h2>Profilo / Account</h2><span class="tag">hub · no-slice</span></div>
+  <p class="screen-sub">Hub che raccoglie pagamenti, promozioni, supporto, storico corse, logout. Non è una slice ma serve come contenitore di navigazione per le slice "account".</p>
+  <div class="frames">
+    <div class="device"><span class="label">📱 mobile</span>
+      <div class="phone"><div class="phone-screen">
+        <div class="body">
+          <div class="row" style="gap:12px;align-items:center"><div class="icon lg rnd"></div><div class="col"><div class="line t" style="width:110px"></div><div class="muted">customer</div></div></div>
+          <div class="card row between"><div class="line w50"></div><span class="muted">›</span></div>
+          <div class="card row between"><div class="line w40"></div><span class="muted">›</span></div>
+          <div class="card row between"><div class="line w60"></div><span class="muted">›</span></div>
+          <div class="card row between"><div class="line w50"></div><span class="muted">›</span></div>
+          <div class="btn ghost full" style="margin-top:auto">Esci</div>
+        </div>
+        <div class="bnav-wrap">
+          <div class="bnav-title">Bottom Navigation</div>
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Mappa</span></div>
+            <div><div class="ic"></div><span class="lbl">Sblocco</span></div>
+            <div><div class="ic"></div><span class="lbl">In corso</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Account</span></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="device"><span class="label">🖥 desktop</span>
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/account</span></div>
+        <div class="viewport"><div class="centered">
+          <div class="row" style="gap:12px"><div class="icon lg rnd"></div><div class="col"><div class="line t" style="width:130px"></div><div class="muted">customer</div></div></div>
+          <div class="card row between"><div class="muted">Metodi di pagamento</div><span>›</span></div>
+          <div class="card row between"><div class="muted">Promozioni</div><span>›</span></div>
+          <div class="card row between"><div class="muted">Storico corse</div><span>›</span></div>
+          <div class="card row between"><div class="muted">Supporto</div><span>›</span></div>
+          <div class="btn ghost full">Esci</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> AccountPage · <b>Route:</b> <code>/account</code> · <b>Slice:</b> — (hub di navigazione)</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li>link a <code>/payment-methods</code>, <code>/promotions</code>, <code>/support/new</code></li>
+        <li>storico corse (lista <code>Ride</code> passate → <code>/ride-summary/:id</code>)</li>
+        <li><code>signOut()</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
+        <span class="p">Avatar</span><span class="p">Card</span><span class="p">Separator</span><span class="p">Button</span><span class="p">List/Menu</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ SUMMARY ════════════════════════ -->
+<section class="screen" style="border-bottom:0">
+  <div class="screen-head"><span class="num">★</span><h2>Riepilogo per il team</h2></div>
+  <div class="annot" style="border-left-color:var(--primary)">
+    <div class="ah"><b>13 schermate · 16 slice customer coperte · ~2 pagine di supporto da creare (Login, Account)</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Bottom-nav (mobile) — 4 voci</h4><ul>
+        <li><b>Mappa</b> → <code>/</code> (NearbyVehicles)</li>
+        <li><b>Sblocco</b> → <code>/unlock-method/:id</code> (UnlockMethod)</li>
+        <li><b>In corso</b> → <code>/active-ride</code> (badge se prenotazione/corsa attiva)</li>
+        <li><b>Account</b> → <code>/account</code></li>
+      </ul>
+      <p class="muted">Le altre pagine sono raggiunte per push-navigation (dettaglio, prenota, fine corsa, riepilogo, pagamenti, promo, supporto, danno).</p></div>
+      <div class="cell"><h4>Componenti shadcn da installare</h4><div class="pillset">
+        <span class="p">button ✓</span><span class="p">card</span><span class="p">input</span><span class="p">label</span><span class="p">badge</span><span class="p">avatar</span><span class="p">sheet</span><span class="p">drawer</span><span class="p">dialog</span><span class="p">alert-dialog</span><span class="p">alert</span><span class="p">tabs</span><span class="p">toggle-group</span><span class="p">radio-group</span><span class="p">separator</span><span class="p">progress</span><span class="p">textarea</span><span class="p">form</span><span class="p">input-otp</span><span class="p">sonner</span><span class="p">scroll-area</span><span class="p">skeleton</span></div>
+        <p class="muted" style="margin-top:10px"><code>npx shadcn@latest add card input badge sheet drawer dialog ...</code></p>
+      </div>
+    </div>
+    <div class="cell" style="border-right:0"><h4>Buchi nel registry / decisioni aperte</h4><ul>
+      <li>Manca una slice <b>per lo stato "corsa in corso"</b> (avvio ride dopo unlock). Oggi c'è solo <code>PauseRide</code>. → creare <code>StartRide</code>/<code>ActiveRide</code> o accorpare.</li>
+      <li><b>Login / Account / Storico corse</b> non sono slice ma servono come pagine di supporto.</li>
+      <li><code>UnlockMethod</code>+<code>UnlockVehicle</code>: confermare se wizard 1-pagina o 2-route.</li>
+      <li>Scelta <b>libreria mappa</b> (impatta anche operator/admin).</li>
+      <li><code>SuggestBestVehicle</code> ed <code>EstimateWalkTime</code> non hanno pagina propria: vivono dentro Home/Dettaglio. OK lasciarle come slice "embedded"?</li>
+    </ul></div>
+  </div>
+  <p class="note">Prossimo passo proposto: stesso trattamento per <b>operator</b> (back-office desktop: sidebar + tabella + mappa flotta) in <code>docs/ui/operator.html</code> e <b>admin</b> (report/heatmap zone) in <code>docs/ui/admin.html</code>.</p>
+</section>
+
+</main>
+</body>
+</html>
