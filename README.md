@@ -117,7 +117,7 @@ Each slice is self-contained. No cross-slice imports.
 | VehicleDetails | ✅ Done | `GET /vehicles/[id]` | `GET /api/vehicles/:vehicleId` |
 | BookVehicle | ✅ Done | `GET /vehicles/[id]/book` | `POST /api/bookings` |
 | UnlockVehicle | ✅ Done | `GET /vehicles/[id]/unlock` | `POST /api/rides/unlock` |
-| EndRide | scaffold | — | `POST /api/rides/:rideId/end` |
+| EndRide | ✅ Done | `GET /rides/end` | `POST /api/rides/:rideId/end` |
 
 ## Test VehicleDetails
 
@@ -234,9 +234,61 @@ curl -X POST http://localhost:3001/api/rides/unlock \
 - Unlock method: mock/QR label shown in UI, no real BLE/QR scanning
 - `MockUnlockService` always returns success
 
-## TODO — next slice: EndRide
+## Test EndRide
 
-- [ ] `EndRide` slice: user ends active ride
-- [ ] `DrizzleRideRepository.end()` already implemented — needs EndRide handler to call it
-- [ ] Handler must verify ride is ACTIVE, calculate duration, call billing service, set vehicle AVAILABLE
-- [ ] Frontend: end-ride button (can live on `/vehicles/[id]/unlock` success screen or dedicated route)
+```bash
+# Start all apps
+pnpm dev
+
+# 1. Book a vehicle
+curl -X POST http://localhost:3001/api/bookings \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"u1","vehicleId":"v1"}'
+# → { booking: { id: "<bookingId>", ... } }
+
+# 2. Unlock (get rideId from response)
+curl -X POST http://localhost:3001/api/rides/unlock \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"u1","bookingId":"<bookingId>","startLat":45.4654,"startLng":9.1859}'
+# → { ride: { id: "<rideId>", status: "ACTIVE", ... } }
+
+# 3. End ride
+curl -X POST http://localhost:3001/api/rides/<rideId>/end \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"u1","endLat":45.4661,"endLng":9.1872,"distanceKm":2.3}'
+# → { ride: { id, status: "ENDED", endedAt, endLocation, distanceKm, durationMinutes, totalCost }, totalCost: { amount, currency } }
+```
+
+**Frontend flow:**
+1. Open http://localhost:3000
+2. Click any AVAILABLE vehicle → `VehicleDetails`
+3. Click "Prenota" → `BookVehicle`
+4. Click "Conferma prenotazione"
+5. Click "Vai allo sblocco →" → `UnlockVehicle`
+6. Click "Sblocca & Avvia corsa" → ride started, `activeRide` saved in Zustand
+7. Click **"Termina corsa"** → `/rides/end`
+8. Review active ride info (start time, ID, status badge)
+9. Click **"Termina corsa"** → calls `POST /api/rides/:rideId/end`
+10. See summary: duration, distance, total cost, parking badge, vehicle status
+
+**What happens on end ride:**
+- Handler fetches ride by ID, verifies `userId` and `status: ACTIVE`
+- `MockZoneValidator.isInParkingZone()` called → always returns `{ valid: true, zoneId: "zone-1" }`
+- `MockBillingService.calculateRideCost()` → `unlockFee + minutes × perMinuteRate`
+- Ride updated in DB: `status: ENDED`, `endedAt`, `endLocation`, `distanceKm`, `durationMinutes`, `totalCost`
+- Vehicle status → `AVAILABLE`, location updated to end coords
+- Zustand `clearSession()` called on success
+
+**MVP assumptions:**
+- Demo user: `u1` (hardcoded)
+- End coordinates: mock Milan coords (`45.4661, 9.1872`) — no real GPS
+- Distance: hardcoded `2.3 km` (demo value)
+- Parking validation: mock, always valid
+- Billing: `unlockFee (1 EUR) + minutes × 0.25 EUR/min`
+- No real billing, notifications, or incentives
+
+**Known limits:**
+- No real GPS end position
+- No geofencing or zone enforcement (mock always passes)
+- Billing is simplified (time-based only, no pause/km split)
+- No push notification to user

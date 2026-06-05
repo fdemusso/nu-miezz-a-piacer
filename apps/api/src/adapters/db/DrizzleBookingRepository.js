@@ -8,6 +8,7 @@ const INACTIVE_STATUSES = [
     contracts_1.BookingStatus.CANCELLED,
     contracts_1.BookingStatus.EXPIRED,
     contracts_1.BookingStatus.COMPLETED,
+    contracts_1.BookingStatus.CONVERTED_TO_RIDE,
 ];
 function rowToBooking(row) {
     return {

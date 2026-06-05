@@ -33,6 +33,7 @@ var BookingStatus;
     BookingStatus["PENDING"] = "PENDING";
     BookingStatus["CONFIRMED"] = "CONFIRMED";
     BookingStatus["ACTIVE"] = "ACTIVE";
+    BookingStatus["CONVERTED_TO_RIDE"] = "CONVERTED_TO_RIDE";
     BookingStatus["COMPLETED"] = "COMPLETED";
     BookingStatus["CANCELLED"] = "CANCELLED";
     BookingStatus["EXPIRED"] = "EXPIRED";

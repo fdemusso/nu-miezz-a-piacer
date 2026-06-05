@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -267,10 +268,10 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
               Questo veicolo non esiste o non è più disponibile.
             </p>
             <Button variant="outline" size="sm" asChild>
-              <a href="/">
+              <Link href="/">
                 <ChevronLeft className="mr-1 h-4 w-4" />
                 Torna alla lista
-              </a>
+              </Link>
             </Button>
           </div>
         )}
@@ -283,7 +284,7 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
             <FeaturesCard vehicle={vehicle} />
             {isAvailable ? (
               <Button className="w-full" size="lg" asChild>
-                <a href={`/vehicles/${vehicleId}/book`}>Prenota</a>
+                <Link href={`/vehicles/${vehicleId}/book`}>Prenota</Link>
               </Button>
             ) : (
               <Button className="w-full" size="lg" disabled>

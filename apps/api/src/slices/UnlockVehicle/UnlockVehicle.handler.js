@@ -32,7 +32,7 @@ function createUnlockVehicleHandler(deps) {
             res.status(502).json({ error: 'Failed to unlock vehicle' });
             return;
         }
-        await deps.bookingRepo.updateStatus(bookingId, contracts_1.BookingStatus.ACTIVE);
+        await deps.bookingRepo.updateStatus(bookingId, contracts_1.BookingStatus.CONVERTED_TO_RIDE);
         await deps.vehicleRepo.updateStatus(booking.vehicleId, contracts_1.VehicleStatus.IN_USE);
         res.status(201).json({ ride, unlockCode });
     };

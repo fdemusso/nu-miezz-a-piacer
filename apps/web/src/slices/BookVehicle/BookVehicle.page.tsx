@@ -106,10 +106,10 @@ function BookingConfirmed({ booking, vehicle, vehicleId }: { booking: Booking; v
       </Link>
 
       <Button className="w-full" variant="outline" size="lg" asChild>
-        <a href="/">
+        <Link href="/">
           <ChevronLeft className="mr-2 h-4 w-4" />
           Torna alla lista
-        </a>
+        </Link>
       </Button>
     </div>
   );

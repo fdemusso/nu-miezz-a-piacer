@@ -67,17 +67,16 @@ export function UnlockVehiclePage({ vehicleId, bookingId }: UnlockVehiclePagePro
             </CardContent>
           </Card>
 
-          <Card className="border-dashed">
-            <CardContent className="p-4 text-center space-y-1">
-              <p className="text-sm font-medium">Prossimo step</p>
-              <p className="text-xs text-muted-foreground">
-                Quando hai finito, termina la corsa con EndRide
-              </p>
-            </CardContent>
-          </Card>
+          <Button
+            className="w-full"
+            size="lg"
+            onClick={() => router.push('/rides/end')}
+          >
+            Termina corsa
+          </Button>
 
           <Button
-            variant="outline"
+            variant="ghost"
             className="w-full"
             onClick={() => router.push('/')}
           >

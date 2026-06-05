@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -82,7 +83,7 @@ function VehicleCard({ item }: { item: NearbyVehiclesItem }) {
         {isAvailable && (
           <div className="mt-3">
             <Button asChild size="sm" className="w-full">
-              <a href={`/vehicles/${item.id}`}>Vedi dettagli</a>
+              <Link href={`/vehicles/${item.id}`}>Vedi dettagli</Link>
             </Button>
           </div>
         )}
