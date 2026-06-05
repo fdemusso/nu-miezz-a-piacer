@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
@@ -40,7 +41,7 @@ function formatExpiry(date: Date | string) {
   return d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
 }
 
-function BookingConfirmed({ booking, vehicle }: { booking: Booking; vehicle: Vehicle | null }) {
+function BookingConfirmed({ booking, vehicle, vehicleId }: { booking: Booking; vehicle: Vehicle | null; vehicleId: string }) {
   return (
     <div className="p-4 space-y-4">
       <Card className="border-green-200 bg-green-50">
@@ -98,14 +99,11 @@ function BookingConfirmed({ booking, vehicle }: { booking: Booking; vehicle: Veh
         </CardContent>
       </Card>
 
-      <Card className="border-dashed">
-        <CardContent className="p-4 text-center space-y-1">
-          <p className="text-sm font-medium">Prossimo step</p>
-          <p className="text-xs text-muted-foreground">
-            Raggiungi il veicolo e sblocca con UnlockVehicle
-          </p>
-        </CardContent>
-      </Card>
+      <Link href={`/vehicles/${vehicleId}/unlock?bookingId=${booking.id}`} className="block">
+        <Button className="w-full" size="lg">
+          Vai allo sblocco →
+        </Button>
+      </Link>
 
       <Button className="w-full" variant="outline" size="lg" asChild>
         <a href="/">
@@ -158,7 +156,7 @@ export function BookVehiclePage({ vehicleId }: BookVehiclePageProps) {
   if (confirmed && booking) {
     return (
       <AppLayout title="Prenotazione" hideNav>
-        <BookingConfirmed booking={booking} vehicle={vehicle} />
+        <BookingConfirmed booking={booking} vehicle={vehicle} vehicleId={vehicleId} />
       </AppLayout>
     );
   }

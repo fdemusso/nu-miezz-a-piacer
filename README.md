@@ -116,7 +116,7 @@ Each slice is self-contained. No cross-slice imports.
 | NearbyVehicles | ✅ Done | `GET /` | `GET /api/vehicles/nearby` |
 | VehicleDetails | ✅ Done | `GET /vehicles/[id]` | `GET /api/vehicles/:vehicleId` |
 | BookVehicle | ✅ Done | `GET /vehicles/[id]/book` | `POST /api/bookings` |
-| UnlockVehicle | scaffold | — | `POST /api/rides/unlock` |
+| UnlockVehicle | ✅ Done | `GET /vehicles/[id]/unlock` | `POST /api/rides/unlock` |
 | EndRide | scaffold | — | `POST /api/rides/:rideId/end` |
 
 ## Test VehicleDetails
@@ -191,10 +191,52 @@ curl -X POST http://localhost:3001/api/bookings \
 - Demo user `u1` (demo@mvp.local) used as requester (no auth in MVP)
 - `setActiveBooking` called in Zustand store for future slices
 
-## TODO — next slice: UnlockVehicle
+## Test UnlockVehicle
 
-- [ ] UnlockVehicle: user arrives at vehicle, triggers unlock via booking ID
-- [ ] `DrizzleRideRepository` already scaffolded but not implemented
-- [ ] `MockUnlockService` already wired in composition root
-- [ ] Frontend: new page at `/rides/unlock/[bookingId]` or `/vehicles/[id]/unlock`
-- [ ] Handler must verify booking is CONFIRMED, vehicle is RESERVED, call unlockService
+```bash
+# Start all apps
+pnpm dev
+
+# 1. Book a vehicle (get bookingId from response)
+curl -X POST http://localhost:3001/api/bookings \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"u1","vehicleId":"v1"}'
+# → { booking: { id: "<bookingId>", status: "CONFIRMED", ... } }
+
+# 2. Unlock vehicle (use bookingId from step 1)
+curl -X POST http://localhost:3001/api/rides/unlock \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"u1","bookingId":"<bookingId>","startLat":45.4654,"startLng":9.1859}'
+# → 201 { ride: { id, userId, vehicleId, status: "ACTIVE", startedAt, startLocation }, unlockCode: "MOCK-UNLOCK-001" }
+```
+
+**Frontend flow:**
+1. Open http://localhost:3000
+2. Click any AVAILABLE vehicle → `VehicleDetails`
+3. Click "Prenota" → `BookVehicle` page
+4. Click "Conferma prenotazione" → booking confirmed
+5. Click **"Vai allo sblocco →"** → `/vehicles/[id]/unlock?bookingId=...`
+6. Review booking summary + mock unlock method (QR / Mock)
+7. Click **"Sblocca & Avvia corsa"**
+8. See ride confirmation: ID, start time, position, status badge "In corso"
+
+**What happens on unlock:**
+- Booking validated: must be `CONFIRMED` and belong to demo user `u1`
+- Zone check via `MockZoneValidator` (always passes)
+- `Ride` created in DB with `status: ACTIVE`, `startedAt: now`
+- `MockUnlockService.unlock()` called → returns `{ success: true, unlockCode: "MOCK-UNLOCK-001" }`
+- Booking status → `ACTIVE`
+- Vehicle status → `IN_USE`
+
+**MVP assumptions:**
+- Demo user hardcoded: `u1`
+- Start coordinates: hardcoded Milan Duomo (`45.4654, 9.1859`) — no real GPS
+- Unlock method: mock/QR label shown in UI, no real BLE/QR scanning
+- `MockUnlockService` always returns success
+
+## TODO — next slice: EndRide
+
+- [ ] `EndRide` slice: user ends active ride
+- [ ] `DrizzleRideRepository.end()` already implemented — needs EndRide handler to call it
+- [ ] Handler must verify ride is ACTIVE, calculate duration, call billing service, set vehicle AVAILABLE
+- [ ] Frontend: end-ride button (can live on `/vehicles/[id]/unlock` success screen or dedicated route)

@@ -7,6 +7,7 @@ const INACTIVE_STATUSES: BookingStatus[] = [
   BookingStatus.CANCELLED,
   BookingStatus.EXPIRED,
   BookingStatus.COMPLETED,
+  BookingStatus.CONVERTED_TO_RIDE,
 ];
 
 function rowToBooking(row: typeof bookings.$inferSelect): Booking {

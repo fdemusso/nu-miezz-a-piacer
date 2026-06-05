@@ -43,7 +43,7 @@ export function createUnlockVehicleHandler(deps: UnlockVehicleDeps) {
       return;
     }
 
-    await deps.bookingRepo.updateStatus(bookingId, BookingStatus.ACTIVE);
+    await deps.bookingRepo.updateStatus(bookingId, BookingStatus.CONVERTED_TO_RIDE);
     await deps.vehicleRepo.updateStatus(booking.vehicleId, VehicleStatus.IN_USE);
 
     res.status(201).json({ ride, unlockCode });
