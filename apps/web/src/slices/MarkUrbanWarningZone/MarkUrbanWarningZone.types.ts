@@ -1,6 +1,6 @@
-export type { } from '@vsa/contracts'
+// Local view-state types for the MarkUrbanWarningZone slice.
+// Import shared domain types only from '@vsa/contracts'.
 
 export interface MarkUrbanWarningZoneViewState {
-  loading: boolean
-  error: string | null
+  status: 'idle' | 'loading' | 'error'
 }

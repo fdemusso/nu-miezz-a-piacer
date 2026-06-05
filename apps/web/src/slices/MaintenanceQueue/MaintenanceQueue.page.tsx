@@ -1,13 +1,11 @@
-﻿import { useMaintenanceQueue } from './MaintenanceQueue.hook'
+import { useMaintenanceQueue } from './MaintenanceQueue.hook'
 
 export function MaintenanceQueuePage() {
-  const { loading, error } = useMaintenanceQueue()
-
+  const { status } = useMaintenanceQueue()
   return (
     <div>
-      <h1>MaintenanceQueue</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>MaintenanceQueue</h2>
+      <p>{status}</p>
     </div>
   )
 }

@@ -1,13 +1,11 @@
-﻿import { useHighDensityZoneMap } from './HighDensityZoneMap.hook'
+import { useHighDensityZoneMap } from './HighDensityZoneMap.hook'
 
 export function HighDensityZoneMapPage() {
-  const { loading, error } = useHighDensityZoneMap()
-
+  const { status } = useHighDensityZoneMap()
   return (
     <div>
-      <h1>HighDensityZoneMap</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>HighDensityZoneMap</h2>
+      <p>{status}</p>
     </div>
   )
 }

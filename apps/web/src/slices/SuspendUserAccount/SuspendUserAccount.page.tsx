@@ -1,13 +1,11 @@
-﻿import { useSuspendUserAccount } from './SuspendUserAccount.hook'
+import { useSuspendUserAccount } from './SuspendUserAccount.hook'
 
 export function SuspendUserAccountPage() {
-  const { loading, error } = useSuspendUserAccount()
-
+  const { status } = useSuspendUserAccount()
   return (
     <div>
-      <h1>SuspendUserAccount</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>SuspendUserAccount</h2>
+      <p>{status}</p>
     </div>
   )
 }

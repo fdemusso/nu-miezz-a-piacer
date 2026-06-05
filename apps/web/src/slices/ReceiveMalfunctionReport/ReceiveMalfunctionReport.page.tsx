@@ -1,13 +1,11 @@
-﻿import { useReceiveMalfunctionReport } from './ReceiveMalfunctionReport.hook'
+import { useReceiveMalfunctionReport } from './ReceiveMalfunctionReport.hook'
 
 export function ReceiveMalfunctionReportPage() {
-  const { loading, error } = useReceiveMalfunctionReport()
-
+  const { status } = useReceiveMalfunctionReport()
   return (
     <div>
-      <h1>ReceiveMalfunctionReport</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ReceiveMalfunctionReport</h2>
+      <p>{status}</p>
     </div>
   )
 }

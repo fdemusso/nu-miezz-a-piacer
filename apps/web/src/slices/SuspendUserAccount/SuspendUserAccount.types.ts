@@ -1,6 +1,6 @@
-export type { } from '@vsa/contracts'
+// Local view-state types for the SuspendUserAccount slice.
+// Import shared domain types only from '@vsa/contracts'.
 
 export interface SuspendUserAccountViewState {
-  loading: boolean
-  error: string | null
+  status: 'idle' | 'loading' | 'error'
 }

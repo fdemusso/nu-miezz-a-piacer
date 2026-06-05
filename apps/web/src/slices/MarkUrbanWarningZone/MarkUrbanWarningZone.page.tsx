@@ -1,13 +1,11 @@
-﻿import { useMarkUrbanWarningZone } from './MarkUrbanWarningZone.hook'
+import { useMarkUrbanWarningZone } from './MarkUrbanWarningZone.hook'
 
 export function MarkUrbanWarningZonePage() {
-  const { loading, error } = useMarkUrbanWarningZone()
-
+  const { status } = useMarkUrbanWarningZone()
   return (
     <div>
-      <h1>MarkUrbanWarningZone</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>MarkUrbanWarningZone</h2>
+      <p>{status}</p>
     </div>
   )
 }

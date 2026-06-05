@@ -1,13 +1,11 @@
-﻿import { useManagePaymentMethod } from './ManagePaymentMethod.hook'
+import { useManagePaymentMethod } from './ManagePaymentMethod.hook'
 
 export function ManagePaymentMethodPage() {
-  const { loading, error } = useManagePaymentMethod()
-
+  const { status } = useManagePaymentMethod()
   return (
     <div>
-      <h1>ManagePaymentMethod</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ManagePaymentMethod</h2>
+      <p>{status}</p>
     </div>
   )
 }

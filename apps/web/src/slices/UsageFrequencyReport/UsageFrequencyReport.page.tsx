@@ -1,13 +1,11 @@
-﻿import { useUsageFrequencyReport } from './UsageFrequencyReport.hook'
+import { useUsageFrequencyReport } from './UsageFrequencyReport.hook'
 
 export function UsageFrequencyReportPage() {
-  const { loading, error } = useUsageFrequencyReport()
-
+  const { status } = useUsageFrequencyReport()
   return (
     <div>
-      <h1>UsageFrequencyReport</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>UsageFrequencyReport</h2>
+      <p>{status}</p>
     </div>
   )
 }

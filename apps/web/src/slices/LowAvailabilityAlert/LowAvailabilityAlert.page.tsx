@@ -1,13 +1,11 @@
-﻿import { useLowAvailabilityAlert } from './LowAvailabilityAlert.hook'
+import { useLowAvailabilityAlert } from './LowAvailabilityAlert.hook'
 
 export function LowAvailabilityAlertPage() {
-  const { loading, error } = useLowAvailabilityAlert()
-
+  const { status } = useLowAvailabilityAlert()
   return (
     <div>
-      <h1>LowAvailabilityAlert</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>LowAvailabilityAlert</h2>
+      <p>{status}</p>
     </div>
   )
 }

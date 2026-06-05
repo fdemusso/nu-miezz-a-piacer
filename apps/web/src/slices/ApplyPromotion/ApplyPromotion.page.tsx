@@ -1,13 +1,11 @@
-﻿import { useApplyPromotion } from './ApplyPromotion.hook'
+import { useApplyPromotion } from './ApplyPromotion.hook'
 
 export function ApplyPromotionPage() {
-  const { loading, error } = useApplyPromotion()
-
+  const { status } = useApplyPromotion()
   return (
     <div>
-      <h1>ApplyPromotion</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ApplyPromotion</h2>
+      <p>{status}</p>
     </div>
   )
 }

@@ -1,13 +1,11 @@
-﻿import { useVehicleBatteryStatus } from './VehicleBatteryStatus.hook'
+import { useVehicleBatteryStatus } from './VehicleBatteryStatus.hook'
 
 export function VehicleBatteryStatusPage() {
-  const { loading, error } = useVehicleBatteryStatus()
-
+  const { status } = useVehicleBatteryStatus()
   return (
     <div>
-      <h1>VehicleBatteryStatus</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>VehicleBatteryStatus</h2>
+      <p>{status}</p>
     </div>
   )
 }

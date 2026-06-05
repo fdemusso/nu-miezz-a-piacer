@@ -1,13 +1,11 @@
-﻿import { useExpiredBookingsMonitor } from './ExpiredBookingsMonitor.hook'
+import { useExpiredBookingsMonitor } from './ExpiredBookingsMonitor.hook'
 
 export function ExpiredBookingsMonitorPage() {
-  const { loading, error } = useExpiredBookingsMonitor()
-
+  const { status } = useExpiredBookingsMonitor()
   return (
     <div>
-      <h1>ExpiredBookingsMonitor</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ExpiredBookingsMonitor</h2>
+      <p>{status}</p>
     </div>
   )
 }

@@ -1,13 +1,11 @@
-﻿import { useUnlockMethod } from './UnlockMethod.hook'
+import { useUnlockMethod } from './UnlockMethod.hook'
 
 export function UnlockMethodPage() {
-  const { loading, error } = useUnlockMethod()
-
+  const { status } = useUnlockMethod()
   return (
     <div>
-      <h1>UnlockMethod</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>UnlockMethod</h2>
+      <p>{status}</p>
     </div>
   )
 }

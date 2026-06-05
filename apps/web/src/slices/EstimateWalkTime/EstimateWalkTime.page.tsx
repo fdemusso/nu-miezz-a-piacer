@@ -1,13 +1,11 @@
-﻿import { useEstimateWalkTime } from './EstimateWalkTime.hook'
+import { useEstimateWalkTime } from './EstimateWalkTime.hook'
 
 export function EstimateWalkTimePage() {
-  const { loading, error } = useEstimateWalkTime()
-
+  const { status } = useEstimateWalkTime()
   return (
     <div>
-      <h1>EstimateWalkTime</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>EstimateWalkTime</h2>
+      <p>{status}</p>
     </div>
   )
 }

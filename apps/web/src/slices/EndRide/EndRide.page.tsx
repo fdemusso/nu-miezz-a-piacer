@@ -1,13 +1,11 @@
-﻿import { useEndRide } from './EndRide.hook'
+import { useEndRide } from './EndRide.hook'
 
 export function EndRidePage() {
-  const { loading, error } = useEndRide()
-
+  const { status } = useEndRide()
   return (
     <div>
-      <h1>EndRide</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>EndRide</h2>
+      <p>{status}</p>
     </div>
   )
 }

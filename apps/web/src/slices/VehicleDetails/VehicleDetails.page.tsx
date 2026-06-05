@@ -1,13 +1,11 @@
-﻿import { useVehicleDetails } from './VehicleDetails.hook'
+import { useVehicleDetails } from './VehicleDetails.hook'
 
 export function VehicleDetailsPage() {
-  const { loading, error } = useVehicleDetails()
-
+  const { status } = useVehicleDetails()
   return (
     <div>
-      <h1>VehicleDetails</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>VehicleDetails</h2>
+      <p>{status}</p>
     </div>
   )
 }

@@ -1,13 +1,11 @@
-﻿import { useManageSupportTickets } from './ManageSupportTickets.hook'
+import { useManageSupportTickets } from './ManageSupportTickets.hook'
 
 export function ManageSupportTicketsPage() {
-  const { loading, error } = useManageSupportTickets()
-
+  const { status } = useManageSupportTickets()
   return (
     <div>
-      <h1>ManageSupportTickets</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ManageSupportTickets</h2>
+      <p>{status}</p>
     </div>
   )
 }

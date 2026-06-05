@@ -59,6 +59,10 @@ Adding a new repository or service: define the interface in `packages/contracts/
 
 Core types live in `packages/contracts/src/index.ts`: `Vehicle`, `Booking`, `Ride`, `ZoneRule`, `FleetZone`, etc. Roles are `customer | operator | admin`. Vehicle types are `scooter | bike | ebike | car`. Zone types are `parking | forbidden | sensitive | incentive`.
 
+## Design
+
+UI must be responsive and scale from desktop to mobile. Use Tailwind's mobile-first breakpoints (`sm`, `md`, `lg`) consistently. Components from shadcn/ui are the default building blocks. Do not hardcode pixel widths — prefer fluid layouts (`w-full`, `max-w-*`, `flex`, `grid`).
+
 ## Project context
 
 `sprint/` contains sprint planning notes (Italian) — useful for understanding scope of in-progress work. `studio migrazione VSA.md` documents the migration to VSA. `ClassDiagram.svg` shows the domain model.

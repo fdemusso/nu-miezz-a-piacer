@@ -1,12 +1,6 @@
-import type { VehicleType, Money } from '@vsa/contracts'
-
-export interface VehiclePricing {
-  unlockCost: Money
-  perMinuteCost: Money
-}
+// Local view-state types for the EstimateRideCost slice.
+// Import shared domain types only from '@vsa/contracts'.
 
 export interface EstimateRideCostViewState {
-  loading: boolean
-  error: string | null
-  getPricing: (type: VehicleType) => VehiclePricing
+  status: 'idle' | 'loading' | 'error'
 }

@@ -1,13 +1,11 @@
-﻿import { useConfigureParkingBonus } from './ConfigureParkingBonus.hook'
+import { useConfigureParkingBonus } from './ConfigureParkingBonus.hook'
 
 export function ConfigureParkingBonusPage() {
-  const { loading, error } = useConfigureParkingBonus()
-
+  const { status } = useConfigureParkingBonus()
   return (
     <div>
-      <h1>ConfigureParkingBonus</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ConfigureParkingBonus</h2>
+      <p>{status}</p>
     </div>
   )
 }

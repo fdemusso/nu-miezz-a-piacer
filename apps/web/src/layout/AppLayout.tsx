@@ -3,8 +3,8 @@ import { BottomNav } from './BottomNav'
 
 export function AppLayout() {
   return (
-    <div className="app-shell">
-      <main className="page-content">
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <main style={{ flex: 1, overflow: 'auto' }}>
         <Outlet />
       </main>
       <BottomNav />

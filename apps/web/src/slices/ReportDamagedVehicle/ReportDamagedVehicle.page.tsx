@@ -1,13 +1,11 @@
-﻿import { useReportDamagedVehicle } from './ReportDamagedVehicle.hook'
+import { useReportDamagedVehicle } from './ReportDamagedVehicle.hook'
 
 export function ReportDamagedVehiclePage() {
-  const { loading, error } = useReportDamagedVehicle()
-
+  const { status } = useReportDamagedVehicle()
   return (
     <div>
-      <h1>ReportDamagedVehicle</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>ReportDamagedVehicle</h2>
+      <p>{status}</p>
     </div>
   )
 }

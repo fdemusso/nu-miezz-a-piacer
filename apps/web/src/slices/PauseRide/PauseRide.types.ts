@@ -1,19 +1,6 @@
-export interface ActiveRideVehicle {
-  id: string
-  type: 'scooter' | 'bike' | 'ebike' | 'car'
-  label: string
-  batteryLevel: number
-}
+// Local view-state types for the PauseRide slice.
+// Import shared domain types only from '@vsa/contracts'.
 
 export interface PauseRideViewState {
-  loading: boolean
-  error: string | null
-  vehicle: ActiveRideVehicle | null
-  elapsedSeconds: number
-  formattedTime: string
-  estimatedCost: number
-  isPaused: boolean
-  togglePause: () => void
-  isEndingRide: boolean
-  endRide: () => void
+  status: 'idle' | 'loading' | 'error'
 }

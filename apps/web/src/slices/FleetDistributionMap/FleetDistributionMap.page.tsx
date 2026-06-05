@@ -1,13 +1,11 @@
-﻿import { useFleetDistributionMap } from './FleetDistributionMap.hook'
+import { useFleetDistributionMap } from './FleetDistributionMap.hook'
 
 export function FleetDistributionMapPage() {
-  const { loading, error } = useFleetDistributionMap()
-
+  const { status } = useFleetDistributionMap()
   return (
     <div>
-      <h1>FleetDistributionMap</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>FleetDistributionMap</h2>
+      <p>{status}</p>
     </div>
   )
 }

@@ -1,13 +1,11 @@
-﻿import { useUnlockVehicle } from './UnlockVehicle.hook'
+import { useUnlockVehicle } from './UnlockVehicle.hook'
 
 export function UnlockVehiclePage() {
-  const { loading, error } = useUnlockVehicle()
-
+  const { status } = useUnlockVehicle()
   return (
     <div>
-      <h1>UnlockVehicle</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>UnlockVehicle</h2>
+      <p>{status}</p>
     </div>
   )
 }

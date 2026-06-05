@@ -1,13 +1,11 @@
-﻿import { useDefineSensitiveZone } from './DefineSensitiveZone.hook'
+import { useDefineSensitiveZone } from './DefineSensitiveZone.hook'
 
 export function DefineSensitiveZonePage() {
-  const { loading, error } = useDefineSensitiveZone()
-
+  const { status } = useDefineSensitiveZone()
   return (
     <div>
-      <h1>DefineSensitiveZone</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>DefineSensitiveZone</h2>
+      <p>{status}</p>
     </div>
   )
 }

@@ -1,13 +1,11 @@
-﻿import { useVehicleGPSHistory } from './VehicleGPSHistory.hook'
+import { useVehicleGPSHistory } from './VehicleGPSHistory.hook'
 
 export function VehicleGPSHistoryPage() {
-  const { loading, error } = useVehicleGPSHistory()
-
+  const { status } = useVehicleGPSHistory()
   return (
     <div>
-      <h1>VehicleGPSHistory</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <h2>VehicleGPSHistory</h2>
+      <p>{status}</p>
     </div>
   )
 }
