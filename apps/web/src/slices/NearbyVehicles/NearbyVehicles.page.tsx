@@ -6,8 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MapPin, Zap, Bike, Car, AlertCircle, Navigation } from 'lucide-react';
+import { MapPin, Zap, Bike, Car, AlertCircle, Navigation, Clock, Play } from 'lucide-react';
 import { VehicleType, VehicleStatus } from '@mvp/contracts';
+import { useAppStore } from '@/stores/app.store';
 import { useNearbyVehicles } from './NearbyVehicles.hook';
 import type { NearbyVehiclesItem } from './NearbyVehicles.types';
 
@@ -48,6 +49,60 @@ function batteryColor(level: number) {
 function formatDistance(meters: number) {
   if (meters < 1000) return `${meters} m`;
   return `${(meters / 1000).toFixed(1)} km`;
+}
+
+function ActiveSessionBanner() {
+  const activeRide = useAppStore((s) => s.activeRide);
+  const activeBooking = useAppStore((s) => s.activeBooking);
+  const selectedVehicle = useAppStore((s) => s.selectedVehicle);
+
+  if (activeRide) {
+    const startedAt = new Date(activeRide.startedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    const label = selectedVehicle ? `${selectedVehicle.model}` : 'Veicolo';
+    return (
+      <Link href="/rides/end">
+        <div className="flex items-center justify-between rounded-lg bg-green-50 border border-green-200 px-4 py-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700">
+              <Play className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-green-900">Corsa in corso</p>
+              <p className="text-xs text-green-700">{label} · iniziata alle {startedAt}</p>
+            </div>
+          </div>
+          <Button size="sm" className="shrink-0 bg-green-700 hover:bg-green-800">
+            Termina
+          </Button>
+        </div>
+      </Link>
+    );
+  }
+
+  if (activeBooking) {
+    const expiresAt = new Date(activeBooking.expiresAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    const label = selectedVehicle ? `${selectedVehicle.model}` : 'Veicolo';
+    return (
+      <Link href={`/vehicles/${activeBooking.vehicleId}/unlock`}>
+        <div className="flex items-center justify-between rounded-lg bg-blue-50 border border-blue-200 px-4 py-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+              <Clock className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-blue-900">Prenotazione attiva</p>
+              <p className="text-xs text-blue-700">{label} · scade alle {expiresAt}</p>
+            </div>
+          </div>
+          <Button size="sm" className="shrink-0 bg-blue-700 hover:bg-blue-800">
+            Sblocca
+          </Button>
+        </div>
+      </Link>
+    );
+  }
+
+  return null;
 }
 
 function VehicleCard({ item }: { item: NearbyVehiclesItem }) {
@@ -108,6 +163,8 @@ export function NearbyVehiclesPage() {
   return (
     <AppLayout title="Vicino a te" activeNav="/">
       <div className="p-4 space-y-4">
+        <ActiveSessionBanner />
+
         {usingFallback && (
           <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
             <Navigation className="h-3.5 w-3.5 shrink-0" />
