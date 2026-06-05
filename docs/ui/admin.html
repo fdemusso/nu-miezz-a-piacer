@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nu miezz a piacer · Wireframe Admin</title>
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     WIREFRAME KIT — monocromatico, niente colori brand.
+     Tutto è greybox: serve a discutere STRUTTURA e FLUSSO.
+     (stesso kit di operatore/customer — Admin web-only)
+     ───────────────────────────────────────────────────────────── */
+  :root{
+    --ink:#080c17; --mut:#6b7280; --line:#c9;
+    --bg:#f8f9fd; --paper:#ffffff;
+    --wire:#d4d7db; --wire2:#bcc0c5; --dark:#3260d7;
+    --primary:#3260d7; --secondary:#83a1ef; --accent:#4e7cf3; --danger:#b00;
+    --r:10px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:Inter,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.45}
+  a{color:inherit}
+  header.top{padding:28px 24px;border-bottom:1px solid var(--wire2);background:var(--paper);position:sticky;top:0;z-index:50}
+  header.top h1{margin:0 0 4px;font-size:20px}
+  header.top p{margin:0;color:var(--mut);font-size:13px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
+  .legend b{color:var(--ink);font-weight:600}
+  .legend .sw{display:inline-block;width:22px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px;border:1px solid var(--wire2)}
+  nav.toc{padding:18px 24px;background:var(--paper);border-bottom:1px solid var(--wire2);font-size:13px}
+  nav.toc a{display:inline-block;margin:0 14px 8px 0;color:var(--mut);text-decoration:none}
+  nav.toc a:hover{color:var(--ink)}
+  main{max-width:1180px;margin:0 auto;padding:8px 24px 80px}
+
+  /* SCREEN BLOCK */
+  .screen{padding:40px 0;border-bottom:1px dashed var(--wire2)}
+  .screen-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .screen-head .num{font-family:var(--mono);font-size:13px;color:var(--mut)}
+  .screen-head h2{margin:0;font-size:18px}
+  .screen-head .tag{font-size:11px;font-family:var(--mono);background:var(--wire);padding:2px 8px;border-radius:20px;color:var(--dark)}
+  .screen-sub{color:var(--mut);font-size:13px;margin:0 0 20px;max-width:760px}
+  .frames{display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start}
+  .device{display:flex;flex-direction:column;gap:8px}
+  .device .label{font-family:var(--mono);font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+
+  /* DESKTOP / BROWSER */
+  .desktop{width:760px;background:var(--paper);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid var(--wire2)}
+  .desktop .chrome{height:30px;background:#e7e9ec;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid var(--wire2)}
+  .desktop .chrome i{width:10px;height:10px;border-radius:50%;background:#c4c8cd;display:inline-block}
+  .desktop .chrome .url{flex:1;margin-left:10px;height:16px;background:#fff;border-radius:4px;border:1px solid var(--wire2);font:11px var(--mono);color:var(--mut);display:flex;align-items:center;padding:0 8px}
+  .viewport{padding:0;min-height:420px;display:flex;flex-direction:column}
+
+  /* WIRE PRIMITIVES */
+  .appbar{display:flex;align-items:center;gap:10px;padding:14px 14px;border-bottom:1px solid var(--wire);font-weight:600;font-size:14px}
+  .appbar .sp{flex:1}
+  .body{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+  .body.nopad{padding:0}
+  .wb{background:var(--wire);border-radius:8px}
+  .card{border:1px solid var(--wire2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+  .row{display:flex;gap:10px;align-items:center}
+  .col{display:flex;flex-direction:column;gap:8px}
+  .between{justify-content:space-between}
+  .line{height:9px;background:var(--wire);border-radius:5px}
+  .line.t{height:12px}
+  .w40{width:40%}.w50{width:50%}.w60{width:60%}.w70{width:70%}.w80{width:80%}.w30{width:30%}.w25{width:25%}.full{width:100%}
+  .icon{width:34px;height:34px;border-radius:9px;background:var(--wire2);flex:none}
+  .icon.sm{width:24px;height:24px;border-radius:6px}
+  .icon.lg{width:48px;height:48px;border-radius:12px}
+  .icon.rnd{border-radius:50%}
+  .btn{background:var(--dark);color:#fff;border-radius:9px;padding:11px;text-align:center;font-size:13px;font-weight:600}
+  .btn.ghost{background:transparent;color:var(--dark);border:1.5px solid var(--wire2)}
+  .btn.danger{background:transparent;color:var(--danger);border:1.5px solid #e3b6b6}
+  .btn.sm{padding:8px 12px;font-size:12px}
+  .input{border:1.5px solid var(--wire2);border-radius:9px;padding:11px;font-size:12px;color:var(--mut);background:var(--paper)}
+  .chip{border:1px solid var(--wire2);border-radius:20px;padding:5px 11px;font-size:11px;color:var(--dark);background:var(--paper);white-space:nowrap}
+  .chip.solid{background:var(--dark);color:#fff;border-color:var(--dark)}
+  .muted{color:var(--mut);font-size:11px}
+  .h{font-weight:600;font-size:13px}
+  .big{font-size:22px;font-weight:700}
+  /* MAP placeholder */
+  .map{flex:1;position:relative;min-height:280px;background:
+      linear-gradient(0deg,rgba(0,0,0,.04) 1px,transparent 1px) 0 0/100% 26px,
+      linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px) 0 0/26px 100%,
+      #f3f4f6;
+    overflow:hidden}
+  .map .road{position:absolute;background:#e3e5e8}
+  .map .zone{position:absolute;border:2px dashed var(--dark);background:rgba(58,63,69,.06);border-radius:8px}
+  .map .zone.solid{border-style:solid}
+  .maplegend{position:absolute;top:10px;left:10px;background:var(--paper);border:1px solid var(--wire2);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:5px;z-index:3}
+  .maplegend .row{gap:6px}
+  .maplegend .sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--wire2)}
+  /* heatmap blobs (greybox: intensità = opacità) */
+  .heat{position:absolute;border-radius:50%;filter:blur(6px)}
+  .heat.lo{background:rgba(58,63,69,.18)}
+  .heat.mid{background:rgba(58,63,69,.32)}
+  .heat.hi{background:rgba(58,63,69,.5)}
+  /* bar chart (greybox) */
+  .bars{display:flex;align-items:flex-end;gap:10px;height:120px;padding:6px 2px 0}
+  .bars .grp{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%}
+  .bars .bar{width:7px;border-radius:3px 3px 0 0;background:var(--wire2)}
+  .bars .bar.d{background:var(--dark)}
+  .axis{display:flex;gap:10px;padding:4px 2px 0}
+  .axis .t{flex:1;height:7px;background:var(--wire);border-radius:4px}
+  /* top nav */
+  .bnav{display:flex;border-bottom:1px solid var(--wire);background:var(--paper)}
+  .bnav div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0}
+  .bnav .ic{width:20px;height:20px;border-radius:6px;background:var(--wire2)}
+  .bnav .ic.on{background:var(--dark)}
+  .bnav .lbl{font-size:9px;color:var(--mut);letter-spacing:.02em;text-align:center;line-height:1}
+  .bnav .lbl.on{color:var(--dark);font-weight:700}
+  .badge{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:5px;background:var(--wire);color:var(--dark)}
+  /* tabs (segmented) */
+  .seg{display:flex;gap:4px;background:var(--bg);border:1px solid var(--wire2);border-radius:9px;padding:3px}
+  .seg div{flex:1;text-align:center;font-size:11px;font-weight:600;padding:6px;border-radius:6px;color:var(--mut)}
+  .seg div.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;font-size:12px}
+  .tbl th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);padding:7px 10px;border-bottom:1px solid var(--wire);background:var(--bg);font-weight:600}
+  .tbl td{padding:8px 10px;border-bottom:1px solid var(--wire)}
+  /* desktop two-pane */
+  .pane{display:flex;height:460px}
+  .pane .left{flex:1.4;border-right:1px solid var(--wire);display:flex;flex-direction:column}
+  .pane .right{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+  .topbar{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--wire)}
+  .topbar .sp{flex:1}
+  .scrollarea{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .scrim{position:absolute;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;padding:20px}
+  .dialog{background:var(--paper);border-radius:12px;padding:16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+  .fab{position:absolute;right:16px;bottom:16px;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:3}
+
+  /* ANNOTATION */
+  .annot{margin-top:24px;border:1px solid var(--wire2);border-left:3px solid var(--dark);border-radius:8px;background:var(--paper)}
+  .annot .ah{padding:10px 16px;border-bottom:1px solid var(--wire);font-size:12px;font-family:var(--mono);color:var(--mut);display:flex;gap:8px;flex-wrap:wrap}
+  .annot .ah b{color:var(--ink)}
+  .annot .grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  @media(max-width:780px){.annot .grid{grid-template-columns:1fr}}
+  .annot .cell{padding:14px 16px;border-top:1px solid var(--wire);border-right:1px solid var(--wire)}
+  .annot .cell:nth-child(even){border-right:0}
+  .annot h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)}
+  .annot ul{margin:0;padding-left:16px;font-size:13px}
+  .annot li{margin:3px 0}
+  .annot code{font-family:var(--mono);font-size:12px;background:var(--wire);padding:1px 5px;border-radius:4px}
+  .pillset{display:flex;flex-wrap:wrap;gap:6px}
+  .pillset .p{font-family:var(--mono);font-size:11px;border:1px solid var(--wire2);border-radius:6px;padding:3px 7px;background:#fafbfc}
+  .note{font-size:12px;color:var(--mut);background:#fafbfc;border:1px dashed var(--wire2);border-radius:8px;padding:10px 12px;margin-top:14px}
+  .kbd{font-family:var(--mono);font-size:11px;background:var(--wire);border-radius:4px;padding:1px 5px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>nu miezz a piacer — Wireframe <b>Amministrazione Pubblica</b> (web only)</h1>
+  <p>Greybox / lo-fi. Serve a discutere struttura, flusso e mappatura slice→pagina→componenti. Colori e branding NON sono finali. Interfaccia orientata a reportistica e gestione territoriale: solo browser desktop.</p>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--wire)"></span> contenuto / dato dinamico</span>
+    <span><span class="sw" style="background:var(--primary)"></span> azione primaria (CTA)</span>
+    <span><span class="sw" style="background:var(--paper)"></span> input / outline</span>
+    <span><b>Navigazione:</b> TopNav 4 voci (Dashboard · Zone · Report · Altro)</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#s01">01 · Dashboard mobilità</a>
+  <a href="#s02">02 · Gestione zone</a>
+  <a href="#s03">03 · Report periodici</a>
+  <a href="#nav">★ Nav / Riepilogo</a>
+</nav>
+
+<main>
+
+<!-- ════════════════════════ 01 DASHBOARD MOBILITÀ ════════════════════════ -->
+<section class="screen" id="s01">
+  <div class="screen-head"><span class="num">01</span><h2>Home — Dashboard mobilità</h2><span class="tag">hub</span></div>
+  <p class="screen-sub">Schermata d'ingresso dell'ente. Riga di <b>KPI</b> (corse totali, veicoli attivi, zone critiche) filtrabili per periodo, <b>grafico utilizzo</b> per tipo veicolo e fascia oraria, e <b>heatmap</b> densità traffico. Da qui si lancia la generazione di un report periodico.</p>
+  <div class="frames">
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/admin/dashboard</span></div>
+        <div class="viewport">
+          <div class="bnav">
+            <div><div class="ic on"></div><span class="lbl on">Dashboard</span></div>
+            <div><div class="ic"></div><span class="lbl">Zone</span></div>
+            <div><div class="ic"></div><span class="lbl">Report</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
+          </div>
+          <div class="topbar"><div class="icon sm rnd"></div><div class="col" style="gap:4px"><div class="line t w60" style="width:120px"></div><div class="muted">Amministrazione Pubblica</div></div><div class="sp"></div><div class="chip">Ultimo mese</div><div class="chip solid">Genera report</div></div>
+          <div class="body">
+            <div class="row" style="gap:10px;align-items:stretch">
+              <div class="card" style="flex:1"><div class="muted">Corse totali</div><div class="big">12.480</div><div class="line w40"></div></div>
+              <div class="card" style="flex:1"><div class="muted">Veicoli attivi</div><div class="big">312</div><div class="line w40"></div></div>
+              <div class="card" style="flex:1;border-color:var(--danger)"><div class="muted">Zone critiche</div><div class="big">4</div><div class="line w40"></div></div>
+            </div>
+            <div class="row" style="gap:10px;align-items:stretch">
+              <div class="card" style="flex:1.1">
+                <div class="row between"><div class="h">Utilizzo per tipo · fascia oraria</div><div class="row" style="gap:8px"><span class="muted">Bici</span><span class="muted">Scooter</span><span class="muted">Auto</span></div></div>
+                <div class="bars">
+                  <div class="grp"><div class="bar" style="height:30%"></div><div class="bar d" style="height:50%"></div><div class="bar" style="height:20%"></div></div>
+                  <div class="grp"><div class="bar" style="height:55%"></div><div class="bar d" style="height:80%"></div><div class="bar" style="height:35%"></div></div>
+                  <div class="grp"><div class="bar" style="height:70%"></div><div class="bar d" style="height:95%"></div><div class="bar" style="height:45%"></div></div>
+                  <div class="grp"><div class="bar" style="height:40%"></div><div class="bar d" style="height:60%"></div><div class="bar" style="height:30%"></div></div>
+                  <div class="grp"><div class="bar" style="height:65%"></div><div class="bar d" style="height:85%"></div><div class="bar" style="height:50%"></div></div>
+                </div>
+                <div class="axis"><div class="t"></div><div class="t"></div><div class="t"></div><div class="t"></div><div class="t"></div></div>
+              </div>
+              <div class="card" style="flex:1;padding:0;overflow:hidden">
+                <div class="map" style="min-height:200px">
+                  <div class="maplegend">
+                    <div class="row"><span class="sw" style="background:rgba(58,63,69,.18)"></span><span class="muted">bassa</span></div>
+                    <div class="row"><span class="sw" style="background:rgba(58,63,69,.32)"></span><span class="muted">media</span></div>
+                    <div class="row"><span class="sw" style="background:rgba(58,63,69,.5)"></span><span class="muted">alta</span></div>
+                  </div>
+                  <div class="heat hi" style="left:120px;top:60px;width:90px;height:90px"></div>
+                  <div class="heat mid" style="left:200px;top:120px;width:70px;height:70px"></div>
+                  <div class="heat lo" style="left:60px;top:130px;width:80px;height:80px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> AdminDashboardPage · <b>Route:</b> <code>/admin/dashboard</code> · <b>Slice:</b> <b>UsageFrequencyReport</b> + MobilityPeriodicReport + HighDensityZoneMap</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadKpi(range)</code> ⇐ <code>UsageFrequencyReport</code> (corse / veicoli / zone critiche)</li>
+        <li><code>loadUsageByType(range)</code> → bar chart per tipo + fascia oraria (AP.01)</li>
+        <li><code>loadHeatmap()</code> ⇐ <code>HighDensityZoneMap</code> (AP.04)</li>
+        <li><code>setPeriod(from, to)</code> → ricarica tutta la dashboard</li>
+        <li>Genera report → naviga a Report periodici (03) con periodo preselezionato</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Card</span><span class="p">Badge</span><span class="p">Button</span><span class="p">Popover</span><span class="p">Calendar</span><span class="p">Tabs</span><span class="p">Skeleton</span></div>
+        <p class="muted" style="margin-top:8px">Grafici: libreria esterna (<code>recharts</code>) — non shadcn. Heatmap: layer Leaflet (<code>leaflet.heat</code>) + OSM.</p>
+      </div>
+    </div>
+    <div class="note">📌 Nessuna mappa di flotta operativa: la mappa serve solo a heatmap e zone. Intensità heatmap nel greybox resa con opacità — palette reale in theming.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 02 GESTIONE ZONE ════════════════════════ -->
+<section class="screen" id="s02">
+  <div class="screen-head"><span class="num">02</span><h2>Gestione zone</h2><span class="tag">mappa + form</span></div>
+  <p class="screen-sub">Mappa interattiva con i poligoni delle zone esistenti (colore = tipo). Tab Permanenti/Temporanee, lista zone a destra, FAB per disegnare una nuova zona. Il form (overlay) crea una zona sensibile o di allerta urbana. Tap su zona esistente → modifica / disattiva.</p>
+  <div class="frames">
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/admin/zones</span></div>
+        <div class="viewport" style="position:relative">
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Dashboard</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Zone</span></div>
+            <div><div class="ic"></div><span class="lbl">Report</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
+          </div>
+          <div class="pane">
+            <div class="left map">
+              <div class="maplegend">
+                <div class="row"><span class="sw" style="background:rgba(58,63,69,.06);border:1px dashed var(--dark)"></span><span class="muted">ZTL / Pedonale</span></div>
+                <div class="row"><span class="sw" style="background:rgba(58,63,69,.12);border:1px solid var(--dark)"></span><span class="muted">Scuola / Ospedale</span></div>
+                <div class="row"><span class="sw" style="background:rgba(176,0,0,.1);border:1px solid var(--danger)"></span><span class="muted">Cantiere / Allerta</span></div>
+              </div>
+              <div class="road" style="left:0;right:0;top:170px;height:14px"></div>
+              <div class="road" style="top:0;bottom:0;left:200px;width:12px"></div>
+              <div class="zone" style="left:60px;top:60px;width:120px;height:90px"></div>
+              <div class="zone solid" style="left:240px;top:90px;width:100px;height:80px"></div>
+              <div class="zone solid" style="left:150px;top:210px;width:130px;height:70px;border-color:var(--danger);background:rgba(176,0,0,.08)"></div>
+              <div class="fab">+</div>
+            </div>
+            <div class="right">
+              <div class="seg"><div class="on">Permanenti</div><div>Temporanee</div></div>
+              <div class="card"><div class="row between"><div class="line t w50"></div><span class="chip">ZTL</span></div><div class="muted">attiva</div></div>
+              <div class="card"><div class="row between"><div class="line t w40"></div><span class="chip">Scuola</span></div><div class="muted">attiva</div></div>
+              <div class="card" style="border-color:var(--danger)"><div class="row between"><div class="line t w50"></div><span class="chip">Cantiere</span></div><div class="muted">temporanea · scade tra 5 gg</div></div>
+              <div class="card"><div class="row between"><div class="line t w30"></div><span class="chip">Ospedale</span></div><div class="muted">attiva</div></div>
+            </div>
+          </div>
+          <!-- overlay: form nuova zona -->
+          <div class="scrim">
+            <div class="dialog">
+              <div class="h">Nuova zona</div>
+              <div class="muted">Disegna il poligono sulla mappa, poi compila i dettagli.</div>
+              <div class="muted">Nome zona</div><div class="input">Es. Centro storico</div>
+              <div class="muted">Tipo zona</div><div class="input">ZTL / Pedonale / Scuola / Ospedale / Cantiere</div>
+              <div class="row" style="gap:8px"><div class="col" style="flex:1"><div class="muted">Validità</div><div class="seg"><div class="on">Permanente</div><div>Temporanea</div></div></div></div>
+              <div class="row" style="gap:8px"><div class="input" style="flex:1">Dal</div><div class="input" style="flex:1">Al</div></div>
+              <div class="muted">Regole accesso</div><div class="input">Veicoli ammessi / divieto</div>
+              <div class="row between"><div class="btn ghost sm">Annulla</div><div class="btn sm">Salva zona</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> ZoneManagementPage · <b>Route:</b> <code>/admin/zones</code> · <b>Slice:</b> <b>DefineSensitiveZone</b> + MarkUrbanWarningZone</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>loadZones(scope)</code> → poligoni esistenti (permanenti / temporanee)</li>
+        <li><code>drawPolygon()</code> → FAB + → modalità disegno su mappa</li>
+        <li><code>saveZone(type, geom, validity, rules)</code> → <code>DefineSensitiveZone</code> (AP.05) o <code>MarkUrbanWarningZone</code> (AP.03)</li>
+        <li>tap zona → sheet dettaglio (modifica)</li>
+        <li><code>deactivate(zoneId)</code> → <code>IZoneRepository.deactivate()</code></li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Tabs</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Dialog</span><span class="p">Form</span><span class="p">Input</span><span class="p">Select</span><span class="p">Calendar</span><span class="p">Button</span><span class="p">AlertDialog</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px">Disegno poligoni = <code>leaflet-draw</code> (esterno). <code>ZoneType</code> dal dominio. Disattiva sempre dietro conferma.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 03 REPORT PERIODICI ════════════════════════ -->
+<section class="screen" id="s03">
+  <div class="screen-head"><span class="num">03</span><h2>Report periodici</h2><span class="tag">report · export</span></div>
+  <p class="screen-sub">Costruzione di un report aggregato: selettore periodo e tipo veicolo, preview con grafici, tabella dati aggregati, export PDF/CSV. In fondo, lo storico dei report già generati con link di download.</p>
+  <div class="frames">
+    <div class="device">
+      <div class="desktop"><div class="chrome"><i></i><i></i><i></i><span class="url">app.numiezz.it/admin/reports</span></div>
+        <div class="viewport">
+          <div class="bnav">
+            <div><div class="ic"></div><span class="lbl">Dashboard</span></div>
+            <div><div class="ic"></div><span class="lbl">Zone</span></div>
+            <div><div class="ic on"></div><span class="lbl on">Report</span></div>
+            <div><div class="ic"></div><span class="lbl">Altro</span></div>
+          </div>
+          <div class="topbar"><div class="icon sm rnd"></div><div class="line w25"></div><div class="sp"></div><div class="chip">Settimana</div><div class="chip solid">Mese</div><div class="chip">Custom</div></div>
+          <div class="scrollarea">
+            <div class="row" style="gap:8px"><span class="chip solid">Tutti</span><span class="chip">Bici</span><span class="chip">Scooter</span><span class="chip">Auto</span></div>
+            <div class="row" style="gap:10px;align-items:stretch">
+              <div class="card" style="flex:1;align-items:center"><div class="muted">Corse</div><div class="big">12.480</div></div>
+              <div class="card" style="flex:1;align-items:center"><div class="muted">Km percorsi</div><div class="big">38.902</div></div>
+              <div class="card" style="flex:1;align-items:center"><div class="muted">Utenti unici</div><div class="big">2.140</div></div>
+            </div>
+            <div class="card">
+              <div class="h">Andamento corse</div>
+              <div class="bars">
+                <div class="grp"><div class="bar d" style="height:40%"></div></div>
+                <div class="grp"><div class="bar d" style="height:65%"></div></div>
+                <div class="grp"><div class="bar d" style="height:55%"></div></div>
+                <div class="grp"><div class="bar d" style="height:85%"></div></div>
+                <div class="grp"><div class="bar d" style="height:70%"></div></div>
+                <div class="grp"><div class="bar d" style="height:95%"></div></div>
+                <div class="grp"><div class="bar d" style="height:60%"></div></div>
+              </div>
+            </div>
+            <table class="tbl">
+              <thead><tr><th>Periodo</th><th>Tipo</th><th>Corse</th><th>Km</th><th>Ore utilizzo</th></tr></thead>
+              <tbody>
+                <tr><td><div class="line w70"></div></td><td><span class="chip">Bici</span></td><td><div class="line w50"></div></td><td><div class="line w50"></div></td><td><div class="line w40"></div></td></tr>
+                <tr><td><div class="line w70"></div></td><td><span class="chip">Scooter</span></td><td><div class="line w50"></div></td><td><div class="line w50"></div></td><td><div class="line w40"></div></td></tr>
+                <tr><td><div class="line w70"></div></td><td><span class="chip">Auto</span></td><td><div class="line w50"></div></td><td><div class="line w50"></div></td><td><div class="line w40"></div></td></tr>
+              </tbody>
+            </table>
+            <div class="row" style="gap:8px"><div class="btn sm">Esporta PDF</div><div class="btn ghost sm">Esporta CSV</div></div>
+            <div class="h" style="margin-top:6px">Storico report generati</div>
+            <div class="card row between"><div class="line w50"></div><div class="chip">Download</div></div>
+            <div class="card row between"><div class="line w40"></div><div class="chip">Download</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="annot">
+    <div class="ah"><b>Pagina:</b> PeriodicReportPage · <b>Route:</b> <code>/admin/reports</code> · <b>Slice:</b> <b>MobilityPeriodicReport</b> + UsageFrequencyReport</div>
+    <div class="grid">
+      <div class="cell"><h4>Funzioni / azioni</h4><ul>
+        <li><code>setRange('week'|'month'|custom)</code> · <code>filterByType([...])</code></li>
+        <li><code>loadAggregates()</code> ⇐ <code>UsageFrequencyReport</code> (corse / km / utenti unici)</li>
+        <li><code>exportPdf()</code> · <code>exportCsv()</code> → <code>MobilityPeriodicReport</code> (AP.02)</li>
+        <li><code>loadHistory()</code> → report già generati + link download</li>
+        <li>empty state se nessun dato nel periodo</li>
+      </ul></div>
+      <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
+        <span class="p">Popover</span><span class="p">Calendar</span><span class="p">Badge</span><span class="p">Card</span><span class="p">Table</span><span class="p">Button</span><span class="p">ScrollArea</span><span class="p">Skeleton</span><span class="p">Sonner</span></div>
+        <p class="muted" style="margin-top:8px">Grafici = <code>recharts</code>. Export PDF lato server o <code>jspdf</code>; CSV da dati grezzi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ NAV / SUMMARY ════════════════════════ -->
+<section class="screen" id="nav" style="border-bottom:0">
+  <div class="screen-head"><span class="num">★</span><h2>TopNav &amp; Riepilogo per il team</h2></div>
+  <div class="annot" style="border-left-color:var(--primary)">
+    <div class="ah"><b>3 schermate · 5 slice admin coperte · login condiviso (no-slice) · web-only</b></div>
+    <div class="grid">
+      <div class="cell"><h4>Top-nav — 4 voci (3 tab + overflow)</h4><ul>
+        <li><b>Dashboard</b> → <code>/admin/dashboard</code> (UsageFrequencyReport + HighDensityZoneMap)</li>
+        <li><b>Zone</b> → <code>/admin/zones</code> (DefineSensitiveZone + MarkUrbanWarningZone)</li>
+        <li><b>Report</b> → <code>/admin/reports</code> (MobilityPeriodicReport)</li>
+        <li><b>Altro</b> → overlay: Profilo ente, Logout</li>
+      </ul>
+      <p class="muted">Heatmap densità (AP.04) e KPI vivono dentro la Dashboard, non come pagina autonoma. Allerta urbana (AP.03) è un tipo di zona dentro Gestione zone.</p></div>
+      <div class="cell"><h4>Slice → pagina</h4><ul>
+        <li><code>UsageFrequencyReport</code> (AP.01) → Dashboard + Report</li>
+        <li><code>MobilityPeriodicReport</code> (AP.02) → Report</li>
+        <li><code>HighDensityZoneMap</code> (AP.04) → Dashboard (heatmap)</li>
+        <li><code>DefineSensitiveZone</code> (AP.05) → Zone</li>
+        <li><code>MarkUrbanWarningZone</code> (AP.03) → Zone</li>
+      </ul></div>
+    </div>
+    <div class="cell" style="border-right:0"><h4>Componenti shadcn da installare</h4><div class="pillset">
+      <span class="p">card</span><span class="p">badge</span><span class="p">button</span><span class="p">tabs</span><span class="p">table</span><span class="p">dialog</span><span class="p">alert-dialog</span><span class="p">form</span><span class="p">input</span><span class="p">select</span><span class="p">label</span><span class="p">popover</span><span class="p">calendar</span><span class="p">scroll-area</span><span class="p">skeleton</span><span class="p">sonner</span></div>
+      <p class="muted" style="margin-top:10px">Librerie esterne: <code>recharts</code> (grafici), <code>react-leaflet</code> + <code>leaflet.heat</code> + <code>leaflet-draw</code> (heatmap, poligoni zone).</p>
+    </div>
+    <div class="cell" style="border-right:0"><h4>Decisioni aperte</h4><ul>
+      <li><b>Libreria grafici</b>: <code>recharts</code> proposto — confermare vs alternative (visx, chart.js).</li>
+      <li><b>Export PDF</b>: lato server (qualità) vs client <code>jspdf</code> (semplicità).</li>
+      <li><b>ZoneType</b>: allineare enum dominio (parking/forbidden/sensitive/incentive) con i tipi UI (ZTL/Pedonale/Scuola/Ospedale/Cantiere).</li>
+      <li><b>TopNav role-aware</b>: estendere <code>BottomNav.tsx</code> con variante admin da <code>getVisibleSlices('admin')</code>.</li>
+    </ul></div>
+  </div>
+  <p class="note">Set completo dei 3 profili: <code>customer.html</code> · <code>UI_Mockup_Operatore.html</code> · <code>admin.html</code>.</p>
+</section>
+
+</main>
+</body>
+</html>
