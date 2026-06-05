@@ -41,6 +41,7 @@ export function buildContainer() {
   const reportingService = new StandardReportingService(rideRepo, fleetZoneRepo)
 
   return {
+    auth: { userRepo },
     nearbyVehicles: { vehicleRepo },
     bookVehicle: { userRepo, vehicleRepo, bookingRepo },
     estimateRideCost: { vehicleRepo, pricingService, promotionService },

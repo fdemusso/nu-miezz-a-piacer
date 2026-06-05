@@ -16,6 +16,8 @@ export const sliceRegistry: Record<string, { roles: UserRole[] }> = {
   VehicleBatteryStatus:    { roles: ['customer'] },
   UnlockVehicle:           { roles: ['customer'] },
   UnlockMethod:            { roles: ['customer'] },
+  StartRide:               { roles: ['customer'] },
+  ActiveRide:              { roles: ['customer'] },
   ManagePaymentMethod:     { roles: ['customer'] },
   PauseRide:               { roles: ['customer'] },
 

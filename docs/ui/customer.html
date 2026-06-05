@@ -214,6 +214,69 @@
   </div>
 </section>
 
+<!-- ════════════════════════ DEV NOTE — PAGINE PROTETTE ════════════════════════ -->
+<section class="screen" id="dev-protected">
+  <div class="screen-head"><span class="num">⚙</span><h2>Requisiti per ogni pagina post-login</h2><span class="tag">dev note</span></div>
+  <p class="screen-sub">Tutto ciò che è necessario e sufficiente per creare una pagina accessibile solo da utenti autenticati, in coerenza con l'infrastruttura auth già implementata.</p>
+  <div class="annot" style="border-left-color:var(--primary)">
+    <div class="ah"><b>File coinvolti:</b>
+      <code>App.tsx</code> · <code>auth/ProtectedRoute.tsx</code> · <code>auth/AuthContext.tsx</code> · <code>layout/AppLayout.tsx</code>
+    </div>
+    <div class="grid">
+
+      <div class="cell"><h4>1 · Registrare la route in App.tsx</h4>
+        <ul>
+          <li>Aggiungere la <code>&lt;Route&gt;</code> <em>dentro</em> il blocco <code>&lt;Route element=&#123;&lt;ProtectedRoute /&gt;&#125;&gt;&lt;Route element=&#123;&lt;AppLayout /&gt;&#125;&gt;</code>.</li>
+          <li>Nessun guard aggiuntivo: <code>ProtectedRoute</code> verifica <code>user !== null</code> e redirige a <code>/login</code> prima del mount.</li>
+          <li>Esempio: <code>&lt;Route path="/mia-pagina" element=&#123;&lt;MiaPagina /&gt;&#125; /&gt;</code></li>
+        </ul>
+      </div>
+
+      <div class="cell"><h4>2 · Leggere lo stato auth con <code>useAuth()</code></h4>
+        <ul>
+          <li><code>import &#123; useAuth &#125; from '@/auth/AuthContext'</code></li>
+          <li><code>const &#123; user, logout &#125; = useAuth()</code> — <code>user</code> è garantito non-null dentro <code>ProtectedRoute</code>.</li>
+          <li><code>user.role</code> → <code>'customer' | 'operator' | 'admin'</code> — usato per condizionare UI e navigazione.</li>
+          <li><code>user.name</code>, <code>user.userId</code> — per personalizzare intestazioni e filtrare dati.</li>
+        </ul>
+      </div>
+
+      <div class="cell"><h4>3 · Autenticare ogni chiamata API</h4>
+        <ul>
+          <li>Tutte le <code>fetch('/api/...')</code> devono includere l'header:</li>
+          <li><code>Authorization: `Bearer $&#123;user.token&#125;`</code></li>
+          <li>Il token è già in memoria (e in localStorage) tramite <code>AuthContext</code>; non va riletto manualmente.</li>
+          <li>Se l'API risponde <code>401</code> → chiamare <code>logout()</code> per svuotare la sessione e tornare al login.</li>
+        </ul>
+      </div>
+
+      <div class="cell"><h4>4 · Struttura minima di una page component</h4>
+        <div class="pillset" style="margin-bottom:10px">
+          <span class="p">useAuth()</span>
+          <span class="p">user.token → fetch</span>
+          <span class="p">user.role → guard UI</span>
+          <span class="p">logout() → esci</span>
+        </div>
+        <ul>
+          <li>Il layout (BottomNav, header) è fornito da <code>AppLayout</code> — la page non deve ridisegnarlo.</li>
+          <li>Non usare <code>&lt;Navigate to="/login"&gt;</code> nelle pagine: ci pensa già <code>ProtectedRoute</code>.</li>
+          <li>Non servono hook <code>useEffect</code> per verificare la sessione: se il componente monta, l'utente è loggato.</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="note">
+      <b>Schema del tipo <code>AuthUser</code></b> (da <code>auth/AuthContext.tsx</code>):<br>
+      <code>&#123; token: string, userId: string, role: 'customer'|'operator'|'admin', name: string &#125;</code><br><br>
+      <b>Checklist rapida per una nuova pagina protetta:</b><br>
+      ☐ Route aggiunta dentro <code>&lt;ProtectedRoute&gt;&lt;AppLayout&gt;</code> in <code>App.tsx</code><br>
+      ☐ <code>useAuth()</code> chiamato per leggere <code>user</code><br>
+      ☐ Ogni <code>fetch</code> passa <code>Authorization: Bearer &#123;user.token&#125;</code><br>
+      ☐ Nessuna logica di redirect/guard scritta nella pagina stessa
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ 01 HOME / MAPPA ════════════════════════ -->
 <section class="screen" id="s01">
   <div class="screen-head"><span class="num">01</span><h2>Home — Mappa veicoli vicini</h2><span class="tag">hub</span></div>
@@ -287,10 +350,10 @@
       </ul></div>
       <div class="cell"><h4>Componenti shadcn + librerie</h4><div class="pillset">
         <span class="p">Sheet/Drawer</span><span class="p">Card</span><span class="p">Badge</span><span class="p">Button</span><span class="p">ToggleGroup</span><span class="p">ScrollArea</span><span class="p">Skeleton</span></div>
-        <p class="muted" style="margin-top:8px">Mappa: libreria esterna (<code>react-leaflet</code> / MapLibre) — non è shadcn. Bottom-nav custom (3 slice + Profilo).</p>
+        <p class="muted" style="margin-top:8px">Mappa: <b>renderer custom su GeoJSON</b> — nessuna libreria esterna (react-leaflet / MapLibre). Il team ha un GeoJSON di un villaggio fittizio disegnato a mano; il renderer sarà progettato a parte. Bottom-nav custom (3 slice + Profilo).</p>
       </div>
     </div>
-    <div class="note">📌 La mappa sarà basata su GeoJSON. Implementazione affidata a Flavio.</div>
+    <div class="note">✅ Mappa = renderer custom su GeoJSON fittizio (villaggio disegnato a mano). Nessuna tile esterna. Implementazione rimandato: il componente mappa sarà un placeholder finché il renderer non è pronto.</div>
   </div>
 </section>
 
@@ -433,20 +496,21 @@
     </div>
   </div>
   <div class="annot">
-    <div class="ah"><b>Pagina:</b> UnlockMethodPage → UnlockVehiclePage · <b>Route:</b> <code>/unlock-method/:id</code> · <code>/unlock/:id</code> · <b>Slice:</b> <b>UnlockMethod</b> + <b>UnlockVehicle</b></div>
+    <div class="ah"><b>Pagina:</b> UnlockVehiclePage · <b>Route:</b> <code>/unlock/:id</code> · <b>Slice:</b> <b>UnlockMethod</b> + <b>UnlockVehicle</b> (wizard 1-pagina, 2 step)</div>
     <div class="grid">
       <div class="cell"><h4>Funzioni / azioni</h4><ul>
-        <li><code>getAvailableMethods(vehicle)</code> → <code>IUnlockService</code> (filtra i 2 metodi)</li>
-        <li><code>unlock(vehicleId, method)</code> → <code>IUnlockService.unlock</code></li>
-        <li>al successo → avvia <code>Ride</code>, vai a <code>/active-ride</code></li>
+        <li>Step 1 — <code>getAvailableMethods(vehicle)</code> → <code>IUnlockService</code> (filtra i 2 metodi)</li>
+        <li>Step 2 — <code>unlock(vehicleId, method)</code> → <code>IUnlockService.unlock</code></li>
+        <li>al successo → chiama <code>StartRide</code>, poi vai a <code>/active-ride</code></li>
         <li>QR ⇒ accesso fotocamera; PIN ⇒ tastierino</li>
+        <li>step gestito da stato locale; nessuna route <code>/unlock-method/:id</code></li>
       </ul></div>
       <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
         <span class="p">RadioGroup</span><span class="p">Card</span><span class="p">Button</span><span class="p">InputOTP</span><span class="p">Sonner</span><span class="p">Dialog</span></div>
         <p class="muted" style="margin-top:8px"><code>InputOTP</code> per il PIN. Scanner QR = libreria esterna (<code>html5-qrcode</code>).</p>
       </div>
     </div>
-    <div class="note">❓ Da decidere: il flusso <code>UnlockMethod</code>+<code>UnlockVehicle</code> sono 2 route o 1 pagina a step (wizard)? Proposta nel mock: 1 pagina, 2 step.</div>
+    <div class="note">✅ Wizard 1-pagina su route unica <code>/unlock/:id</code>. Le due slice (<code>UnlockMethod</code>, <code>UnlockVehicle</code>) restano nel registry ma condividono la stessa pagina con step interno.</div>
   </div>
 </section>
 
@@ -495,20 +559,21 @@
     </div>
   </div>
   <div class="annot">
-    <div class="ah"><b>Pagina:</b> ActiveRidePage (+ PauseRide) · <b>Route:</b> <code>/active-ride</code> · <b>Slice:</b> <b>PauseRide</b> (+ stato Ride condiviso)</div>
+    <div class="ah"><b>Pagina:</b> ActiveRidePage · <b>Route:</b> <code>/active-ride</code> · <b>Slice:</b> <b>StartRide</b> + <b>ActiveRide</b> + <b>PauseRide</b></div>
     <div class="grid">
       <div class="cell"><h4>Funzioni / azioni</h4><ul>
-        <li>all'avvio: <code>findActiveByUser</code> → <code>IRideRepository</code></li>
-        <li><code>pause(rideId)</code> / <code>resume(rideId)</code> → <code>Ride.paused</code></li>
+        <li><code>UnlockVehicle</code> al successo chiama <code>startRide(vehicleId)</code> → <code>StartRide</code> (crea <code>Ride</code> sul backend)</li>
+        <li>all'avvio pagina: <code>findActiveByUser</code> → <code>IRideRepository</code> (<code>ActiveRide</code>)</li>
+        <li><code>pause(rideId)</code> / <code>resume(rideId)</code> → <code>Ride.paused</code> (<code>PauseRide</code>)</li>
         <li>costo live (tick client) confermato server a fine corsa</li>
         <li>Termina → <code>/end-ride</code></li>
       </ul></div>
       <div class="cell"><h4>Componenti shadcn</h4><div class="pillset">
         <span class="p">Card</span><span class="p">Badge</span><span class="p">Button</span><span class="p">Sheet</span><span class="p">Sonner</span></div>
-        <p class="muted" style="margin-top:8px">Nota: nel registry esiste <code>PauseRide</code> ma non una slice "ActiveRide" esplicita — va aggiunta o accorpata a EndRide.</p>
+        <p class="muted" style="margin-top:8px"><code>StartRide</code> e <code>ActiveRide</code> aggiunte al registry. <code>StartRide</code> è chiamata da <code>UnlockVehicle</code> prima del redirect; <code>ActiveRide</code> gestisce il polling/timer live su questa pagina.</p>
       </div>
     </div>
-    <div class="note">❓ Manca una slice "RideInProgress / Avvia corsa": oggi <code>UnlockVehicle</code> finisce nel nulla. Da chiarire dove nasce/vive lo stato corsa.</div>
+    <div class="note">✅ Flusso chiarito: <code>UnlockVehicle</code> → <code>StartRide</code> (crea Ride) → redirect <code>/active-ride</code> → <code>ActiveRide</code> (timer + costo live) + <code>PauseRide</code> (pausa/riprendi).</div>
   </div>
 </section>
 
@@ -855,11 +920,11 @@
 <section class="screen" style="border-bottom:0">
   <div class="screen-head"><span class="num">★</span><h2>Riepilogo per il team</h2></div>
   <div class="annot" style="border-left-color:var(--primary)">
-    <div class="ah"><b>13 schermate · 16 slice customer coperte · ~2 pagine di supporto da creare (Login, Account)</b></div>
+    <div class="ah"><b>13 schermate · 18 slice customer coperte · ~2 pagine di supporto da creare (Login, Account)</b></div>
     <div class="grid">
       <div class="cell"><h4>Bottom-nav (mobile) — 4 voci</h4><ul>
         <li><b>Mappa</b> → <code>/</code> (NearbyVehicles)</li>
-        <li><b>Sblocco</b> → <code>/unlock-method/:id</code> (UnlockMethod)</li>
+        <li><b>Sblocco</b> → <code>/unlock/:id</code> (wizard UnlockMethod+UnlockVehicle)</li>
         <li><b>In corso</b> → <code>/active-ride</code> (badge se prenotazione/corsa attiva)</li>
         <li><b>Account</b> → <code>/account</code></li>
       </ul>
@@ -869,12 +934,12 @@
         <p class="muted" style="margin-top:10px"><code>npx shadcn@latest add card input badge sheet drawer dialog ...</code></p>
       </div>
     </div>
-    <div class="cell" style="border-right:0"><h4>Buchi nel registry / decisioni aperte</h4><ul>
-      <li>Manca una slice <b>per lo stato "corsa in corso"</b> (avvio ride dopo unlock). Oggi c'è solo <code>PauseRide</code>. → creare <code>StartRide</code>/<code>ActiveRide</code> o accorpare.</li>
-      <li><b>Login / Account / Storico corse</b> non sono slice ma servono come pagine di supporto.</li>
-      <li><code>UnlockMethod</code>+<code>UnlockVehicle</code>: confermare se wizard 1-pagina o 2-route.</li>
-      <li>Scelta <b>libreria mappa</b> (impatta anche operator/admin).</li>
-      <li><code>SuggestBestVehicle</code> ed <code>EstimateWalkTime</code> non hanno pagina propria: vivono dentro Home/Dettaglio. OK lasciarle come slice "embedded"?</li>
+    <div class="cell" style="border-right:0"><h4>Decisioni architetturali — state chiuse</h4><ul>
+      <li>✅ <b>Slice corsa in corso</b>: aggiunte <code>StartRide</code> e <code>ActiveRide</code> al registry. <code>UnlockVehicle</code> chiama <code>StartRide</code> poi redirige a <code>/active-ride</code>.</li>
+      <li>✅ <b>Sblocco wizard</b>: route unica <code>/unlock/:id</code>, step interno via stato locale. Nessuna route <code>/unlock-method/:id</code>.</li>
+      <li>✅ <b>Libreria mappa</b>: renderer custom su GeoJSON fittizio. Nessuna lib esterna. Rimandato.</li>
+      <li>✅ <b><code>SuggestBestVehicle</code> + <code>EstimateWalkTime</code></b>: slice embedded senza route propria — hook importati dentro Home e Dettaglio.</li>
+      <li>ℹ️ <b>Login / Account / Storico corse</b>: non sono slice, sono pagine di supporto (cross-cutting).</li>
     </ul></div>
   </div>
   <p class="note">Prossimo passo proposto: stesso trattamento per <b>operator</b> (back-office desktop: sidebar + tabella + mappa flotta) in <code>docs/ui/operator.html</code> e <b>admin</b> (report/heatmap zone) in <code>docs/ui/admin.html</code>.</p>
