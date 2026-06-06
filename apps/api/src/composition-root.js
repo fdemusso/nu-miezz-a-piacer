@@ -18,6 +18,9 @@ const UnlockVehicle_router_1 = require("./slices/UnlockVehicle/UnlockVehicle.rou
 const EndRide_router_1 = require("./slices/EndRide/EndRide.router");
 const PauseRide_router_1 = require("./slices/PauseRide/PauseRide.router");
 const RestoreSession_router_1 = require("./slices/RestoreSession/RestoreSession.router");
+const Profile_router_1 = require("./slices/Profile/Profile.router");
+const History_router_1 = require("./slices/History/History.router");
+const Search_router_1 = require("./slices/Search/Search.router");
 function createCompositionRoot() {
     // Concrete adapters
     const vehicleRepo = new DrizzleVehicleRepository_1.DrizzleVehicleRepository(db_1.db);
@@ -29,7 +32,6 @@ function createCompositionRoot() {
     const zoneValidator = new MockZoneValidator_1.MockZoneValidator();
     const billingService = new MockBillingService_1.MockBillingService();
     const gpsTrackingService = new MockGpsTrackingService_1.MockGpsTrackingService();
-    void userRepo;
     void fleetZoneRepo;
     void gpsTrackingService;
     // Wire slice routers with their dependencies
@@ -41,5 +43,8 @@ function createCompositionRoot() {
         endRideRouter: (0, EndRide_router_1.createEndRideRouter)({ rideRepo, vehicleRepo, billingService, zoneValidator }),
         pauseRideRouter: (0, PauseRide_router_1.createPauseRideRouter)({ rideRepo, vehicleRepo }),
         restoreSessionRouter: (0, RestoreSession_router_1.createRestoreSessionRouter)({ rideRepo, bookingRepo, vehicleRepo }),
+        profileRouter: (0, Profile_router_1.createProfileRouter)({ userRepo }),
+        historyRouter: (0, History_router_1.createHistoryRouter)({ rideRepo }),
+        searchRouter: (0, Search_router_1.createSearchRouter)({ vehicleRepo }),
     };
 }

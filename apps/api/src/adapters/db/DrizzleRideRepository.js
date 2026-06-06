@@ -40,6 +40,14 @@ class DrizzleRideRepository {
             .limit(1);
         return rows[0] ? rowToRide(rows[0]) : null;
     }
+    async findByUserId(userId) {
+        const rows = await this.db
+            .select()
+            .from(schema_1.rides)
+            .where((0, drizzle_orm_1.eq)(schema_1.rides.userId, userId))
+            .orderBy((0, drizzle_orm_1.desc)(schema_1.rides.startedAt));
+        return rows.map(rowToRide);
+    }
     async create(data) {
         const id = crypto.randomUUID();
         await this.db.insert(schema_1.rides).values({

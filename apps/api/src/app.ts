@@ -17,6 +17,7 @@ export function createApp(): express.Express {
 
   // Mount slice routers
   app.use('/api/vehicles', root.nearbyVehiclesRouter);
+  app.use('/api/vehicles', root.searchRouter);
   app.use('/api/vehicles', root.vehicleDetailsRouter);
   app.use('/api/bookings', root.bookVehicleRouter);
   app.use('/api/rides', root.unlockVehicleRouter);
@@ -25,7 +26,6 @@ export function createApp(): express.Express {
   app.use('/api/session', root.restoreSessionRouter);
   app.use('/api/profile', root.profileRouter);
   app.use('/api/history', root.historyRouter);
-  app.use('/api/vehicles', root.searchRouter);
 
   app.use(notFound);
   app.use(errorHandler);

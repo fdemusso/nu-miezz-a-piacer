@@ -6,4 +6,7 @@ export declare function createCompositionRoot(): {
     endRideRouter: import("express").Router;
     pauseRideRouter: import("express").Router;
     restoreSessionRouter: import("express").Router;
+    profileRouter: import("express").Router;
+    historyRouter: import("express").Router;
+    searchRouter: import("express").Router;
 };

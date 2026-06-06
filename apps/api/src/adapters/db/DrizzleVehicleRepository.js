@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrizzleVehicleRepository = void 0;
 const drizzle_orm_1 = require("drizzle-orm");
+const contracts_1 = require("@mvp/contracts");
 const schema_1 = require("../../db/schema");
 function haversineKm(a, b) {
     const R = 6371;
@@ -46,6 +47,25 @@ class DrizzleVehicleRepository {
             .filter((row) => haversineKm(coords, { lat: row.lat, lng: row.lng }) <= radiusKm)
             .sort((a, b) => haversineKm(coords, { lat: a.lat, lng: a.lng }) -
             haversineKm(coords, { lat: b.lat, lng: b.lng }))
+            .map(rowToVehicle);
+    }
+    async search(filters) {
+        const rows = await this.db.select().from(schema_1.vehicles);
+        return rows
+            .filter((row) => {
+            if (filters.type && row.type !== filters.type)
+                return false;
+            if (filters.onlyAvailable && row.status !== contracts_1.VehicleStatus.AVAILABLE)
+                return false;
+            if (filters.query) {
+                const q = filters.query.toLowerCase();
+                const plate = (row.licensePlate ?? '').toLowerCase();
+                const model = row.model.toLowerCase();
+                if (!plate.includes(q) && !model.includes(q))
+                    return false;
+            }
+            return true;
+        })
             .map(rowToVehicle);
     }
     async updateStatus(id, status) {

@@ -37,7 +37,7 @@ function statusVariant(status: VehicleStatus): 'default' | 'secondary' | 'outlin
 
 function VehicleCard({ vehicle }: { vehicle: SearchVehicleItem }) {
   return (
-    <a href={`/vehicles/${vehicle.id}`}>
+    <a href={`/vehicles/${vehicle.id}`} className="block">
       <Card className="active:scale-[0.98] transition-transform">
         <CardContent className="p-4 space-y-3">
           <div className="flex items-start justify-between gap-2">
@@ -198,7 +198,7 @@ export function SearchPage() {
             <p className="text-xs text-muted-foreground px-1">
               {results.total} {results.total === 1 ? 'veicolo' : 'veicoli'}
             </p>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {results.vehicles.map((v) => (
                 <VehicleCard key={v.id} vehicle={v} />
               ))}

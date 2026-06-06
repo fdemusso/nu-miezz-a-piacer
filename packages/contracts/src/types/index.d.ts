@@ -63,6 +63,24 @@ export interface Vehicle {
     model: string;
     imageUrl?: string;
 }
+export interface VehicleSearchFilters {
+    query?: string;
+    type?: VehicleType;
+    onlyAvailable?: boolean;
+}
+export interface SearchVehicleItem {
+    id: string;
+    plateOrCode: string;
+    type: VehicleType;
+    status: VehicleStatus;
+    model: string;
+    batteryLevel: number;
+    estimatedRangeKm: number;
+}
+export interface SearchVehiclesResponse {
+    vehicles: SearchVehicleItem[];
+    total: number;
+}
 export interface Booking {
     id: string;
     userId: string;

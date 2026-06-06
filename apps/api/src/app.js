@@ -19,12 +19,15 @@ function createApp() {
     });
     // Mount slice routers
     app.use('/api/vehicles', root.nearbyVehiclesRouter);
+    app.use('/api/vehicles', root.searchRouter);
     app.use('/api/vehicles', root.vehicleDetailsRouter);
     app.use('/api/bookings', root.bookVehicleRouter);
     app.use('/api/rides', root.unlockVehicleRouter);
     app.use('/api/rides', root.endRideRouter);
     app.use('/api/rides', root.pauseRideRouter);
     app.use('/api/session', root.restoreSessionRouter);
+    app.use('/api/profile', root.profileRouter);
+    app.use('/api/history', root.historyRouter);
     app.use(errorHandler_1.notFound);
     app.use(errorHandler_1.errorHandler);
     return app;

@@ -16,7 +16,7 @@ function createPauseRideHandler(deps) {
         // Vehicle stays IN_USE — still assigned to rider during pause
         await deps.vehicleRepo.updateStatus(ride.vehicleId, contracts_1.VehicleStatus.IN_USE);
         const updated = await deps.rideRepo.findById(rideId);
-        res.json({ ride: updated });
+        res.json({ ride: updated ?? { ...ride, status: contracts_1.RideStatus.PAUSED } });
     };
 }
 function createResumeRideHandler(deps) {
@@ -31,6 +31,6 @@ function createResumeRideHandler(deps) {
         await deps.rideRepo.updateStatus(rideId, contracts_1.RideStatus.ACTIVE);
         await deps.vehicleRepo.updateStatus(ride.vehicleId, contracts_1.VehicleStatus.IN_USE);
         const updated = await deps.rideRepo.findById(rideId);
-        res.json({ ride: updated });
+        res.json({ ride: updated ?? { ...ride, status: contracts_1.RideStatus.ACTIVE } });
     };
 }
