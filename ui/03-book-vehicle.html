@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 Book Vehicle — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK (stato: conferma prenotazione) ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:44</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <div class="header-back">‹</div>
+    <span class="header-title">Conferma prenotazione</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Vehicle summary -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-center gap-3">
+          <div class="vehicle-icon" style="width:44px;height:44px;border-radius:12px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold">Vespa GTS 300</p>
+            <p class="text-sm text-muted">Scooter</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-medium">78%</p>
+            <p class="text-xs text-muted">batteria</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Riepilogo -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Riepilogo</div>
+      </div>
+      <div class="card-content" style="padding-top:4px">
+        <div class="space-y-2">
+          <div class="row">
+            <span class="row-label">Sblocco</span>
+            <span class="row-value">€ 1,00</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Al minuto</span>
+            <span class="row-value">€ 0,29/min</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Prenotazione valida</span>
+            <span class="row-value flex items-center gap-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              10 minuti
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-auto space-y-2">
+      <button class="btn btn-default btn-lg">Conferma prenotazione</button>
+      <a href="02-vehicle-details.html" class="btn btn-outline btn-lg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="15 18 9 12 15 6"/></svg>
+        Torna al veicolo
+      </a>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+<!-- ── PHONE MOCK 2 (stato: prenotazione confermata) ── -->
+<div class="device" style="margin-left:0">
+  <div class="status-bar">
+    <span class="time">9:45</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Prenotazione</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Success card -->
+    <div class="card card-green">
+      <div class="card-content">
+        <div class="flex items-start gap-3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;color:#16a34a;flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div>
+            <p class="font-semibold" style="color:var(--green-900)">Prenotazione confermata</p>
+            <p class="text-sm" style="color:var(--green-700);margin-top:2px">
+              Il veicolo è riservato per te fino alle <strong>10:12</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vehicle row -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-center gap-3">
+          <div class="vehicle-icon" style="width:44px;height:44px;border-radius:12px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold">Vespa GTS 300</p>
+            <p class="text-sm text-muted">Scooter</p>
+          </div>
+          <span class="badge badge-outline ml-auto">Riservato</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking details -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Dettagli prenotazione</div>
+      </div>
+      <div class="card-content" style="padding-top:4px">
+        <div class="space-y-2">
+          <div class="row">
+            <span class="row-label">ID prenotazione</span>
+            <span class="row-mono">a3f7b2c1…</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Scade alle</span>
+            <span class="row-value flex items-center gap-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              10:12
+            </span>
+          </div>
+          <div class="row">
+            <span class="row-label">Stato</span>
+            <span class="badge badge-default ml-auto" style="font-size:0.6875rem">Confermata</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-auto space-y-2">
+      <a href="04-unlock-vehicle.html" class="btn btn-default btn-lg">Vai allo sblocco →</a>
+      <a href="01-nearby-vehicles.html" class="btn btn-outline btn-lg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="15 18 9 12 15 6"/></svg>
+        Torna alla lista
+      </a>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">Book Vehicle</div>
+  <div class="notes-route">Route: /vehicles/[id]/book</div>
+  <p style="font-size:0.75rem;color:var(--muted-fg);margin-bottom:4px">← Due stati mostrati affiancati: conferma e post-conferma</p>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/BookVehicle/</code><br>
+      Entry point: <code>apps/web/src/app/vehicles/[id]/book/page.tsx</code>
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>GET /api/vehicles/:id</code> — via <code>useQuery</code> (react-query) per il riepilogo del veicolo</li>
+      <li><code>POST /api/bookings</code> — hook <code>useBookVehicle()</code> con body <code>{ vehicleId, userId }</code></li>
+      <li>Risposta: <code>Booking</code> da <code>@mvp/contracts</code></li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato globale</div>
+    <ul>
+      <li>Dopo il successo, <code>useBookVehicle</code> salva la booking nello store (<code>setBooking</code>)</li>
+      <li>Salva anche <code>selectedVehicle</code> per il banner nella home</li>
+      <li>Il componente usa <code>userId = 'u1'</code> hardcoded (demo, no auth)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Logica interna</div>
+    <ul>
+      <li>Il bottone è disabilitato se <code>vehicle.status !== AVAILABLE</code></li>
+      <li>Dopo <code>book()</code>, lo stato locale <code>confirmed</code> viene settato a <code>true</code></li>
+      <li>La pagina re-renderizza mostrando <code>BookingConfirmed</code> (secondo mock)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI</div>
+    <ul>
+      <li><span class="tag tag-gray">loading vehicle</span> 2 skeleton card</li>
+      <li><span class="tag tag-blue">confirm</span> riepilogo + btn "Conferma" (mock sinistro)</li>
+      <li><span class="tag tag-amber">pending</span> btn "Prenotazione in corso…" disabilitato</li>
+      <li><span class="tag tag-green">confirmed</span> card verde + dettagli (mock destro)</li>
+      <li><span class="tag tag-red">error</span> card rossa con messaggio errore</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Navigazione</div>
+    <div class="flow">
+      <span class="flow-step">Conferma</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">stato confirmed</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">/vehicles/:id/unlock</span>
+    </div>
+  </div>
+
+  <div class="screen-nav">
+    <a href="02-vehicle-details.html">← 02 Vehicle Details</a>
+    <a href="04-unlock-vehicle.html">04 Unlock Vehicle →</a>
+  </div>
+</aside>
+
+</body>
+</html>

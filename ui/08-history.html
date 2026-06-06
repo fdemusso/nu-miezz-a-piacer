@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 History — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Storico</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Count -->
+    <p class="text-xs text-muted">3 corse</p>
+
+    <!-- Ride card 1 — completed -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--muted-fg);flex-shrink:0"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+            <span class="text-sm font-medium truncate" style="font-family:monospace;font-size:0.75rem">vehicle-vs-7734</span>
+          </div>
+          <span class="badge badge-secondary shrink-0">Conclusa</span>
+        </div>
+
+        <div class="flex" style="gap:16px;margin-top:10px;font-size:0.75rem">
+          <div class="flex items-center gap-1" style="color:var(--muted-fg)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>06 giu 2026, 09:47</span>
+          </div>
+          <div style="text-align:right;font-weight:600;margin-left:auto">€ 5,93</div>
+        </div>
+        <div class="flex" style="gap:16px;margin-top:4px;font-size:0.6875rem;color:var(--muted-fg)">
+          <span>Durata: 17 min</span>
+          <span style="margin-left:auto">2.3 km</span>
+        </div>
+        <div class="flex items-center gap-1 text-xs text-muted" style="margin-top:6px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          45.4661, 9.1872
+        </div>
+      </div>
+    </div>
+
+    <!-- Ride card 2 — completed -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--muted-fg);flex-shrink:0"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+            <span class="text-sm font-medium truncate" style="font-family:monospace;font-size:0.75rem">vehicle-mp-9912</span>
+          </div>
+          <span class="badge badge-secondary shrink-0">Conclusa</span>
+        </div>
+
+        <div class="flex" style="gap:16px;margin-top:10px;font-size:0.75rem">
+          <div class="flex items-center gap-1" style="color:var(--muted-fg)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>05 giu 2026, 14:22</span>
+          </div>
+          <div style="text-align:right;font-weight:600;margin-left:auto">€ 3,42</div>
+        </div>
+        <div class="flex" style="gap:16px;margin-top:4px;font-size:0.6875rem;color:var(--muted-fg)">
+          <span>Durata: 8 min</span>
+          <span style="margin-left:auto">1.1 km</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ride card 3 — active (in progress) -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--muted-fg);flex-shrink:0"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+            <span class="text-sm font-medium truncate" style="font-family:monospace;font-size:0.75rem">vehicle-vs-3319</span>
+          </div>
+          <span class="badge badge-default shrink-0">In corso</span>
+        </div>
+
+        <div class="flex" style="gap:16px;margin-top:10px;font-size:0.75rem">
+          <div class="flex items-center gap-1" style="color:var(--muted-fg)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>06 giu 2026, 09:41</span>
+          </div>
+          <div style="text-align:right;font-weight:600;margin-left:auto">—</div>
+        </div>
+        <div class="flex" style="gap:16px;margin-top:4px;font-size:0.6875rem;color:var(--muted-fg)">
+          <span>Durata: —</span>
+          <span style="margin-left:auto">—</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div><!-- /device -->
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">History</div>
+  <div class="notes-route">Route: /history</div>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/History/</code><br>
+      Entry point: <code>apps/web/src/app/history/page.tsx</code>
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>GET /api/rides?userId=u1</code> — hook <code>useHistory()</code></li>
+      <li>userId hardcoded <code>'u1'</code> (demo, no auth)</li>
+      <li>Risposta: array di <code>Ride</code> da <code>@mvp/contracts</code></li>
+      <li>Include tutte le corse: ACTIVE, PAUSED, ENDED</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato globale</div>
+    <p>Nessuno. La schermata è completamente stateless rispetto allo store.</p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">RideCard — campi mostrati</div>
+    <ul>
+      <li><strong>vehicleId</strong> — visualizzato come ID tronco (nessun link)</li>
+      <li><strong>status badge</strong> — Conclusa / In pausa / In corso</li>
+      <li><strong>startedAt</strong> — data e ora formattata</li>
+      <li><strong>totalCost</strong> — <code>—</code> se corsa non terminata</li>
+      <li><strong>durationMinutes</strong> — se disponibile</li>
+      <li><strong>distanceKm</strong> — se disponibile</li>
+      <li><strong>endLocation</strong> — coordinate se disponibili</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI</div>
+    <ul>
+      <li><span class="tag tag-gray">loading</span> 3 skeleton card h-28</li>
+      <li><span class="tag tag-red">error</span> AlertCircle + "Impossibile caricare lo storico"</li>
+      <li><span class="tag tag-gray">empty</span> icona Clock grande + "Nessuna corsa ancora"</li>
+      <li><span class="tag tag-blue">list</span> lista RideCard (questo mock)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Navigazione</div>
+    <p>Nessuna navigazione outgoing — schermata terminale di sola lettura.</p>
+  </div>
+
+  <div class="screen-nav">
+    <a href="07-search.html">← 07 Search</a>
+    <a href="09-profile.html">09 Profile →</a>
+  </div>
+</aside>
+
+</body>
+</html>

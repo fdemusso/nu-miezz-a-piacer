@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09 Profile — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Profilo</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Demo banner -->
+    <div class="info-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Account demo — accesso senza autenticazione
+    </div>
+
+    <!-- Profile card -->
+    <div class="card">
+      <div class="card-content">
+        <!-- Avatar + email + role -->
+        <div class="flex items-center gap-3">
+          <div style="width:48px;height:48px;border-radius:50%;background:hsl(236 68.1% 51.8% / 0.1);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:1.1rem;flex-shrink:0">
+            R
+          </div>
+          <div class="min-w-0">
+            <p class="font-semibold truncate">rider@demo.it</p>
+            <span class="badge badge-secondary" style="margin-top:4px;display:inline-flex">Rider</span>
+          </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Info rows -->
+        <div class="space-y-3">
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span class="row-label">Email</span>
+            <span class="row-value" style="font-size:0.8125rem;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">rider@demo.it</span>
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="row-label">Registrato</span>
+            <span class="row-value">01 gen 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payments placeholder card -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title" style="display:flex;align-items:center;gap:6px;text-transform:none;font-size:0.875rem;font-weight:600;color:var(--fg)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pagamenti
+        </div>
+      </div>
+      <div class="card-content" style="padding-top:4px">
+        <p class="text-xs text-muted">
+          Gestione metodi di pagamento non ancora disponibile in questa versione demo.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div><!-- /device -->
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">Profile</div>
+  <div class="notes-route">Route: /profile</div>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/Profile/</code><br>
+      Entry point: <code>apps/web/src/app/profile/page.tsx</code>
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>GET /api/users/profile?userId=u1</code> — hook <code>useProfile()</code></li>
+      <li>userId hardcoded <code>'u1'</code> (demo, no auth)</li>
+      <li>Risposta: <code>{ id, email, role, createdAt }</code></li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato globale</div>
+    <p>Nessuno. Stateless rispetto allo store.</p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Banner demo</div>
+    <p>
+      Il banner grigio "Account demo" è sempre visibile quando i dati sono caricati.
+      Segnala all'utente che non c'è autenticazione reale.
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Avatar</div>
+    <p>
+      Generato prendendo <code>profile.email.charAt(0).toUpperCase()</code>.<br>
+      Sfondo <code>primary/10</code>, colore <code>primary</code>.
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Pagamenti</div>
+    <p>
+      Card placeholder — non implementato in questa fase MVP.<br>
+      <span class="tag tag-amber">TODO</span> Integrazione metodi di pagamento fuori scope MVP.
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI</div>
+    <ul>
+      <li><span class="tag tag-gray">loading</span> 3 skeleton card</li>
+      <li><span class="tag tag-red">error</span> AlertCircle + "Impossibile caricare il profilo"</li>
+      <li><span class="tag tag-blue">data</span> banner + profile card + payments (questo mock)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Navigazione</div>
+    <p>Nessuna navigazione outgoing — schermata terminale.</p>
+  </div>
+
+  <div class="screen-nav">
+    <a href="08-history.html">← 08 History</a>
+    <a href="01-nearby-vehicles.html">01 Nearby (home) →</a>
+  </div>
+</aside>
+
+</body>
+</html>

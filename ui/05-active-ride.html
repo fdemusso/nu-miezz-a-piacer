@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 Active Ride — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK 1 (corsa attiva) ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:52</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Corsa in corso</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Status card — active (green) -->
+    <div class="card card-green">
+      <div class="card-content">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-semibold" style="color:var(--green-900)">Corsa in corso</p>
+            <p class="text-sm" style="color:var(--green-700);margin-top:2px">Il veicolo è attivo.</p>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px;height:32px;color:#16a34a;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ride info -->
+    <div class="card">
+      <div class="card-content">
+        <div class="space-y-3">
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="row-label">Inizio corsa</span>
+            <span class="row-value">09:47</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Stato</span>
+            <span class="badge badge-default ml-auto">In corso</span>
+          </div>
+          <div class="row">
+            <span class="row-label">ID corsa</span>
+            <span class="row-mono">c9d4e5f6…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-auto space-y-2">
+      <button class="btn btn-outline btn-lg" style="color:var(--fg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
+        Metti in pausa
+      </button>
+      <button class="btn btn-destructive btn-lg">Termina corsa</button>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+<!-- ── PHONE MOCK 2 (corsa in pausa) ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:55</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Corsa in corso</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Status card — paused (amber) -->
+    <div class="card card-amber">
+      <div class="card-content">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-semibold" style="color:var(--amber-900)">Corsa in pausa</p>
+            <p class="text-sm" style="color:var(--amber-700);margin-top:2px">Il veicolo è fermo, pronto alla ripresa.</p>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px;height:32px;color:var(--amber-600);flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ride info -->
+    <div class="card">
+      <div class="card-content">
+        <div class="space-y-3">
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="row-label">Inizio corsa</span>
+            <span class="row-value">09:47</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Stato</span>
+            <span class="badge badge-secondary ml-auto">In pausa</span>
+          </div>
+          <div class="row">
+            <span class="row-label">ID corsa</span>
+            <span class="row-mono">c9d4e5f6…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions — paused state -->
+    <div class="mt-auto space-y-2">
+      <button class="btn btn-default btn-lg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Riprendi corsa
+      </button>
+      <button class="btn btn-destructive btn-lg">Termina corsa</button>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">Active Ride (Pause/Resume)</div>
+  <div class="notes-route">Route: /rides/active</div>
+  <p style="font-size:0.75rem;color:var(--muted-fg);margin-bottom:4px">← Mock sinistro: corsa attiva | Mock destro: corsa in pausa</p>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/PauseRide/</code><br>
+      Entry point: <code>apps/web/src/app/rides/active/page.tsx</code>
+    </p>
+    <p style="margin-top:6px">
+      ⚠️ Questa slice usa anche <code>EndRide.hook</code> importato da un'altra slice.
+      È l'unica eccezione attualmente presente alla regola di isolamento delle slice.
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>PATCH /api/rides/:id/pause</code> — <code>usePauseRide().pauseRide()</code></li>
+      <li><code>PATCH /api/rides/:id/resume</code> — <code>usePauseRide().resumeRide()</code></li>
+      <li><code>POST /api/rides/:id/end</code> — <code>useEndRide().endRide()</code></li>
+      <li>Coordinate end hardcoded demo: <code>45.4661, 9.1872</code></li>
+      <li>Distanza hardcoded demo: <code>2.3 km</code></li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato globale</div>
+    <ul>
+      <li>Legge <code>activeRide</code> da <code>useAppStore</code></li>
+      <li><code>useRestoreSession()</code> ricarica lo stato al mount</li>
+      <li>Dopo "Termina corsa": <code>clearSession()</code> sullo store</li>
+      <li><code>activeRide.status</code> determina quale layout mostrare</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI (4 render branch)</div>
+    <ul>
+      <li><span class="tag tag-gray">no ride</span> card ambra "Nessuna corsa" + btn home</li>
+      <li><span class="tag tag-green">ACTIVE</span> card verde + btn "Pausa" + btn "Termina" (mock sinistro)</li>
+      <li><span class="tag tag-amber">PAUSED</span> card ambra + btn "Riprendi" + btn "Termina" (mock destro)</li>
+      <li><span class="tag tag-green">completed</span> riepilogo post-corsa (vedi screen 06)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Navigazione</div>
+    <div class="flow">
+      <span class="flow-step">Termina corsa</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">stato completed</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">/</span>
+    </div>
+  </div>
+
+  <div class="screen-nav">
+    <a href="04-unlock-vehicle.html">← 04 Unlock</a>
+    <a href="06-end-ride.html">06 End Ride →</a>
+  </div>
+</aside>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 Nearby Vehicles — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Vicino a te</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Active booking banner -->
+    <div class="card card-blue">
+      <div class="card-content">
+        <div class="flex items-center gap-3">
+          <div class="icon-circle ic-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold" style="color:#1e3a8a">Prenotazione attiva</p>
+            <p class="text-xs" style="color:#1d4ed8">Vespa GTS · scade alle 10:12</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button class="btn btn-blue-outline">Annulla</button>
+            <button class="btn btn-blue">Sblocca</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location fallback badge -->
+    <div class="info-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+      Posizione demo — Milano Duomo
+    </div>
+
+    <!-- Vehicle count -->
+    <p class="text-xs text-muted">3 veicoli nelle vicinanze</p>
+
+    <!-- Vehicle card 1 — scooter available -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-start gap-3">
+          <div class="vehicle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold">Scooter</span>
+              <span class="text-xs text-muted font-mono">VS-7734</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-muted" style="margin-top:4px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              320 m · ~4 min a piedi
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-1 shrink-0" style="align-items:flex-end">
+            <span class="badge badge-default">Disponibile</span>
+            <span class="text-xs font-medium text-green">78%</span>
+          </div>
+        </div>
+        <button class="btn btn-default" style="width:100%;margin-top:12px;padding:8px 16px;font-size:0.8125rem">Vedi dettagli</button>
+      </div>
+    </div>
+
+    <!-- Vehicle card 2 — bike in use -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-start gap-3">
+          <div class="vehicle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold">Bici</span>
+              <span class="text-xs text-muted font-mono">BK-2201</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-muted" style="margin-top:4px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              540 m · ~7 min a piedi
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-1 shrink-0" style="align-items:flex-end">
+            <span class="badge badge-secondary">In uso</span>
+            <span class="text-xs font-medium text-amber">42%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vehicle card 3 — moped available -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-start gap-3">
+          <div class="vehicle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold">Moped</span>
+              <span class="text-xs text-muted font-mono">MP-9912</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-muted" style="margin-top:4px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              820 m · ~11 min a piedi
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-1 shrink-0" style="align-items:flex-end">
+            <span class="badge badge-default">Disponibile</span>
+            <span class="text-xs font-medium text-green">91%</span>
+          </div>
+        </div>
+        <button class="btn btn-default" style="width:100%;margin-top:12px;padding:8px 16px;font-size:0.8125rem">Vedi dettagli</button>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div><!-- /device -->
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">Nearby Vehicles</div>
+  <div class="notes-route">Route: /</div>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/NearbyVehicles/</code><br>
+      Entry point nell'app router: <code>apps/web/src/app/page.tsx</code>
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>GET /api/vehicles/nearby?lat&amp;lng&amp;radiusKm</code> — hook <code>useNearbyVehicles()</code></li>
+      <li>Usa <code>navigator.geolocation</code>; fallback a coordinate demo Milano Duomo se negata</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato globale (useAppStore)</div>
+    <ul>
+      <li><strong>Legge:</strong> <code>activeRide</code>, <code>activeBooking</code>, <code>selectedVehicle</code></li>
+      <li><strong>Scrive:</strong> <code>clearSession()</code> — alla cancellazione prenotazione</li>
+      <li><code>useRestoreSession()</code> ricarica lo stato da API al mount</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Banner sessione attiva</div>
+    <ul>
+      <li><span class="tag tag-green">Booking attivo</span> → mostra banner blu con scadenza + btn "Sblocca" → <code>/vehicles/:id/unlock?bookingId=...</code></li>
+      <li><span class="tag tag-green">Corsa attiva</span> → banner verde, "Termina" → <code>/rides/end</code></li>
+      <li><span class="tag tag-amber">Corsa in pausa</span> → banner ambra, "Riprendi" → <code>/rides/active</code></li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI</div>
+    <ul>
+      <li><span class="tag tag-gray">loading</span> 3 skeleton cards h-28</li>
+      <li><span class="tag tag-red">error</span> icona AlertCircle + btn "Riprova"</li>
+      <li><span class="tag tag-gray">empty</span> icona MapPin + messaggio</li>
+      <li><span class="tag tag-blue">list</span> VehicleCard per ogni veicolo (questo mock)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Navigazione</div>
+    <div class="flow">
+      <span class="flow-step">VehicleCard (available)</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">/vehicles/:id</span>
+    </div>
+    <div class="flow">
+      <span class="flow-step">Banner booking</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">/vehicles/:id/unlock</span>
+    </div>
+  </div>
+
+  <div class="screen-nav">
+    <span></span>
+    <a href="02-vehicle-details.html">02 Vehicle Details →</a>
+  </div>
+</aside>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Mocks — Nu Miezz'a Piacer</title>
+  <style>
+    :root {
+      --primary: hsl(236, 68.1%, 51.8%);
+      --bg: hsl(240, 54.5%, 98%);
+      --border: hsl(236.5, 20%, 90%);
+      --muted-fg: hsl(236.5, 20%, 40%);
+      --fg: hsl(236.5, 45.9%, 7.3%);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: #e8eaf4;
+      color: var(--fg);
+      min-height: 100vh;
+      padding: 3rem 2rem;
+    }
+    .header {
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+    }
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .header p {
+      color: var(--muted-fg);
+      margin-top: 6px;
+      font-size: 0.9375rem;
+    }
+    .grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      text-decoration: none;
+      color: var(--fg);
+      display: block;
+      transition: box-shadow 0.15s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+      transform: translateY(-2px);
+    }
+    .card-num {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      background: hsl(236 68.1% 51.8% / 0.08);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .card-route {
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 0.75rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .card-desc {
+      font-size: 0.8125rem;
+      color: var(--muted-fg);
+      line-height: 1.55;
+    }
+    .card-tags {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .tag {
+      font-size: 0.6875rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .tag-blue  { background: #dbeafe; color: #1e40af; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+    .tag-gray  { background: #f1f2f8; color: #555; }
+
+    .flow-section {
+      max-width: 960px;
+      margin: 2.5rem auto 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .flow-section h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted-fg);
+      margin-bottom: 16px;
+    }
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 0.8125rem;
+    }
+    .flow-step {
+      background: #f0f1f8;
+      padding: 4px 12px;
+      border-radius: 8px;
+      color: #2a2a4a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .flow-step:hover { background: var(--primary); color: #fff; }
+    .flow-arrow { color: var(--muted-fg); }
+
+    footer {
+      max-width: 960px;
+      margin: 2rem auto 0;
+      font-size: 0.75rem;
+      color: var(--muted-fg);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Nu Miezz'a Piacer — UI Mocks</h1>
+  <p>Mock delle schermate con design tokens reali dall'app. Clicca su una schermata per aprirla.</p>
+</div>
+
+<div class="grid">
+
+  <a href="01-nearby-vehicles.html" class="card">
+    <div class="card-num">01</div>
+    <div class="card-title">Nearby Vehicles</div>
+    <div class="card-route">Route: /</div>
+    <div class="card-desc">
+      Lista veicoli nelle vicinanze. Mostra un banner quando c'è una sessione attiva (booking / corsa attiva / pausa).
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useNearbyVehicles</span>
+      <span class="tag tag-green">useRestoreSession</span>
+      <span class="tag tag-amber">useAppStore</span>
+    </div>
+  </a>
+
+  <a href="02-vehicle-details.html" class="card">
+    <div class="card-num">02</div>
+    <div class="card-title">Vehicle Details</div>
+    <div class="card-route">Route: /vehicles/[id]</div>
+    <div class="card-desc">
+      Dettaglio completo: hero card, tariffe, specifiche, dotazioni. CTA "Prenota" solo se AVAILABLE.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useVehicleDetails</span>
+      <span class="tag tag-gray">GET /api/vehicles/:id</span>
+    </div>
+  </a>
+
+  <a href="03-book-vehicle.html" class="card">
+    <div class="card-num">03</div>
+    <div class="card-title">Book Vehicle</div>
+    <div class="card-route">Route: /vehicles/[id]/book</div>
+    <div class="card-desc">
+      Due stati affiancati: conferma riepilogo → prenotazione confermata con redirect allo sblocco.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useBookVehicle</span>
+      <span class="tag tag-gray">POST /api/bookings</span>
+      <span class="tag tag-amber">setBooking in store</span>
+    </div>
+  </a>
+
+  <a href="04-unlock-vehicle.html" class="card">
+    <div class="card-num">04</div>
+    <div class="card-title">Unlock Vehicle</div>
+    <div class="card-route">Route: /vehicles/[id]/unlock</div>
+    <div class="card-desc">
+      Due stati: pre-sblocco (prompt di prossimità) → corsa avviata con dettagli ride.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useUnlockVehicle</span>
+      <span class="tag tag-gray">POST /api/rides</span>
+      <span class="tag tag-amber">setRide in store</span>
+    </div>
+  </a>
+
+  <a href="05-active-ride.html" class="card">
+    <div class="card-num">05</div>
+    <div class="card-title">Active Ride</div>
+    <div class="card-route">Route: /rides/active</div>
+    <div class="card-desc">
+      Gestione corsa in tempo reale. Due stati affiancati: attiva (verde) e in pausa (ambra).
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">usePauseRide</span>
+      <span class="tag tag-blue">useEndRide</span>
+      <span class="tag tag-amber">activeRide store</span>
+    </div>
+  </a>
+
+  <a href="06-end-ride.html" class="card">
+    <div class="card-num">06</div>
+    <div class="card-title">End Ride</div>
+    <div class="card-route">Route: /rides/end</div>
+    <div class="card-desc">
+      Conferma chiusura corsa + riepilogo post-corsa con durata, distanza e costo totale.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useEndRide</span>
+      <span class="tag tag-gray">POST /api/rides/:id/end</span>
+      <span class="tag tag-amber">clearSession store</span>
+    </div>
+  </a>
+
+  <a href="07-search.html" class="card">
+    <div class="card-num">07</div>
+    <div class="card-title">Search</div>
+    <div class="card-route">Route: /search</div>
+    <div class="card-desc">
+      Ricerca veicoli con filtri: testo libero, tipo (chip row), solo disponibili. Risultati linkati al dettaglio.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useSearch</span>
+      <span class="tag tag-gray">GET /api/vehicles/search</span>
+    </div>
+  </a>
+
+  <a href="08-history.html" class="card">
+    <div class="card-num">08</div>
+    <div class="card-title">History</div>
+    <div class="card-route">Route: /history</div>
+    <div class="card-desc">
+      Storico corse dell'utente demo. Mostra tutte le corse: concluse, in corso, in pausa.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useHistory</span>
+      <span class="tag tag-gray">GET /api/rides</span>
+    </div>
+  </a>
+
+  <a href="09-profile.html" class="card">
+    <div class="card-num">09</div>
+    <div class="card-title">Profile</div>
+    <div class="card-route">Route: /profile</div>
+    <div class="card-desc">
+      Profilo utente demo: email, ruolo, data registrazione. Sezione pagamenti placeholder.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-blue">useProfile</span>
+      <span class="tag tag-gray">GET /api/users/profile</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- User flow -->
+<div class="flow-section">
+  <h2>Flusso principale (happy path)</h2>
+  <div class="flow">
+    <a href="01-nearby-vehicles.html" class="flow-step">01 Nearby</a>
+    <span class="flow-arrow">→</span>
+    <a href="02-vehicle-details.html" class="flow-step">02 Details</a>
+    <span class="flow-arrow">→</span>
+    <a href="03-book-vehicle.html" class="flow-step">03 Book</a>
+    <span class="flow-arrow">→</span>
+    <a href="04-unlock-vehicle.html" class="flow-step">04 Unlock</a>
+    <span class="flow-arrow">→</span>
+    <a href="05-active-ride.html" class="flow-step">05 Active Ride</a>
+    <span class="flow-arrow">→</span>
+    <a href="06-end-ride.html" class="flow-step">06 End Ride</a>
+    <span class="flow-arrow">→</span>
+    <a href="01-nearby-vehicles.html" class="flow-step">01 Nearby</a>
+  </div>
+</div>
+
+<footer>
+  Nu Miezz'a Piacer MVP — mock generati da Claude Code il 06/06/2026
+</footer>
+
+</body>
+</html>

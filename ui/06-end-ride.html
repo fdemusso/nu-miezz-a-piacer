@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 End Ride — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK 1 (conferma fine corsa) ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">10:03</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Termina corsa</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Active ride info -->
+    <div class="card">
+      <div class="card-content">
+        <div class="space-y-3">
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="row-label">Corsa iniziata alle</span>
+            <span class="row-value">09:47</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Stato</span>
+            <span class="badge badge-default ml-auto">In corso</span>
+          </div>
+          <div class="row">
+            <span class="row-label">ID corsa</span>
+            <span class="row-mono">c9d4e5f6…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location prompt -->
+    <div class="unlock-zone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px;height:32px;color:var(--muted-fg);margin-bottom:4px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <p class="text-sm font-medium">Posizione di fine corsa</p>
+      <p class="text-xs text-muted">Assicurati di parcheggiare in una zona valida prima di terminare</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-auto">
+      <button class="btn btn-destructive btn-lg">Termina corsa</button>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+<!-- ── PHONE MOCK 2 (riepilogo post-corsa) ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">10:04</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Corsa completata</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Success card -->
+    <div class="card card-green">
+      <div class="card-content">
+        <div class="flex items-start gap-3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;color:#16a34a;flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div>
+            <p class="font-semibold" style="color:var(--green-900)">Corsa terminata!</p>
+            <p class="text-sm" style="color:var(--green-700);margin-top:2px">Il mezzo è nuovamente disponibile.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ride summary -->
+    <div class="card">
+      <div class="card-content">
+        <div class="space-y-3">
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="row-label">Inizio</span>
+            <span class="row-value">09:47</span>
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="row-label">Fine</span>
+            <span class="row-value">10:04</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Durata</span>
+            <span class="row-value">17 min</span>
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="row-label">Distanza</span>
+            <span class="row-value">2.3 km</span>
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span class="row-label">Costo totale</span>
+            <span class="row-value font-bold text-base">€ 5,93</span>
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="row-label">Parcheggio</span>
+            <span class="badge badge-default ml-auto">Zona valida</span>
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="row-icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="row-label">Stato mezzo</span>
+            <span class="badge badge-secondary ml-auto">Disponibile</span>
+          </div>
+          <div class="row">
+            <span class="row-label">ID corsa</span>
+            <span class="row-mono">c9d4e5f6…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-auto">
+      <a href="01-nearby-vehicles.html" class="btn btn-default btn-lg">Torna alla home</a>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item" href="07-search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">End Ride</div>
+  <div class="notes-route">Route: /rides/end</div>
+  <p style="font-size:0.75rem;color:var(--muted-fg);margin-bottom:4px">← Mock sinistro: conferma | Mock destro: riepilogo post-corsa</p>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/EndRide/</code><br>
+      Entry point: <code>apps/web/src/app/rides/end/page.tsx</code>
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Differenza con /rides/active</div>
+    <p>
+      <code>/rides/end</code> è raggiunto direttamente dal banner "Termina" nella home quando la corsa è <code>ACTIVE</code>.<br>
+      <code>/rides/active</code> (PauseRide) è il pannello completo con pausa/ripresa/termina.
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>POST /api/rides/:id/end</code> — hook <code>useEndRide()</code></li>
+      <li>Body: <code>{ userId, endLocation: { lat, lng }, distanceKm }</code></li>
+      <li>Coordinate e distanza hardcoded demo</li>
+      <li>Risposta: <code>{ ride, totalCost }</code></li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato globale</div>
+    <ul>
+      <li>Legge <code>activeRide</code> da <code>useAppStore</code> per mostrare i dati della corsa</li>
+      <li>Dopo il successo: <code>clearSession()</code> per resettare tutto lo store</li>
+      <li>Se <code>activeRide</code> è null → mostra "Nessuna corsa attiva" (stato guard)</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Calcolo costo (lato API)</div>
+    <p>
+      Il costo viene calcolato dal backend:<br>
+      <code>unlockFee + (durationMinutes × perMinuteRate) + (distanceKm × perKmRate)</code><br>
+      I dati di pausa vengono inclusi nel calcolo se presenti.
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI</div>
+    <ul>
+      <li><span class="tag tag-amber">no ride</span> card ambra + btn home</li>
+      <li><span class="tag tag-red">confirm</span> info corsa + zona parcheggio + btn "Termina" (mock sinistro)</li>
+      <li><span class="tag tag-amber">pending</span> btn "Chiusura in corso…" disabilitato</li>
+      <li><span class="tag tag-green">summary</span> riepilogo completo (mock destro)</li>
+      <li><span class="tag tag-red">error</span> card rossa con messaggio errore</li>
+    </ul>
+  </div>
+
+  <div class="screen-nav">
+    <a href="05-active-ride.html">← 05 Active Ride</a>
+    <a href="07-search.html">07 Search →</a>
+  </div>
+</aside>
+
+</body>
+</html>

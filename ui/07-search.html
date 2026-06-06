@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07 Search — Nu Miezz'a Piacer</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── PHONE MOCK ── -->
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">●●● 5G 🔋</span>
+  </div>
+
+  <div class="app-header">
+    <span class="header-title">Ricerca</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Search input -->
+    <div class="input-wrapper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="input" placeholder="Modello o targa..." value="Vespa">
+    </div>
+
+    <!-- Type filter chips -->
+    <div class="flex gap-2" style="overflow-x:auto;padding-bottom:2px;flex-wrap:nowrap">
+      <span class="text-xs text-muted" style="white-space:nowrap;align-self:center">Tipo:</span>
+      <button class="chip active">Tutti</button>
+      <button class="chip">Scooter</button>
+      <button class="chip">Bici</button>
+      <button class="chip">Moped</button>
+      <button class="chip">Auto</button>
+    </div>
+
+    <!-- Only available toggle -->
+    <button class="chip" style="align-self:flex-start">Solo disponibili</button>
+
+    <!-- Search CTA -->
+    <div class="flex gap-2">
+      <button class="btn btn-default" style="flex:1;padding:10px 16px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Cerca
+      </button>
+      <button class="btn btn-outline" style="padding:10px 16px">Reset</button>
+    </div>
+
+    <!-- Results count -->
+    <p class="text-xs text-muted">2 veicoli</p>
+
+    <!-- Result card 1 -->
+    <div class="card" style="cursor:pointer">
+      <div class="card-content">
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <p class="font-semibold text-sm">VS-7734</p>
+            <p class="text-xs text-muted">Vespa GTS 300</p>
+          </div>
+          <span class="badge badge-default shrink-0">Disponibile</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-muted" style="margin-top:10px">
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+            <span>Scooter</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>78% · 47 km</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result card 2 -->
+    <div class="card" style="cursor:pointer">
+      <div class="card-content">
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <p class="font-semibold text-sm">VS-3319</p>
+            <p class="text-xs text-muted">Vespa Primavera</p>
+          </div>
+          <span class="badge badge-secondary shrink-0">In uso</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-muted" style="margin-top:10px">
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+            <span>Scooter</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>55% · 33 km</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="01-nearby-vehicles.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Nearby</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" href="05-active-ride.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      <span>Ride</span>
+    </a>
+    <a class="nav-item" href="08-history.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </a>
+    <a class="nav-item" href="09-profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div><!-- /device -->
+
+
+<!-- ── NOTES ── -->
+<aside class="notes">
+  <div class="notes-title">Search</div>
+  <div class="notes-route">Route: /search</div>
+
+  <div class="notes-section">
+    <div class="notes-h">Slice</div>
+    <p>
+      <code>apps/web/src/slices/Search/</code><br>
+      Entry point: <code>apps/web/src/app/search/page.tsx</code>
+    </p>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">API</div>
+    <ul>
+      <li><code>GET /api/vehicles/search?q=&amp;type=&amp;onlyAvailable=</code></li>
+      <li>Hook <code>useSearch(filters, submitted)</code> — la query parte solo dopo che <code>submitted = true</code></li>
+      <li>Risposta: <code>{ total, vehicles: SearchVehicleItem[] }</code></li>
+      <li><code>SearchVehicleItem</code> è definito in <code>@mvp/contracts</code></li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stato locale (no store)</div>
+    <ul>
+      <li><code>filters: SearchFiltersState</code> — <code>{ query, type, onlyAvailable }</code></li>
+      <li><code>submitted: boolean</code> — controlla se la ricerca è attiva</li>
+      <li>Il bottone "Reset" azzera entrambi i campi</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Filtri</div>
+    <ul>
+      <li><strong>query</strong> — testo libero su modello o targa (con bottone ✕ di clear)</li>
+      <li><strong>type</strong> — chip row scrollabile: Tutti | Scooter | Bici | Moped | Auto</li>
+      <li><strong>onlyAvailable</strong> — toggle chip "Solo disponibili"</li>
+      <li>Enter nel campo di testo triggera la ricerca</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Stati UI</div>
+    <ul>
+      <li><span class="tag tag-gray">initial</span> icona Search + "Cerca un veicolo"</li>
+      <li><span class="tag tag-gray">loading</span> 3 skeleton card</li>
+      <li><span class="tag tag-green">results</span> lista VehicleCard linkate a <code>/vehicles/:id</code></li>
+      <li><span class="tag tag-gray">no results</span> icona + "Nessun risultato"</li>
+      <li><span class="tag tag-red">error</span> AlertCircle + "Errore"</li>
+    </ul>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-h">Navigazione</div>
+    <div class="flow">
+      <span class="flow-step">VehicleCard click</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">/vehicles/:id</span>
+    </div>
+  </div>
+
+  <div class="screen-nav">
+    <a href="06-end-ride.html">← 06 End Ride</a>
+    <a href="08-history.html">08 History →</a>
+  </div>
+</aside>
+
+</body>
+</html>
