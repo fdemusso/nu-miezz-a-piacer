@@ -26,7 +26,7 @@ export function UnlockVehiclePage({ vehicleId, bookingId }: UnlockVehiclePagePro
 
   if (ride) {
     return (
-      <AppLayout title="Corsa avviata" hideNav>
+      <AppLayout title="Corsa avviata">
         <div className="flex flex-col min-h-full p-4 gap-4">
           <div className="space-y-4">
             <Card className="border-green-200 bg-green-50">
@@ -83,7 +83,7 @@ export function UnlockVehiclePage({ vehicleId, bookingId }: UnlockVehiclePagePro
   }
 
   return (
-    <AppLayout title="Sblocca veicolo" hideNav>
+    <AppLayout title="Sblocca veicolo">
       <div className="flex flex-col min-h-full p-4 gap-4">
         <div className="space-y-4">
           <Card>

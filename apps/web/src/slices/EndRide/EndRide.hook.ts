@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
 import { Ride, Money } from '@mvp/contracts';
 import { useAppStore } from '@/stores/app.store';
@@ -8,6 +8,7 @@ import { UseEndRideResult } from './EndRide.types';
 
 export function useEndRide(): UseEndRideResult {
   const clearSession = useAppStore((s) => s.clearSession);
+  const queryClient = useQueryClient();
 
   const { mutateAsync, data, isPending, error } = useMutation({
     mutationFn: ({
@@ -25,7 +26,10 @@ export function useEndRide(): UseEndRideResult {
         method: 'POST',
         body: JSON.stringify({ userId, endLat: coords.lat, endLng: coords.lng, distanceKm }),
       }),
-    onSuccess: () => clearSession(),
+    onSuccess: () => {
+      clearSession();
+      queryClient.invalidateQueries({ queryKey: ['nearby-vehicles'] });
+    },
   });
 
   return {

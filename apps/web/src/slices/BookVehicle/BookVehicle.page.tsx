@@ -158,14 +158,14 @@ export function BookVehiclePage({ vehicleId }: BookVehiclePageProps) {
 
   if (confirmed && booking) {
     return (
-      <AppLayout title="Prenotazione" hideNav>
+      <AppLayout title="Prenotazione">
         <BookingConfirmed booking={booking} vehicle={vehicle} vehicleId={vehicleId} />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout title="Conferma prenotazione" hideNav>
+    <AppLayout title="Conferma prenotazione">
       <div className="flex flex-col min-h-full p-4 gap-4">
         <div className="space-y-4">
           {vehicleLoading && (

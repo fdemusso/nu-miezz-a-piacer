@@ -25,7 +25,7 @@ export function EndRidePage() {
 
   if (!activeRide && !endedRide) {
     return (
-      <AppLayout title="Termina corsa" hideNav>
+      <AppLayout title="Termina corsa">
         <div className="p-4 space-y-4">
           <Card className="border-amber-200 bg-amber-50">
             <CardContent className="p-5">
@@ -45,7 +45,7 @@ export function EndRidePage() {
     const duration = endedRide.durationMinutes != null ? Math.round(endedRide.durationMinutes) : null;
 
     return (
-      <AppLayout title="Corsa completata" hideNav>
+      <AppLayout title="Corsa completata">
         <div className="p-4 space-y-4">
           <Card className="border-green-200 bg-green-50">
             <CardContent className="p-5">
@@ -121,7 +121,7 @@ export function EndRidePage() {
   }
 
   return (
-    <AppLayout title="Termina corsa" hideNav>
+    <AppLayout title="Termina corsa">
       <div className="p-4 space-y-4">
         {activeRide && (
           <Card>

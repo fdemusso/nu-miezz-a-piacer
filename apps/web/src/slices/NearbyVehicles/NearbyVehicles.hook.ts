@@ -55,6 +55,8 @@ export function useNearbyVehicles(radiusKm = DEFAULT_RADIUS_KM): UseNearbyVehicl
         `/api/vehicles/nearby?lat=${coords!.lat}&lng=${coords!.lng}&radiusKm=${radiusKm}`
       ),
     enabled: coords !== null,
+    refetchOnMount: 'always',
+    staleTime: 0,
   });
 
   return {

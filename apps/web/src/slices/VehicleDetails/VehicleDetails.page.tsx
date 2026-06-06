@@ -244,7 +244,7 @@ export function VehicleDetailsPage({ vehicleId }: VehicleDetailsPageProps) {
   const isAvailable = vehicle?.status === VehicleStatus.AVAILABLE;
 
   return (
-    <AppLayout title="Dettaglio veicolo" hideNav>
+    <AppLayout title="Dettaglio veicolo">
       <div className="flex flex-col min-h-full p-4 gap-3">
         {isLoading && <LoadingSkeleton />}
 
