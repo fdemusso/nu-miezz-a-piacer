@@ -12,3 +12,4 @@ coverage/
 .venv/
 .agents/
 graphify-out/
+__pycache__

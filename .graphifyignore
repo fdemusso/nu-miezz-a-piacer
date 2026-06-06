@@ -10,3 +10,6 @@ dist/
 coverage/
 .claude/
 prompt/
+__pycache__/
+*.pyc
+*.pyo
