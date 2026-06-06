@@ -15,6 +15,9 @@ import { createUnlockVehicleRouter } from './slices/UnlockVehicle/UnlockVehicle.
 import { createEndRideRouter } from './slices/EndRide/EndRide.router';
 import { createPauseRideRouter } from './slices/PauseRide/PauseRide.router';
 import { createRestoreSessionRouter } from './slices/RestoreSession/RestoreSession.router';
+import { createProfileRouter } from './slices/Profile/Profile.router';
+import { createHistoryRouter } from './slices/History/History.router';
+import { createSearchRouter } from './slices/Search/Search.router';
 
 export function createCompositionRoot() {
   // Concrete adapters
@@ -27,7 +30,6 @@ export function createCompositionRoot() {
   const zoneValidator = new MockZoneValidator();
   const billingService = new MockBillingService();
   const gpsTrackingService = new MockGpsTrackingService();
-  void userRepo;
   void fleetZoneRepo;
   void gpsTrackingService;
 
@@ -40,5 +42,8 @@ export function createCompositionRoot() {
     endRideRouter: createEndRideRouter({ rideRepo, vehicleRepo, billingService, zoneValidator }),
     pauseRideRouter: createPauseRideRouter({ rideRepo, vehicleRepo }),
     restoreSessionRouter: createRestoreSessionRouter({ rideRepo, bookingRepo, vehicleRepo }),
+    profileRouter: createProfileRouter({ userRepo }),
+    historyRouter: createHistoryRouter({ rideRepo }),
+    searchRouter: createSearchRouter({ vehicleRepo }),
   };
 }

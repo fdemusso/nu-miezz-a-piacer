@@ -1,4 +1,4 @@
-import { Coordinates, Vehicle, Booking, Ride, Money, FleetZone } from '../types';
+import { Coordinates, Vehicle, Booking, Ride, Money, FleetZone, VehicleSearchFilters } from '../types';
 import { VehicleStatus, BookingStatus, RideStatus, UserRole } from '../enums';
 
 export interface User {
@@ -19,6 +19,7 @@ export interface IUserRepository {
 export interface IVehicleRepository {
   findById(id: string): Promise<Vehicle | null>;
   findNearby(coords: Coordinates, radiusKm: number): Promise<Vehicle[]>;
+  search(filters: VehicleSearchFilters): Promise<Vehicle[]>;
   updateStatus(id: string, status: VehicleStatus): Promise<void>;
   updateLocation(id: string, location: Coordinates): Promise<void>;
 }
@@ -33,6 +34,7 @@ export interface IBookingRepository {
 export interface IRideRepository {
   findById(id: string): Promise<Ride | null>;
   findActiveByUserId(userId: string): Promise<Ride | null>;
+  findByUserId(userId: string): Promise<Ride[]>;
   create(data: Omit<Ride, 'id'>): Promise<Ride>;
   updateStatus(id: string, status: RideStatus): Promise<void>;
   end(id: string, data: Pick<Ride, 'endedAt' | 'endLocation' | 'distanceKm' | 'durationMinutes' | 'totalCost'>): Promise<Ride>;

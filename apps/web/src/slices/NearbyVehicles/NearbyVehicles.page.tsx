@@ -12,7 +12,7 @@ import { VehicleType, VehicleStatus, BookingStatus, RideStatus } from '@mvp/cont
 import { apiFetch } from '@/lib/api';
 import { useAppStore } from '@/stores/app.store';
 import { useNearbyVehicles } from './NearbyVehicles.hook';
-import { useRestoreSession } from '@/slices/RestoreSession/RestoreSession.hook';
+import { useRestoreSession } from '@/hooks/useRestoreSession';
 import type { NearbyVehiclesItem } from './NearbyVehicles.types';
 
 const NON_CANCELLABLE_STATUSES = new Set([

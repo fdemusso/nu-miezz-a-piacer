@@ -46,6 +46,15 @@ export class DrizzleRideRepository implements IRideRepository {
     return rows[0] ? rowToRide(rows[0]) : null;
   }
 
+  async findByUserId(userId: string): Promise<Ride[]> {
+    const rows = await this.db
+      .select()
+      .from(rides)
+      .where(eq(rides.userId, userId))
+      .orderBy(desc(rides.startedAt));
+    return rows.map(rowToRide);
+  }
+
   async create(data: Omit<Ride, 'id'>): Promise<Ride> {
     const id = crypto.randomUUID();
     await this.db.insert(rides).values({

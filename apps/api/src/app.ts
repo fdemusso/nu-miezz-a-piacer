@@ -23,6 +23,9 @@ export function createApp(): express.Express {
   app.use('/api/rides', root.endRideRouter);
   app.use('/api/rides', root.pauseRideRouter);
   app.use('/api/session', root.restoreSessionRouter);
+  app.use('/api/profile', root.profileRouter);
+  app.use('/api/history', root.historyRouter);
+  app.use('/api/vehicles', root.searchRouter);
 
   app.use(notFound);
   app.use(errorHandler);

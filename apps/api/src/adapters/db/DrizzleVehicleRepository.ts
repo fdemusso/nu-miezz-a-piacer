@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { IVehicleRepository, Vehicle, VehicleStatus, VehicleType, Coordinates } from '@mvp/contracts';
+import { IVehicleRepository, Vehicle, VehicleStatus, VehicleType, Coordinates, VehicleSearchFilters } from '@mvp/contracts';
 import { Db } from '../../db';
 import { vehicles } from '../../db/schema';
 
@@ -51,6 +51,23 @@ export class DrizzleVehicleRepository implements IVehicleRepository {
           haversineKm(coords, { lat: a.lat, lng: a.lng }) -
           haversineKm(coords, { lat: b.lat, lng: b.lng })
       )
+      .map(rowToVehicle);
+  }
+
+  async search(filters: VehicleSearchFilters): Promise<Vehicle[]> {
+    const rows = await this.db.select().from(vehicles);
+    return rows
+      .filter((row) => {
+        if (filters.type && row.type !== filters.type) return false;
+        if (filters.onlyAvailable && row.status !== VehicleStatus.AVAILABLE) return false;
+        if (filters.query) {
+          const q = filters.query.toLowerCase();
+          const plate = (row.licensePlate ?? '').toLowerCase();
+          const model = row.model.toLowerCase();
+          if (!plate.includes(q) && !model.includes(q)) return false;
+        }
+        return true;
+      })
       .map(rowToVehicle);
   }
 

@@ -18,7 +18,7 @@ export function createPauseRideHandler(deps: PauseRideDeps) {
     await deps.vehicleRepo.updateStatus(ride.vehicleId, VehicleStatus.IN_USE);
 
     const updated = await deps.rideRepo.findById(rideId);
-    res.json({ ride: updated });
+    res.json({ ride: updated ?? { ...ride, status: RideStatus.PAUSED } });
   };
 }
 
@@ -37,6 +37,6 @@ export function createResumeRideHandler(deps: PauseRideDeps) {
     await deps.vehicleRepo.updateStatus(ride.vehicleId, VehicleStatus.IN_USE);
 
     const updated = await deps.rideRepo.findById(rideId);
-    res.json({ ride: updated });
+    res.json({ ride: updated ?? { ...ride, status: RideStatus.ACTIVE } });
   };
 }
