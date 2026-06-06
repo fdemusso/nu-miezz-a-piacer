@@ -106,7 +106,7 @@ export function SearchPage() {
   );
 
   return (
-    <AppLayout title="Ricerca" activeNav="/search">
+    <AppLayout title="Ricerca">
       <div className="p-4 space-y-4">
         {/* Search input */}
         <div className="relative">

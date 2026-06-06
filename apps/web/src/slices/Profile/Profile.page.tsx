@@ -40,7 +40,7 @@ export function ProfilePage() {
   const { profile, isLoading, error } = useProfile();
 
   return (
-    <AppLayout title="Profilo" activeNav="/profile">
+    <AppLayout title="Profilo">
       <div className="p-4 space-y-4">
         {isLoading && <ProfileSkeleton />}
 

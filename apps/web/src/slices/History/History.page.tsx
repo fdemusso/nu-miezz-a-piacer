@@ -106,7 +106,7 @@ export function HistoryPage() {
   const { rides, isLoading, error } = useHistory();
 
   return (
-    <AppLayout title="Storico" activeNav="/history">
+    <AppLayout title="Storico">
       <div className="p-4 space-y-3">
         {isLoading && <HistorySkeleton />}
 

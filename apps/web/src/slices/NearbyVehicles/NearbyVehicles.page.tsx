@@ -228,7 +228,7 @@ export function NearbyVehiclesPage() {
   const { vehicles, isLoading, error, usingFallback } = useNearbyVehicles();
 
   return (
-    <AppLayout title="Vicino a te" activeNav="/">
+    <AppLayout title="Vicino a te">
       <div className="p-4 space-y-4">
         <ActiveSessionBanner />
 

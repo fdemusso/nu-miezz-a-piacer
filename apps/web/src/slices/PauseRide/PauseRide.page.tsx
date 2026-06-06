@@ -33,76 +33,80 @@ export function PauseRidePage() {
   if (endedRide && totalCost) {
     const duration = endedRide.durationMinutes != null ? Math.round(endedRide.durationMinutes) : null;
     return (
-      <AppLayout title="Corsa completata" activeNav="/rides/active">
-        <div className="p-4 space-y-4">
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-5">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-6 w-6 text-green-600 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-semibold text-green-900">Corsa terminata!</p>
-                  <p className="text-sm text-green-700 mt-0.5">Il mezzo è nuovamente disponibile.</p>
+      <AppLayout title="Corsa completata">
+        <div className="flex flex-col min-h-[calc(100dvh-8rem)] p-4 gap-4">
+          <div className="space-y-4">
+            <Card className="border-green-200 bg-green-50">
+              <CardContent className="p-5">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-6 w-6 text-green-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-green-900">Corsa terminata!</p>
+                    <p className="text-sm text-green-700 mt-0.5">Il mezzo è nuovamente disponibile.</p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardContent className="p-4 space-y-3">
-              <div className="flex items-center gap-2 text-sm">
-                <Timer className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Inizio</span>
-                <span className="ml-auto font-medium">
-                  {new Date(endedRide.startedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-              {endedRide.endedAt && (
+            <Card>
+              <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-2 text-sm">
                   <Timer className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Fine</span>
+                  <span className="text-muted-foreground">Inizio</span>
                   <span className="ml-auto font-medium">
-                    {new Date(endedRide.endedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(endedRide.startedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
-              )}
-              {duration != null && (
+                {endedRide.endedAt && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Timer className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-muted-foreground">Fine</span>
+                    <span className="ml-auto font-medium">
+                      {new Date(endedRide.endedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                )}
+                {duration != null && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="text-muted-foreground">Durata</span>
+                    <span className="ml-auto font-medium">{duration} min</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-muted-foreground">Durata</span>
-                  <span className="ml-auto font-medium">{duration} min</span>
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Distanza</span>
+                  <span className="ml-auto font-medium">{endedRide.distanceKm ?? DEMO_DISTANCE_KM} km</span>
                 </div>
-              )}
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Distanza</span>
-                <span className="ml-auto font-medium">{endedRide.distanceKm ?? DEMO_DISTANCE_KM} km</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Euro className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Costo totale</span>
-                <span className="ml-auto font-semibold text-base">
-                  {totalCost.amount.toFixed(2)} {totalCost.currency}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Parcheggio</span>
-                <Badge className="ml-auto" variant="default">Zona valida</Badge>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Car className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Stato mezzo</span>
-                <Badge className="ml-auto" variant="secondary">Disponibile</Badge>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-muted-foreground">ID corsa</span>
-                <span className="ml-auto font-mono text-xs">{endedRide.id.slice(0, 8)}…</span>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex items-center gap-2 text-sm">
+                  <Euro className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Costo totale</span>
+                  <span className="ml-auto font-semibold text-base">
+                    {totalCost.amount.toFixed(2)} {totalCost.currency}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Parcheggio</span>
+                  <Badge className="ml-auto" variant="default">Zona valida</Badge>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Car className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Stato mezzo</span>
+                  <Badge className="ml-auto" variant="secondary">Disponibile</Badge>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-muted-foreground">ID corsa</span>
+                  <span className="ml-auto font-mono text-xs">{endedRide.id.slice(0, 8)}…</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-          <Button className="w-full" onClick={() => router.push('/')}>
-            Torna alla home
-          </Button>
+          <div className="mt-auto">
+            <Button className="w-full" size="lg" onClick={() => router.push('/')}>
+              Torna alla home
+            </Button>
+          </div>
         </div>
       </AppLayout>
     );
@@ -111,17 +115,19 @@ export function PauseRidePage() {
   // No active ride
   if (!activeRide) {
     return (
-      <AppLayout title="Corsa in corso" activeNav="/rides/active">
-        <div className="p-4 space-y-4">
+      <AppLayout title="Corsa in corso">
+        <div className="flex flex-col min-h-[calc(100dvh-8rem)] p-4 gap-4">
           <Card className="border-amber-200 bg-amber-50">
             <CardContent className="p-5">
               <p className="text-sm font-medium text-amber-900">Nessuna corsa attiva trovata.</p>
               <p className="text-xs text-muted-foreground mt-1">Avvia prima una corsa sbloccando un veicolo.</p>
             </CardContent>
           </Card>
-          <Button variant="outline" className="w-full" onClick={() => router.push('/')}>
-            Torna alla home
-          </Button>
+          <div className="mt-auto">
+            <Button variant="outline" className="w-full" size="lg" onClick={() => router.push('/')}>
+              Torna alla home
+            </Button>
+          </div>
         </div>
       </AppLayout>
     );
@@ -144,7 +150,7 @@ export function PauseRidePage() {
   }
 
   return (
-    <AppLayout title="Corsa in corso" activeNav="/rides/active">
+    <AppLayout title="Corsa in corso">
       <div className="flex flex-col min-h-[calc(100dvh-8rem)] p-4 gap-4">
         <div className="space-y-4">
           <Card className={isPaused ? 'border-amber-200 bg-amber-50' : 'border-green-200 bg-green-50'}>
