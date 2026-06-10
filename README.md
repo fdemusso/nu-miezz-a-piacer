@@ -42,21 +42,97 @@ mvp/
     └── config/           # Shared constants, env helpers
 ```
 
-## Getting started
+## Prerequisites
 
+Before starting, ensure you have the following installed:
+- **Node.js**: Version 18.x or higher is recommended.
+- **pnpm**: The package manager used for this monorepo. If you don't have it, install it globally:
+  ```bash
+  npm install -g pnpm
+  ```
+
+## Environment Configuration
+
+Sensible default configurations are built into the app, meaning it works out of the box without manual environment configuration. 
+
+However, if you need to override any defaults (e.g., changing ports or DB location), you can configure them:
+
+### Backend Configuration (`apps/api`)
+Copy `apps/api/.env.example` to `apps/api/.env`:
 ```bash
-# 1. Install dependencies
-pnpm install
+cp apps/api/.env.example apps/api/.env
+```
+Key variables:
+- `PORT`: The port on which the Express API server runs (default: `3001`).
+- `DATABASE_URL`: Path to the SQLite database file (default: `./data/mvp.db`).
+- `NODE_ENV`: Application environment (`development`, `production`, `test`).
 
-# 2. Start all apps in dev mode (DB + seed are auto-initialized on first startup)
+### Frontend Configuration (`apps/web`)
+If you change the backend port, configure the frontend to point to the correct URL by creating a `.env.local` file under `apps/web`:
+```bash
+# apps/web/.env.local
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+Key variables:
+- `NEXT_PUBLIC_API_URL`: The URL of the API backend (default: `http://localhost:3001`).
+
+## Getting Started
+
+Follow these steps to set up and run the project locally:
+
+### 1. Install Dependencies
+Install all package dependencies from the root directory:
+```bash
+pnpm install
+```
+
+### 2. Start the Development Environment
+Run the Turborepo development script to start all apps in watch mode:
+```bash
 pnpm dev
 ```
 
-- Web: http://localhost:3000
-- API: http://localhost:3001
-- Health: http://localhost:3001/health
+Once started, the following services will be available:
+- **Frontend (Web)**: [http://localhost:3000](http://localhost:3000)
+- **API Backend**: [http://localhost:3001](http://localhost:3001)
+- **API Health Check**: [http://localhost:3001/health](http://localhost:3001/health)
 
-> No manual DB migration needed. Tables are created and seed data is inserted automatically on first startup.
+> [!NOTE]
+> **Automatic Database Setup:** You do not need to run manual database migrations or seeding. On the first API startup, the SQLite database is automatically created, the tables are migrated using Drizzle ORM, and the seed data is populated.
+
+## Database Management
+
+If you make modifications to the Drizzle schema (`apps/api/src/db/schema.ts`), you can manage migrations using the following commands:
+
+- **Generate Migrations**:
+  ```bash
+  cd apps/api && pnpm drizzle-kit generate
+  ```
+- **Push Schema Changes Direct to DB (during prototyping)**:
+  ```bash
+  cd apps/api && pnpm drizzle-kit push
+  ```
+
+## Additional Monorepo Commands
+
+These commands can be run from the root directory using Turborepo:
+
+- **Build**: Compiles all packages and Next.js/Express apps.
+  ```bash
+  pnpm build
+  ```
+- **Lint**: Lints the codebase for code style and errors.
+  ```bash
+  pnpm lint
+  ```
+- **Typecheck**: Validates TypeScript types across the entire project.
+  ```bash
+  pnpm typecheck
+  ```
+- **Format**: Formats all files using Prettier.
+  ```bash
+  pnpm format
+  ```
 
 ## Test NearbyVehicles
 
